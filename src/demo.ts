@@ -23,6 +23,8 @@ export class Demo extends Phaser.Scene
     {
         super('demo');
         this.contrAngle = 60*Math.PI/180;
+        //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
+        //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
     }  
 
     preload ()
@@ -32,44 +34,40 @@ export class Demo extends Phaser.Scene
         this.load.image("redBall","assets/redBall.png")
 
         
-        this.load.image("LBRBMaket","assets/LBRBMaket.png")
-        this.load.image("LBRRMaket","assets/LBRRMaket.png")
-        this.load.image("LBRWMaket","assets/LBRWMaket.png")
-        this.load.image("LRRBMaket","assets/LRRBMaket.png")
-        this.load.image("LWRBMaket","assets/LWRBMaket.png")
-
-        this.load.image("LRRRMaket","assets/LRRRMaket.png")
-        this.load.image("LRRWMaket","assets/LRRWMaket.png")
-        this.load.image("LWRRMaket","assets/LWRRMaket.png")
-        this.load.image("LWRWMaket","assets/LWRWMaket.png")
+        this.load.image("bronzTop","assets/bronzTop.png")
+        this.load.image("bronzTopRight","assets/bronzTopRight.png")
+        this.load.image("bronzTopLeft","assets/bronzTopLeft.png")
+        this.load.image("bronzTopLeftRight","assets/bronzTopLeftRight.png")
     }
 
     create ()
     {
         globalThis.currentScene = this;
 
+
         this.wallBody = this.physics.add.image(450, 10, "empty");
         this.wallBody.body.setSize(100,10);
         this.wallBody.setImmovable();
+
 
         // размер 300 на 180
         //this.bimbo = this.add.image(450,800,"elephMaket");
         this.bimboGrp = new Phaser.Physics.Arcade.Group(this.physics.world, this)
         //this.bimboGrp.add(this.bimbo);
         
-        this.bimboGrp.add(this.add.image(350,1200,"LBRBMaket").
-            setData({left: Colors.Black, right:Colors.Black}))
-        this.bimboGrp.add(this.add.image(550,800,"LBRBMaket").
-            setData({left: Colors.Black, right:Colors.Black}));
-        //this.bimboGrp.add(this.add.image(350,400,"LBRBMaket").
-        //    setData({left: Colors.Black, right:Colors.Black}))
+        this.bimboGrp.add(this.add.image(336,1200,"bronzTop").
+            setData({left: Colors.Bronze, right:Colors.Bronze}))
+        this.bimboGrp.add(this.add.image(564,800,"bronzTop").
+            setData({left: Colors.Bronze, right:Colors.Bronze}));
+        this.bimboGrp.add(this.add.image(336,400,"bronzTop").
+            setData({left: Colors.Bronze, right:Colors.Bronze}))
 
         this.bimboGrp.getChildren().forEach((obj) => {
             let locObj = obj as Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody;
             if(locObj.body.gameObject.y != 800){
-                locObj.body.setAngularVelocity(10);
+                locObj.body.setAngularVelocity(30);
             }else{
-                locObj.body.setAngularVelocity(-10);
+                locObj.body.setAngularVelocity(-30);
             }
         })
 
@@ -210,7 +208,6 @@ overlap figure:${this.figureOver}`)
                                 this.debugText.setText(locBimbo.data.values.right);
                                 //}
                             }
-
                         }
                         return true;
                     } else
@@ -222,7 +219,7 @@ overlap figure:${this.figureOver}`)
                             this.deltaAbsY = (ball as Ball).body.deltaAbsY()
                             // если бимба слева от шара
                             if ((ball as Ball).x > locBimbo.body.gameObject.x) {
-                                if ((ball as Ball).y < locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
+                                if (locBall.y < locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
                                     // if ((ball as Ball).y + (ball as Ball).body.deltaAbsY() <
                                     //     locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
                                     //     this.deltaAbsY = (ball as Ball).body.deltaAbsY()
@@ -287,36 +284,28 @@ left color:${this.bimbo}`)
 
         bimbo.setData(side,color);
 
-        let newTexture:string = "L";
-
-        switch (bimbo.data.values.left){
-            case Colors.Black: 
-                newTexture += "B";
-                break;
-            case Colors.Red: 
-                newTexture += "R";
-                break;
-            case Colors.White: 
-                newTexture += "W";
-                break;
+        if(bimbo.data.values.left == Colors.Bronze && 
+            bimbo.data.values.right == Colors.Bronze){
+                bimbo.body.gameObject.setTexture("bronzTop");
+                return;
         }
 
-        newTexture+="R";
-
-        switch(bimbo.data.values.right){
-            case Colors.Black: 
-                newTexture += "B";
-                break;
-            case Colors.Red: 
-                newTexture += "R";
-                break;
-            case Colors.White: 
-                newTexture += "W";
-                break;
+        if(bimbo.data.values.left == Colors.Bronze && 
+            bimbo.data.values.right == Colors.Red){
+                bimbo.body.gameObject.setTexture("bronzTopRight");
+                return;
         }
 
-        newTexture+="Maket";
+        if(bimbo.data.values.left == Colors.Red && 
+            bimbo.data.values.right == Colors.Bronze){
+                bimbo.body.gameObject.setTexture("bronzTopLeft");
+                return;
+        }
 
-        bimbo.body.gameObject.setTexture(newTexture);
+        if(bimbo.data.values.left == Colors.Red && 
+            bimbo.data.values.right == Colors.Red){
+                bimbo.body.gameObject.setTexture("bronzTopLeftRight");
+                return;
+        }
     }
 }

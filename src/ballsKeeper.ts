@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 //import { Colors } from './demo';
 
-export enum Colors {Black, Red, White};
+export enum Colors {Bronze, Red};
 
 export class BallsKeeper
 {
@@ -75,7 +75,7 @@ export class Ball extends Phaser.Physics.Arcade.Sprite
         if(srcImg == "redBall"){
             this.setData('color', Colors.Red);
         }else{
-            this.setData('color', Colors.White);
+            this.setData('color', Colors.Bronze);
         }
     }
 
