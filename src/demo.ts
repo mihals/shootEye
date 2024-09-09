@@ -1,311 +1,217 @@
 import * as Phaser from 'phaser';
-import { BallsKeeper } from './ballsKeeper';
-import { Ball } from './ballsKeeper';
-import { Colors } from './ballsKeeper';
 
+/** объект для описания персонажа - необязательное имя файла из
+ *  которого загружается изображение, ключ этого изображения,
+ *  анимация, связанная с персонажем, объект спрайта */
+type PersonMap = {
+    fileName?:string
+    spriteKey?:string
+    animKey?:string
+    sprite?:Phaser.GameObjects.Sprite
+    deltaX:number,
+    deltaY:number
+}
+
+/** объект для описания сценического объекта - дома, сарая и т.п.,
+ *  координаты его на сцене, массив связанных с ним персонажей с указанием
+ *  смещения X и Y относительно самого объекта
+ */
+type ObjectMap = {
+    fileName:string
+    objKey:string
+    objectX : number
+    objectY : number
+    personArr:Array<PersonMap>
+}
 
 export class Demo extends Phaser.Scene
 {
     infoText:Phaser.GameObjects.Text;
-    //bimbo:Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody;
-    bimbo:Phaser.GameObjects.Image;
-    bimboGrp:Phaser.Physics.Arcade.Group;
-    myBallsKeeper:BallsKeeper;
-    wallBody:Phaser.Physics.Arcade.Image;
+    object2Map:ObjectMap;
+    startKey:boolean;
+    emptyAnchor:Phaser.GameObjects.Image;
+    cursors:Phaser.Types.Input.Keyboard.CursorKeys;
 
-    debugText:Phaser.GameObjects.Text;
-    figureOver:boolean;
-    bodyOver:boolean;
-    contrAngle:number;
-    deltaAbsY:number;
+    /** массив объектов конфигураций для анимаций, используемых
+     * для данной сцены */
+    animsArr: Array<Phaser.Types.Animations.Animation>;
 
     constructor ()
     {
         super('demo');
-        this.contrAngle = 60*Math.PI/180;
+
+        this.animsArr = [
+            {
+                key: 'elAnim0',
+                frames: [
+                    { key: 'an0fr0' },
+                    { key: 'an0fr1' },
+                    { key: 'an0fr2' },
+                    { key: 'an0fr3' },
+                    { key: 'an0fr4' }
+                ],
+                frameRate: 5,
+                repeat: -1
+            },
+            {
+                key: 'elAnim1',
+                frames: [
+                    { key: 'an1fr0' },
+                    { key: 'an1fr1' },
+                    { key: 'an1fr2' },
+                    { key: 'an1fr3' },
+                    { key: 'an1fr4' }
+                ],
+                frameRate: 5,
+                repeat: -1
+            },
+            {
+                key: 'elAnim2',
+                frames: [
+                    { key: 'an2fr0' },
+                    { key: 'an2fr1' },
+                    { key: 'an2fr2' },
+                    { key: 'an2fr3' },
+                    { key: 'an2fr4' }
+                ],
+                frameRate: 5,
+                repeat: -1
+            },
+            {
+                key: 'elAnim3',
+                frames: [
+                    { key: 'an3fr0' },
+                    { key: 'an3fr1' },
+                    { key: 'an3fr2' },
+                    { key: 'an3fr3' },
+                    { key: 'an3fr4' }
+                ],
+                frameRate: 5,
+                repeat: 0
+            },
+            {
+                key: 'elAnim4',
+                frames: [
+                    { key: 'an4fr0' },
+                    { key: 'an4fr1' },
+                    { key: 'an4fr2' },
+                    { key: 'an4fr3' },
+                    { key: 'an4fr4' }
+                ],
+                frameRate: 5,
+                repeat: 0
+            }
+        ];
+
+        this.object2Map = {
+            fileName:'assets/building1',
+            objKey:'building1',
+            objectX:612,
+            objectY:410,
+            personArr:[{ deltaX:-50, deltaY:86, animKey:"elAnim3"},
+                        { deltaX:463, deltaY:35, animKey:"elAnim4"} //1075,445
+            ]
+        }
+
+        //this.contrAngle = 60*Math.PI/180;
         //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
         //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
     }  
 
+    init(data){
+        console.log(data)
+    }
+
     preload ()
     {
-        this.load.image("empty","assets/empty.png")
-        this.load.image("whiteBall","assets/whiteBall.png")
-        this.load.image("redBall","assets/redBall.png")
+        this.load.image('landscapeL','assets/landscapeL.png');
+        this.load.image('emptyAnchor','assets/redBall41x41.png');
 
-        
-        this.load.image("bronzTop","assets/bronzTop.png")
-        this.load.image("bronzTopRight","assets/bronzTopRight.png")
-        this.load.image("bronzTopLeft","assets/bronzTopLeft.png")
-        this.load.image("bronzTopLeftRight","assets/bronzTopLeftRight.png")
+        this.animsArr.forEach((anim) => {
+            (anim.frames as Phaser.Types.Animations.AnimationFrame[]).forEach(frame => {
+                this.load.image(frame.key,"assets/" + frame.key + ".png")
+            });
+        })
+
+        this.load.image(this.object2Map.objKey, this.object2Map.fileName + ".png");
+
+        this.object2Map.personArr.forEach(person => {
+            if('fileName' in person){
+                this.load.image(person.spriteKey, "assets/" + person.fileName + ".png")
+            }
+        })
     }
 
     create ()
     {
         globalThis.currentScene = this;
+        this.startKey = false;
 
+        this.cameras.main.setBounds(0,0,3600,675);
+        this.physics.world.setBounds(0,0,3600,675);
+        this.add.image(600,273,'landscapeL');
+        this.add.image(1800,273,'landscapeL').setFlipX(true);
+        //this.add.image(2400,273,'landscapeL');
+        this.add.image(3000,273,'landscapeL')//.setFlipX(true);
 
-        this.wallBody = this.physics.add.image(450, 10, "empty");
-        this.wallBody.body.setSize(100,10);
-        this.wallBody.setImmovable();
+        this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
 
+        this.cursors = this.input.keyboard.createCursorKeys();
 
-        // размер 300 на 180
-        //this.bimbo = this.add.image(450,800,"elephMaket");
-        this.bimboGrp = new Phaser.Physics.Arcade.Group(this.physics.world, this)
-        //this.bimboGrp.add(this.bimbo);
+        // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
+        this.cameras.main.startFollow(this.emptyAnchor, true);
+
+        //this.cameras.main.setZoom(4);
+        //this.cameras.resize(500,500)
+        //this.cameras.main.setZoom(1);
+        //this.cameras.main.centerOn(0, 0);
         
-        this.bimboGrp.add(this.add.image(336,1200,"bronzTop").
-            setData({left: Colors.Bronze, right:Colors.Bronze}))
-        this.bimboGrp.add(this.add.image(564,800,"bronzTop").
-            setData({left: Colors.Bronze, right:Colors.Bronze}));
-        this.bimboGrp.add(this.add.image(336,400,"bronzTop").
-            setData({left: Colors.Bronze, right:Colors.Bronze}))
-
-        this.bimboGrp.getChildren().forEach((obj) => {
-            let locObj = obj as Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody;
-            if(locObj.body.gameObject.y != 800){
-                locObj.body.setAngularVelocity(30);
-            }else{
-                locObj.body.setAngularVelocity(-30);
-            }
+        // создаём анимации по конфигам из массива animsArr
+        this.animsArr.forEach( anim => {
+            this.anims.create(anim);
         })
-
         
+        // добавляем картинку объекта
+        this.add.image(this.object2Map.objectX, this.object2Map.objectY,
+            this.object2Map.objKey);
 
-        this.figureOver = false;
-        this.bodyOver = false;
-
-        this.debugText = this.add.text(20,20,"empty");
-        this.debugText.setColor('fffffff');
-        this.debugText.setFontSize(40);
-
-        this.debugText.setText(
-            `overlap body:${this.bodyOver} 
-overlap figure:${this.figureOver}`)
-
-        this.myBallsKeeper = new BallsKeeper(this)
-
-        this.infoText = this.add.text(14,4,'').setStyle({fontFamily: 'Arial, Roboto',
-            fill:'black', fontSize: '24px'});
-
-        //this.add.image(220,320,"bimbo");
-
+        this.object2Map.personArr.forEach((person) => {
+            //this.anims.get(person.animKey).frames[0].textureKey;
+            let sprKey: string = ('fileName' in person) ? person.fileName :
+                this.anims.get(person.animKey).frames[0].textureKey;
+            person.sprite = this.add.sprite(this.object2Map.objectX + person.deltaX,
+                this.object2Map.objectY + person.deltaY, (sprKey as string));
+        }
+        )
         
-        //this.bimbo.body.setAngularVelocity(-10)
-
-        this.input.on('pointerdown', (pointer) => {
-            if (pointer.x > 450){
-                this.myBallsKeeper.fireBall()
-            }
-        })
-
-        // обработчик столкновений слоников с красными шарами
-        // this.physics.add.overlap( this.bimboGrp, this.myBallsKeeper.myRedBalls,
-        //     (target, ball) => {
-        //         let locBimbo = target as Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody;
-        //         let radAngle: number = locBimbo.body.gameObject.angle * Math.PI / 180;
-        //         this.bodyOver = true;
-        //         // углы поворота бимбы, при которых его левое ухо находится
-        //         // в зоне поражения правым шаром
-        //         //this.bimbo.angle<this.contrAngle && this.bimbo.angle>-this.contrAngle
-        //         if (radAngle < this.contrAngle && radAngle > -this.contrAngle) {
-        //             this.figureOver = true;
-        //             this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-        //             if ((ball as Ball).y < locBimbo.body.gameObject.y + 150 * Math.sin(radAngle)) {
-        //                 // пытаемся исключить случай, когда ухо проворачивается в зону
-        //                 // поражения после того, как шар пролетел точку соударения,
-        //                 // но из зоны поражения ещё не вылетел 
-        //                 if ((ball as Ball).y + (ball as Ball).body.deltaAbsY() <
-        //                     locBimbo.body.gameObject.y + 150 * Math.sin(radAngle)) {
-        //                     this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-        //                     return false;
-        //                 }
-        //                 (ball as Ball).hide();
-        //                 locBimbo.body.gameObject.angle -= 10;
-        //                 if(locBimbo.data.values.left != Colors.Red){
-        //                     this.changeColor(locBimbo, "left", Colors.Red);
-        //                     this.debugText.setText(locBimbo.data.values.left);
-        //                 }
-        //             }
-        //             return true;
-        //         } else
-        //             // углы поворота бимбы, при которых его правое ухо находится
-        //             // в зоне поражения правым шаром
-        //             //(this.bimbo.angle < -180 + this.contrAngle ||
-        //             //      this.bimbo.angle > 180 - this.contrAngle)
-        //             if (radAngle < -Math.PI + this.contrAngle || radAngle > Math.PI - this.contrAngle) {
-        //                 this.figureOver = true;
-        //                 this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-        //                 if ((ball as Ball).y < locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
-        //                     // пытаемся исключить случай, когда ухо проворачивается в зону
-        //                     // поражения после того, как шар пролетел точку соударения,
-        //                     // но из зоны поражения ещё не вылетел 
-        //                     if ((ball as Ball).y + (ball as Ball).body.deltaAbsY() <
-        //                         locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
-        //                         this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-        //                         return false;
-        //                     }
-        //                     (ball as Ball).hide();
-        //                     locBimbo.body.gameObject.angle -= 10;
-        //                     if(locBimbo.data.values.right != Colors.Red){
-        //                         this.changeColor(locBimbo, "right", Colors.Red);
-        //                         this.debugText.setText(locBimbo.data.values.left);
-        //                     }
-        //                 }
-        //                 return true;
-        //             }
-        //         this.infoText.setText("OVERLAPED");
-        //         return false;
-        //     })
-
-            // обработчик столкновений слоников с белыми шарами
-            this.physics.add.overlap(this.bimboGrp,[this.myBallsKeeper.myRedBalls,
-                this.myBallsKeeper.myWhiteBalls], (target,ball ) => {
-                let locBall = ball as Ball;
-                let locBimbo = target as Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody;
-                let radAngle:number = locBimbo.body.gameObject.angle*Math.PI/180;
-                this.bodyOver = true;
-                // углы поворота бимбы, при которых его левое ухо находится
-                // в зоне поражения шаром справа и правое ухо бимбы, который 
-                // находится в зоне поражения шаром слева
-                //this.bimbo.angle<this.contrAngle && this.bimbo.angle>-this.contrAngle
-                    if (radAngle < this.contrAngle && radAngle > -this.contrAngle) {
-                        this.figureOver = true;
-                        this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-                        // если бимба слева от шара
-                        if ((ball as Ball).x > locBimbo.body.gameObject.x) {
-                            if ((ball as Ball).y <= locBimbo.body.gameObject.y + 
-                                150 * Math.sin(radAngle)) {
-                                // пытаемся исключить случай, когда ухо проворачивается в зону
-                                // поражения после того, как шар пролетел точку соударения,
-                                // но из зоны поражения ещё не вылетел 
-                                // if((ball as Ball).y + (ball as Ball).body.deltaAbsY() < 
-                                //     locBimbo.body.gameObject.y + 150*Math.sin(radAngle))
-                                //     {
-                                //         this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-                                //         return false;
-                                // }
-                                
-                                (ball as Ball).hide();
-                                locBimbo.body.gameObject.angle -= 10;
-                                //if (locBimbo.data.values.left != Colors.White) {
-                                //let color:Colors = (ball as Ball).data.values.color 
-                                this.changeColor(locBimbo, "left", (ball as Ball).data.values.color);
-                                this.debugText.setText(locBimbo.data.values.left);
-                                //}
-                                return true;
-                            }
-                        }
-                        // случай когда бимба справа от шара
-                        else{
-                            // если шар коснулся уха
-                            if ((ball as Ball).y <= locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
-                                (ball as Ball).hide();
-                                locBimbo.body.gameObject.angle += 10;
-                                //if (locBimbo.data.values.right != Colors.White) {
-                                this.changeColor(locBimbo, "right", (ball as Ball).data.values.color);
-                                this.debugText.setText(locBimbo.data.values.right);
-                                //}
-                            }
-                        }
-                        return true;
-                    } else
-                        // углы поворота бимбы слева от шара, при которых его правое ухо находится
-                        // в зоне поражения и для бимбы справа от шара, при которых его левое
-                        // ухо будет в зоне поражения
-                        if (radAngle < -Math.PI + this.contrAngle || radAngle > Math.PI - this.contrAngle) {
-                            this.figureOver = true;
-                            this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-                            // если бимба слева от шара
-                            if ((ball as Ball).x > locBimbo.body.gameObject.x) {
-                                if (locBall.y < locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
-                                    // if ((ball as Ball).y + (ball as Ball).body.deltaAbsY() <
-                                    //     locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
-                                    //     this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-                                    //     return false;
-                                    // }
-                                    (ball as Ball).hide();
-                                    locBimbo.body.gameObject.angle -= 10;
-                                    //if (locBimbo.data.values.right != Colors.White) {
-                                    this.changeColor(locBimbo, "right", (ball as Ball).data.values.color);
-                                    this.debugText.setText(locBimbo.data.values.right);
-                                    //}
-                                }
-                                return true;
-                            }
-                            // если бимба справа от шара
-                            else{
-                                if ((ball as Ball).y < locBimbo.body.gameObject.y + 150 * Math.sin(radAngle)) {
-                                    // if ((ball as Ball).y + (ball as Ball).body.deltaAbsY() <
-                                    //     locBimbo.body.gameObject.y - 150 * Math.sin(radAngle)) {
-                                    //     this.deltaAbsY = (ball as Ball).body.deltaAbsY()
-                                    //     return false;
-                                    // }
-                                    (ball as Ball).hide();
-                                    locBimbo.body.gameObject.angle += 10;
-                                    //if (locBimbo.data.values.left != Colors.White) {
-                                    this.changeColor(locBimbo, "left", (ball as Ball).data.values.color);
-                                    this.debugText.setText(locBimbo.data.values.left);
-                                    //}
-                                }
-                                return true;
-                            }
-                        }
-                    this.infoText.setText("OVERLAPED");
-                    return false;
-                })
-
-        // this.physics.add.collider(this.wallBody, this.myBallsKeeper.myRedBalls,
-        //     (wall, ball) => {
-        //         (ball as Ball).bounceBall();
-        //     })
-
-        // this.physics.add.collider(this.wallBody, this.myBallsKeeper.myWhiteBalls,
-        //     (wall, ball) => {
-        //         (ball as Ball).bounceBall();
-        //     })
     }
 
     update(time: number, delta: number): void {
-        this.debugText.setText(
-            `overlap body:${this.bodyOver} 
-deltaAbsY :${this.deltaAbsY}
-left color:${this.bimbo}`)
-    }
-
-    /** принимает объект, ухо которого надо закрасить, сторону, которую
-     *  надо закрасить и цвет
-     */
-    changeColor(bimbo:Phaser.Types.Physics.Arcade.GameObjectWithDynamicBody,
-                side:string, color:Colors)
-    {
-        if(bimbo.getData(side) == color) return;
-
-        bimbo.setData(side,color);
-
-        if(bimbo.data.values.left == Colors.Bronze && 
-            bimbo.data.values.right == Colors.Bronze){
-                bimbo.body.gameObject.setTexture("bronzTop");
-                return;
+        
+        if(!this.startKey){
+            this.object2Map.personArr.forEach(person => {
+                person.sprite.play(person.animKey)
+            })
+            this.startKey = true;
         }
 
-        if(bimbo.data.values.left == Colors.Bronze && 
-            bimbo.data.values.right == Colors.Red){
-                bimbo.body.gameObject.setTexture("bronzTopRight");
-                return;
-        }
+        if (this.cursors.left.isDown && this.emptyAnchor.x > 0)
+            {
+                
+                this.emptyAnchor.x -= 1.5;
+            }
+            else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600)
+            {
+                this.emptyAnchor.x += 1.5;
+            }
 
-        if(bimbo.data.values.left == Colors.Red && 
-            bimbo.data.values.right == Colors.Bronze){
-                bimbo.body.gameObject.setTexture("bronzTopLeft");
-                return;
-        }
-
-        if(bimbo.data.values.left == Colors.Red && 
-            bimbo.data.values.right == Colors.Red){
-                bimbo.body.gameObject.setTexture("bronzTopLeftRight");
-                return;
-        }
+            if(this.emptyAnchor.x > 3000){
+                this.scene.start('sceneB',{from:"demo"});
+            }
+            
+//         this.debugText.setText(
+//             `overlap body:${this.bodyOver} 
+// deltaAbsY :${this.deltaAbsY}
+// left color:${this.bimbo}`)
     }
 }
