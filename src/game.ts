@@ -1,6 +1,9 @@
 import * as Phaser from 'phaser';
-import {Demo} from './demo'
+import {Preloader} from './preloader'
+import {SceneA} from './sceneA'
 import { SceneB } from './sceneB';
+
+
 
 let myGame: Phaser.Game;
 
@@ -23,7 +26,7 @@ export function startGame(){
             autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
             mode: Phaser.Scale.FIT
           },
-        scene: [ Demo, SceneB],
+        scene: [ Preloader, SceneA, SceneB],
         //render :render,
     };
     myGame = new Phaser.Game(config);
