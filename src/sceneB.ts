@@ -2,64 +2,28 @@ import * as Phaser from 'phaser';
 import { PersonMap } from './preloader';
 import { ObjectMap } from './preloader';
 import { objectsArr } from './preloader';
-import {STATE } from './preloader';
+import { STATE } from './preloader';
 
 export class SceneB extends Phaser.Scene
 {
-    //object2Map:ObjectMap;
     startKey:boolean;
     emptyAnchor:Phaser.GameObjects.Image;
     cursors:Phaser.Types.Input.Keyboard.CursorKeys;
     direction:string
     fireKey:Phaser.Input.Keyboard.Key;
+    dragIsStart:boolean = false;
 
     debugText:Phaser.GameObjects.Text;
 
     /** массив объектов конфигураций для анимаций, используемых
      * для данной сцены */
-    //animsArr: Array<Phaser.Types.Animations.Animation>;
     sceneObjArr:Array<ObjectMap>
-    // object3Map: ObjectMap;
-    // object4Map: ObjectMap;
 
     graphics:Phaser.GameObjects.Graphics;
 
     constructor ()
     {
         super('sceneB');
-
-        // this.object3Map = {
-        //     fileName: 'assets/building2',
-        //     objKey: 'building2',
-        //     objectX: 794,
-        //     objectY: 368,
-        //     personArr: [{
-        //         deltaX: 46, deltaY: 92, animKey: "elAnim5",
-        //         hiddenArea: { dX: 133, dY: 66, w: 46, h: 50 },
-        //         activeArea: { dX: -89, dY: 43, w: 160, h: 116 }
-        //     }
-        //     ]
-        // }
-
-        // this.object4Map = {
-        //     fileName: 'assets/building3',
-        //     objKey: 'building3',
-        //     objectX: 2300,
-        //     objectY: 320,
-        //     personArr: [{
-        //         deltaX: 9, deltaY: -62, animKey: "elAnim6",
-        //         hiddenArea: { dX: -6, dY: -187, w: 34, h: 58 },
-        //         activeArea: { dX: -71, dY: -95, w: 143, h: 167 }
-        //     },
-        //     ]
-        // }
-
-        // this.object3Map = objectsArr[2];
-        // this.object4Map = objectsArr[3];
-        
-        //this.contrAngle = 60*Math.PI/180;
-        //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
-        //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
     }  
 
     init(data){
@@ -82,7 +46,6 @@ export class SceneB extends Phaser.Scene
         
         this.add.image(600,273,'landscapeL');
         this.add.image(1800,273,'landscapeL').setFlipX(true);
-        //this.add.image(2400,273,'landscapeL');
         this.add.image(3000,273,'landscapeL')//.setFlipX(true);
 
         // краешек здания из obj5Map
@@ -99,10 +62,23 @@ export class SceneB extends Phaser.Scene
             this.sceneObjArr[0].objKey);
 
         this.sceneObjArr[0].personArr.forEach((person) => {
-            let sprKey: string = ('fileName' in person) ? person.fileName :
-                this.anims.get(person.animKey).frames[0].textureKey;
-            person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
-                this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
+            if (person.state != STATE.EMPTY) {
+                let sprKey: string = this.anims.get(person.animKey).
+                    frames[0].textureKey;
+                if (person.state == STATE.HIDDEN) {
+                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+                        person.deltaX, this.sceneObjArr[0].objectY +
+                    person.deltaY, (sprKey as string));
+                } else if (person.state == STATE.ACTIVE) {
+                    let lastFrame: number = this.anims.get(person.animKey).
+                        frames.length - 1;
+                    sprKey = this.anims.get(person.animKey).
+                        frames[lastFrame].textureKey;
+                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+                        person.deltaX, this.sceneObjArr[0].objectY +
+                    person.deltaY, (sprKey as string));
+                }
+            }
         }
         )
 
@@ -113,20 +89,30 @@ export class SceneB extends Phaser.Scene
             this.sceneObjArr[1].objKey);
 
         this.sceneObjArr[1].personArr.forEach((person) => {
-            let sprKey: string = ('fileName' in person) ? person.fileName :
-                this.anims.get(person.animKey).frames[0].textureKey;
-            person.sprite = this.add.sprite(this.sceneObjArr[1].objectX + person.deltaX,
-                this.sceneObjArr[1].objectY + person.deltaY, (sprKey as string));
+            if (person.state != STATE.EMPTY) {
+                let sprKey: string = this.anims.get(person.animKey).
+                    frames[0].textureKey;
+                if (person.state == STATE.HIDDEN) {
+                    person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
+                        person.deltaX, this.sceneObjArr[1].objectY +
+                    person.deltaY, (sprKey as string));
+                } else if (person.state == STATE.ACTIVE) {
+                    let lastFrame: number = this.anims.get(person.animKey).
+                        frames.length - 1;
+                    sprKey = this.anims.get(person.animKey).
+                        frames[lastFrame].textureKey;
+                    person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
+                        person.deltaX, this.sceneObjArr[1].objectY +
+                    person.deltaY, (sprKey as string));
+                }
+            }
         }
         )
 
         this.debugText = this.add.text(10,30,"");
         this.debugText.setFontSize(64)
 
-        // let bnd = this.debugText.getBounds()
-        // console.log(bnd)
-
-        this.input.addPointer(2)
+        //this.input.addPointer(2)
 
         this.input.on('pointerdown', (pointer) => {
             
@@ -176,6 +162,7 @@ export class SceneB extends Phaser.Scene
             this.sceneObjArr.forEach((obj) => {
                 if("personArr" in obj){
                     obj.personArr.forEach((pers) => {
+                        // если перс прячется
                         if(pers.state == STATE.HIDDEN){
                             if( new Phaser.Geom.Rectangle(
                                 obj.objectX+pers.hiddenArea.dX,
@@ -185,6 +172,23 @@ export class SceneB extends Phaser.Scene
                             ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
                                 pers.sprite.play(pers.animKey);
                                 pers.state = STATE.ACTIVE;
+                                if("flashesArr" in pers){
+                                    pers.flashesArr.forEach((value) => {
+                                        this.add.sprite(obj.objectX + value.dx,
+                                            obj.objectY + value.dy, "bigFlash");
+                                    })
+                                }
+                            }
+                            // если перс уже выскочил
+                        } else if (pers.state == STATE.ACTIVE) {
+                            if (new Phaser.Geom.Rectangle(
+                                obj.objectX + pers.activeArea.dX,
+                                obj.objectY + pers.activeArea.dY,
+                                pers.activeArea.w,
+                                pers.activeArea.h
+                            ).contains(this.emptyAnchor.x, this.emptyAnchor.y)) {
+                                pers.sprite.setTexture("doorBld4");
+                                pers.state = STATE.EMPTY;
                             }
                         }
                     })
@@ -192,27 +196,38 @@ export class SceneB extends Phaser.Scene
             })
         } )
 
-        //this.sceneObjArr[0].personArr[0].state = STATE.ACTIVE;
+        let pointer = this.input.activePointer;
+        console.log(pointer);
+        let res =this.input.addPointer(2);
+        console.log(res);
+        // this.input.on('pointerdown', (pointer) => {
+        //     var touchX = pointer.x;
+        //     var touchY = pointer.y;
+        //     // ...
+        // });
+        // this.input.on('drag', (pointer) => {
+        //     var touchX = pointer.x;
+        //     console.log(touchX);
+        //     var touchY = pointer.y;
+        //     // ...
+        // });
 
-        // this.add.image(640,360,'dlgWnd')
-        // this.add.image(640,278,'yellowRect')
-        // this.add.image(772,518,'redBtn')
-        // this.add.image(503,518,'yellowBtn')
+        //this.events.st
+        // let tm = this.input.pointer1.;
+        //      console.log(tm.enabled)
+        // }
 
-        //this.emptyAnchor.setScale(0.5)
+        this.input.on('pointermove', (arg) => {
+            console.log(arg)
+            let pointer = this.input.activePointer;
+            console.log(pointer)
+        })
         this.emptyAnchor.setDepth(1);
+
     }
 
     update(time: number, delta: number): void {
         if(!this.startKey){
-            // this.object3Map.personArr.forEach(person => {
-            //     person.sprite.play(person.animKey)
-            // })
-
-            // this.object4Map.personArr.forEach(person => {
-            //     person.sprite.play(person.animKey)
-            // })
-            
             this.startKey = true;
         }
 

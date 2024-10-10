@@ -3,6 +3,7 @@ import {Preloader} from './preloader'
 import {SceneA} from './sceneA'
 import { SceneB } from './sceneB';
 import { SceneC } from './sceneC';
+import { SceneD } from './sceneD';
 
 
 
@@ -12,7 +13,7 @@ export function startGame(){
     
     const config = {
     
-        type: Phaser.AUTO,
+        type: Phaser.WEBGL,
         backgroundColor: '#bfc874',
         width: 1200,
         height: 675,
@@ -27,7 +28,7 @@ export function startGame(){
             autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
             mode: Phaser.Scale.FIT
           },
-        scene: [ Preloader, SceneC, SceneB, SceneA],
+        scene: [ Preloader, SceneC, SceneB, SceneA, SceneD],
         //render :render,
     };
     myGame = new Phaser.Game(config);

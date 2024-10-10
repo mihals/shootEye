@@ -4,36 +4,9 @@ import { ObjectMap } from './preloader';
 import { objectsArr } from './preloader';
 import {STATE } from './preloader';
 
-// /** объект для описания персонажа - необязательное имя файла из
-//  *  которого загружается изображение, ключ этого изображения,
-//  *  анимация, связанная с персонажем, объект спрайта */
-// export type PersonMap = {
-//     fileName?:string
-//     spriteKey?:string
-//     animKey?:string
-//     sprite?:Phaser.GameObjects.Sprite
-//     deltaX:number,
-//     deltaY:number
-// }
-
-// /** объект для описания сценического объекта - дома, сарая и т.п.,
-//  *  координаты его на сцене, массив связанных с ним персонажей с указанием
-//  *  смещения X и Y относительно самого объекта
-//  */
-// export type ObjectMap = {
-//     fileName:string
-//     objKey:string
-//     objectX : number
-//     objectY : number
-//     personArr:Array<PersonMap>
-// }
-
 export class SceneA extends Phaser.Scene
 {
     infoText:Phaser.GameObjects.Text;
-    //object1Map:ObjectMap;
-    //object2Map:ObjectMap;
-    //object4Map:ObjectMap;
     sceneObjArr:Array<ObjectMap>;
     fireKey:Phaser.Input.Keyboard.Key;
 
@@ -136,7 +109,7 @@ export class SceneA extends Phaser.Scene
         this.add.image(1800,273,'landscapeL').setFlipX(true);
         this.add.image(3000,273,'landscapeL')//.setFlipX(true);
         
-        //this.add.image(3700,368,'building2')//.setFlipX(true);
+        this.add.image(3490,358,'building7')//.setFlipX(true);
 
         this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
 
@@ -144,35 +117,70 @@ export class SceneA extends Phaser.Scene
 
         // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
         this.cameras.main.startFollow(this.emptyAnchor, true);
-
-        //this.cameras.main.setZoom(4);
-        //this.cameras.resize(500,500)
-        //this.cameras.main.setZoom(1);
-        //this.cameras.main.centerOn(0, 0);
-        
-        
         
         // добавляем картинку объекта
         this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY,
             this.sceneObjArr[1].objKey);
 
+        // this.sceneObjArr[1].personArr.forEach((person) => {
+        //     let sprKey: string = ('fileName' in person) ? person.fileName :
+        //         this.anims.get(person.animKey).frames[0].textureKey;
+        //     person.sprite = this.add.sprite(this.sceneObjArr[1].objectX + person.deltaX,
+        //         this.sceneObjArr[1].objectY + person.deltaY, (sprKey as string));
+        // })
+
         this.sceneObjArr[1].personArr.forEach((person) => {
-            let sprKey: string = ('fileName' in person) ? person.fileName :
-                this.anims.get(person.animKey).frames[0].textureKey;
-            person.sprite = this.add.sprite(this.sceneObjArr[1].objectX + person.deltaX,
-                this.sceneObjArr[1].objectY + person.deltaY, (sprKey as string));
-        })
+            if (person.state != STATE.EMPTY) {
+                let sprKey: string = this.anims.get(person.animKey).
+                    frames[0].textureKey;
+                if (person.state == STATE.HIDDEN) {
+                    person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
+                        person.deltaX, this.sceneObjArr[1].objectY +
+                    person.deltaY, (sprKey as string));
+                } else if (person.state == STATE.ACTIVE) {
+                    let lastFrame: number = this.anims.get(person.animKey).
+                        frames.length - 1;
+                    sprKey = this.anims.get(person.animKey).
+                        frames[lastFrame].textureKey;
+                    person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
+                        person.deltaX, this.sceneObjArr[1].objectY +
+                    person.deltaY, (sprKey as string));
+                }
+            }
+        }
+        )
 
         this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
             this.sceneObjArr[0].objKey);
 
         this.sceneObjArr[0].personArr.forEach((person) => {
-            let sprKey: string = ('fileName' in person) ? person.fileName :
-                this.anims.get(person.animKey).frames[0].textureKey;
-            person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
-                this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
+            if (person.state != STATE.EMPTY) {
+                let sprKey: string = this.anims.get(person.animKey).
+                    frames[0].textureKey;
+                if (person.state == STATE.HIDDEN) {
+                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+                        person.deltaX, this.sceneObjArr[0].objectY +
+                    person.deltaY, (sprKey as string));
+                } else if (person.state == STATE.ACTIVE) {
+                    let lastFrame: number = this.anims.get(person.animKey).
+                        frames.length - 1;
+                    sprKey = this.anims.get(person.animKey).
+                        frames[lastFrame].textureKey;
+                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+                        person.deltaX, this.sceneObjArr[0].objectY +
+                    person.deltaY, (sprKey as string));
+                }
+            }
         }
         )
+
+        // this.sceneObjArr[0].personArr.forEach((person) => {
+        //     let sprKey: string = ('fileName' in person) ? person.fileName :
+        //         this.anims.get(person.animKey).frames[0].textureKey;
+        //     person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
+        //         this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
+        // }
+        // )
 
         
 
@@ -238,10 +246,31 @@ export class SceneA extends Phaser.Scene
         })
 
         this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        // this.fireKey.on("down", (key, event) => {
+        //     this.sceneObjArr.forEach((obj) => {
+        //         if("personArr" in obj){
+        //             obj.personArr.forEach((pers) => {
+        //                 if(pers.state == STATE.HIDDEN){
+        //                     if( new Phaser.Geom.Rectangle(
+        //                         obj.objectX+pers.hiddenArea.dX,
+        //                         obj.objectY+pers.hiddenArea.dY,
+        //                         pers.hiddenArea.w,
+        //                         pers.hiddenArea.h
+        //                     ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
+        //                         pers.sprite.play(pers.animKey);
+        //                         pers.state = STATE.ACTIVE;
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //     })
+        // } )
+
         this.fireKey.on("down", (key, event) => {
             this.sceneObjArr.forEach((obj) => {
                 if("personArr" in obj){
                     obj.personArr.forEach((pers) => {
+                        // если перс прячется
                         if(pers.state == STATE.HIDDEN){
                             if( new Phaser.Geom.Rectangle(
                                 obj.objectX+pers.hiddenArea.dX,
@@ -251,6 +280,22 @@ export class SceneA extends Phaser.Scene
                             ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
                                 pers.sprite.play(pers.animKey);
                                 pers.state = STATE.ACTIVE;
+                                if("flashesArr" in pers){
+                                    pers.flashesArr.forEach((value) => {
+                                        this.add.sprite(obj.objectX + value.dx,
+                                            obj.objectY + value.dy, "bigFlash");
+                                    })
+                                }
+                            }
+                        }else if(pers.state == STATE.ACTIVE){
+                            if( new Phaser.Geom.Rectangle(
+                                obj.objectX+pers.activeArea.dX,
+                                obj.objectY+pers.activeArea.dY,
+                                pers.activeArea.w,
+                                pers.activeArea.h
+                            ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
+                                pers.sprite.setTexture("empty");
+                                pers.state = STATE.EMPTY;
                             }
                         }
                     })
@@ -304,7 +349,7 @@ export class SceneA extends Phaser.Scene
             }
 
             if(this.emptyAnchor.x > 3000){
-                this.scene.start('sceneB',{from:"demo"});
+                this.scene.start('sceneD',{from:"demo"});
             }
             
          this.debugText.setText(

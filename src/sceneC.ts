@@ -120,11 +120,32 @@ export class SceneC extends Phaser.Scene
         this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
             this.sceneObjArr[0].objKey);
 
+        // this.sceneObjArr[0].personArr.forEach((person) => {
+        //     let sprKey: string = ('fileName' in person) ? person.fileName :
+        //         this.anims.get(person.animKey).frames[0].textureKey;
+        //     person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
+        //         this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
+        // }
+        // )
+
         this.sceneObjArr[0].personArr.forEach((person) => {
-            let sprKey: string = ('fileName' in person) ? person.fileName :
-                this.anims.get(person.animKey).frames[0].textureKey;
-            person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
-                this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
+            if (person.state != STATE.EMPTY) {
+                let sprKey: string = this.anims.get(person.animKey).
+                    frames[0].textureKey;
+                if (person.state == STATE.HIDDEN) {
+                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+                        person.deltaX, this.sceneObjArr[0].objectY +
+                    person.deltaY, (sprKey as string));
+                } else if (person.state == STATE.ACTIVE) {
+                    let lastFrame: number = this.anims.get(person.animKey).
+                        frames.length - 1;
+                    sprKey = this.anims.get(person.animKey).
+                        frames[lastFrame].textureKey;
+                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+                        person.deltaX, this.sceneObjArr[0].objectY +
+                    person.deltaY, (sprKey as string));
+                }
+            }
         }
         )
 
@@ -198,6 +219,7 @@ export class SceneC extends Phaser.Scene
             this.sceneObjArr.forEach((obj) => {
                 if("personArr" in obj){
                     obj.personArr.forEach((pers) => {
+                        // если перс прячется
                         if(pers.state == STATE.HIDDEN){
                             if( new Phaser.Geom.Rectangle(
                                 obj.objectX+pers.hiddenArea.dX,
@@ -207,6 +229,25 @@ export class SceneC extends Phaser.Scene
                             ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
                                 pers.sprite.play(pers.animKey);
                                 pers.state = STATE.ACTIVE;
+                                if("flashesArr" in pers){
+                                    pers.flashesArr.forEach((value) => {
+                                        this.add.sprite(obj.objectX + value.dx,
+                                            obj.objectY + value.dy, "bigFlash");
+                                    })
+                                }
+                            }
+                        }else if(pers.state == STATE.ACTIVE){
+                            if( new Phaser.Geom.Rectangle(
+                                obj.objectX+pers.activeArea.dX,
+                                obj.objectY+pers.activeArea.dY,
+                                pers.activeArea.w,
+                                pers.activeArea.h
+                            ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
+                                if (pers.animKey == "elAnim7") {
+                                    pers.sprite.setTexture("doorBld4");
+                                } else {
+                                    pers.sprite.setTexture("empty");
+                                }
                             }
                         }
                     })
