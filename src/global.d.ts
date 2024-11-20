@@ -43,5 +43,7 @@ declare global{
      
      var currentSceneName:string;
      var myResizeObserver : ResizeObserver;
+
+     
 }
 export {}

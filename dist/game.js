@@ -241554,8 +241554,9 @@ var MyGame = (function (exports) {
   (function (STATE) {
       STATE[STATE["EMPTY"] = 0] = "EMPTY";
       STATE[STATE["HIDDEN"] = 1] = "HIDDEN";
-      STATE[STATE["APPIARENCE"] = 2] = "APPIARENCE";
+      STATE[STATE["SHAKE"] = 2] = "SHAKE";
       STATE[STATE["ACTIVE"] = 3] = "ACTIVE";
+      STATE[STATE["APPIARENCE"] = 4] = "APPIARENCE";
   })(STATE || (STATE = {}));
   const objectsArr = [
       //object1Map = 
@@ -241565,19 +241566,19 @@ var MyGame = (function (exports) {
           objectX: 547,
           objectY: 410,
           personArr: [{
-                  deltaX: -359, deltaY: 77, animKey: "elAnim0", state: STATE.HIDDEN,
+                  deltaX: -359, deltaY: 77, animKey: "elAnim0", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: -336, dY: 28, w: 42, h: 55 },
                   activeArea: { dX: -420, dY: 30, w: 117, h: 113 },
                   flashesArr: [{ dx: -379, dy: 90 }, { dx: -340, dy: 90 }]
               },
               {
-                  deltaX: -23, deltaY: -151, animKey: "elAnim1", state: STATE.HIDDEN,
+                  deltaX: -23, deltaY: -151, animKey: "elAnim1", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: -86, dY: -84, w: 38, h: 36 },
                   activeArea: { dX: -67, dY: -255, w: 86, h: 116 },
                   flashesArr: [{ dx: -39, dy: -194 }, { dx: -9, dy: -196 }]
               },
               {
-                  deltaX: 493, deltaY: 78, animKey: "elAnim2", state: STATE.HIDDEN,
+                  deltaX: 493, deltaY: 78, animKey: "elAnim2", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 379, dY: 22, w: 48, h: 74 },
                   activeArea: { dX: 396, dY: 12, w: 227, h: 141 },
                   flashesArr: [{ dx: 503, dy: 105 }]
@@ -241591,13 +241592,13 @@ var MyGame = (function (exports) {
           objectX: 1869,
           objectY: 410,
           personArr: [{
-                  deltaX: -50, deltaY: 86, animKey: "elAnim3", state: STATE.HIDDEN,
+                  deltaX: -50, deltaY: 86, animKey: "elAnim3", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 0, dY: 60, w: 22, h: 40 },
                   activeArea: { dX: -126, dY: 54, w: 76, h: 76 },
                   flashesArr: [{ dx: -100, dy: 90 }, { dx: -72, dy: 90 }]
               },
               {
-                  deltaX: 463, deltaY: 35, animKey: "elAnim4", state: STATE.HIDDEN,
+                  deltaX: 463, deltaY: 35, animKey: "elAnim4", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 313, dY: -34, w: 40, h: 60 },
                   activeArea: { dX: 433, dY: 10, w: 130, h: 122 },
                   flashesArr: [{ dx: 484, dy: 74 }, { dx: 520, dy: 74 }]
@@ -241612,7 +241613,7 @@ var MyGame = (function (exports) {
           objectX: 794,
           objectY: 368,
           personArr: [{
-                  deltaX: 46, deltaY: 92, animKey: "elAnim5", state: STATE.HIDDEN,
+                  deltaX: 46, deltaY: 92, animKey: "elAnim5", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 133, dY: 66, w: 46, h: 50 },
                   activeArea: { dX: -89, dY: 43, w: 160, h: 116 },
                   flashesArr: [{ dx: -48, dy: 105 }, { dx: 33, dy: 98 }]
@@ -241626,7 +241627,7 @@ var MyGame = (function (exports) {
           objectX: 2300,
           objectY: 320,
           personArr: [{
-                  deltaX: 9, deltaY: -62, animKey: "elAnim6", state: STATE.HIDDEN,
+                  deltaX: 9, deltaY: -62, animKey: "elAnim6", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: -6, dY: -187, w: 34, h: 58 },
                   activeArea: { dX: -71, dY: -95, w: 143, h: 167 },
                   flashesArr: [{ dx: -22, dy: -5 }, { dx: 27, dy: -5 }]
@@ -241640,7 +241641,7 @@ var MyGame = (function (exports) {
           objectX: 1350,
           objectY: 320,
           personArr: [{
-                  deltaX: -4, deltaY: 86, animKey: "elAnim7", state: STATE.HIDDEN,
+                  deltaX: -4, deltaY: 86, animKey: "elAnim7", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 55, dY: 55, w: 58, h: 40 },
                   activeArea: { dX: -75, dY: 23, w: 132, h: 230 },
                   flashesArr: [{ dx: -22, dy: 168 }]
@@ -241654,13 +241655,13 @@ var MyGame = (function (exports) {
           objectX: 1090,
           objectY: 358,
           personArr: [{
-                  deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,
+                  deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 398, dY: 24, w: 32, h: 61 },
                   activeArea: { dX: 400, dY: 35, w: 178, h: 195 },
                   flashesArr: [{ dx: 442, dy: 150 }]
               },
               {
-                  deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,
+                  deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 238, dY: 19, w: 34, h: 66 },
                   activeArea: { dX: 134, dY: -12, w: 134, h: 242 },
                   flashesArr: [{ dx: 247, dy: 126 }]
@@ -241668,6 +241669,16 @@ var MyGame = (function (exports) {
           ]
       }
   ];
+  // export type ScoreType = {
+  //     health:Array<number>,
+  //     ammo:Array<number>,
+  //     money:Array<number>
+  // }
+  // export const score:ScoreType = {
+  //     health: [10,10,10,10,10,10,10,10,10,10],
+  //     ammo: [10,10,10,10,10,10,10,10,10,10],
+  //     money: [0,0,0,0,0,0,0,0,0,0],
+  // }
   class Preloader extends __webpack_exports__Scene {
       constructor() {
           super("preloader");
@@ -241777,55 +241788,55 @@ var MyGame = (function (exports) {
                   repeat: 0
               }
           ];
-          this.object1Map = {
-              fileName: 'assets/building0',
-              objKey: 'building0',
-              objectX: 547,
-              objectY: 410,
-              personArr: [{ deltaX: -359, deltaY: 77, animKey: "elAnim0" },
-                  { deltaX: -23, deltaY: -151, animKey: "elAnim1" },
-                  { deltaX: 493, deltaY: 78, animKey: "elAnim2" } //1075,445
-              ]
-          };
-          this.object2Map = {
-              fileName: 'assets/building1',
-              objKey: 'building1',
-              objectX: 1869,
-              objectY: 410,
-              personArr: [{ deltaX: -50, deltaY: 86, animKey: "elAnim3" },
-                  { deltaX: 463, deltaY: 35, animKey: "elAnim4" }
-              ]
-          };
-          this.object3Map = {
-              fileName: 'assets/building2',
-              objKey: 'building2',
-              objectX: 1300,
-              objectY: 368,
-              personArr: [{
-                      deltaX: 46, deltaY: 92, animKey: "elAnim5",
-                      hiddenArea: { dX: -133, dY: -66, w: 46, h: 50 },
-                      activeArea: { dX: -89, dY: -43, w: 160, h: 116 }
-                  },
-              ]
-          };
-          this.object4Map = {
-              fileName: 'assets/building3',
-              objKey: 'building3',
-              objectX: 300,
-              objectY: 368,
-              personArr: [{ deltaX: 9, deltaY: 62, animKey: "elAnim6",
-                      hiddenArea: { dX: -6, dY: -187, w: 34, h: 58 },
-                      activeArea: { dX: -71, dY: -95, w: 143, h: 167 } },
-              ]
-          };
-          this.object5Map = {
-              fileName: 'assets/building4',
-              objKey: 'building4',
-              objectX: 636,
-              objectY: 296,
-              personArr: [{ deltaX: -4, deltaY: 86, animKey: "elAnim7" },
-              ]
-          };
+          // this.object1Map = {
+          //     fileName: 'assets/building0',
+          //     objKey: 'building0',
+          //     objectX: 547,
+          //     objectY: 410,
+          //     personArr: [{ deltaX: -359, deltaY: 77, animKey: "elAnim0" },
+          //     { deltaX: -23, deltaY: -151, animKey: "elAnim1" },
+          //     { deltaX: 493, deltaY: 78, animKey: "elAnim2" } //1075,445
+          //     ]
+          // }
+          // this.object2Map = {
+          //     fileName: 'assets/building1',
+          //     objKey: 'building1',
+          //     objectX: 1869,
+          //     objectY: 410,
+          //     personArr: [{ deltaX: -50, deltaY: 86, animKey: "elAnim3" },
+          //     { deltaX: 463, deltaY: 35, animKey: "elAnim4" }
+          //     ]
+          // }
+          // this.object3Map = {
+          //     fileName: 'assets/building2',
+          //     objKey: 'building2',
+          //     objectX: 1300,
+          //     objectY: 368,
+          //     personArr: [{
+          //         deltaX: 46, deltaY: 92, animKey: "elAnim5",
+          //         hiddenArea: { dX: -133, dY: -66, w: 46, h: 50 },
+          //         activeArea: { dX: -89, dY: -43, w: 160, h: 116 }
+          //     },
+          //     ]
+          // }
+          // this.object4Map = {
+          //     fileName: 'assets/building3',
+          //     objKey: 'building3',
+          //     objectX: 300,
+          //     objectY: 368,
+          //     personArr: [{ deltaX: 9, deltaY: 62, animKey: "elAnim6", 
+          //                 hiddenArea:{dX:-6,dY:-187,w:34,h:58},
+          //                 activeArea:{dX:-71,dY:-95,w:143,h:167} },
+          //     ]
+          // }
+          // this.object5Map = {
+          //     fileName: 'assets/building4',
+          //     objKey: 'building4',
+          //     objectX: 636,
+          //     objectY: 296,
+          //     personArr: [{ deltaX: -4, deltaY: 86, animKey: "elAnim7" },
+          //     ]
+          // }
       }
       preload() {
           this.load.image('groundL', 'assets/groundL.png');
@@ -241843,6 +241854,11 @@ var MyGame = (function (exports) {
           this.load.image('redBtn', 'assets/redBtn.png');
           this.load.image('dlgWnd', 'assets/dlgWnd.png');
           this.load.image('yellowRect', 'assets/yellowRect.png');
+          this.load.image('unionBar', 'assets/unionBar.png');
+          this.load.image('healthPiece', 'assets/healthPiece.png');
+          this.load.image('moneyPiece', 'assets/moneyPiece.png');
+          this.load.image('ammoPiece', 'assets/ammoPiece.png');
+          this.load.image('goldEl', 'assets/goldEl.png');
           // this.load.image(this.object1Map.objKey, this.object1Map.fileName + ".png");
           // this.load.image(this.object2Map.objKey, this.object2Map.fileName + ".png");
           // this.load.image(this.object3Map.objKey, this.object3Map.fileName + ".png");
@@ -241866,67 +241882,101 @@ var MyGame = (function (exports) {
           this.animsArr.forEach(anim => {
               this.anims.create(anim);
           });
-          this.scene.start('sceneD', { from: "preloader" });
+          myScoreChecker = new ScoreChecker();
+          this.scene.start('sceneB', { from: "preloader" });
       }
   }
+  class ScoreChecker {
+      constructor() {
+          this.health = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+          this.ammo = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+          this.money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      }
+      /** отрисовывает ресурсы в сцене */
+      drawBars(scene) {
+          this.barsContainer = scene.add.container(600, 45);
+          this.barsContainer.addAt(scene.add.image(0, -1, 'unionBar'), 0);
+          for (let i = 0; i < 10; i++) {
+              this.barsContainer.addAt(scene.add.image(-488 + i * 24, 0, 'healthPiece').
+                  setAlpha(this.health[i] / 10), i + 1);
+          }
+          for (let i = 0; i < 10; i++) {
+              this.barsContainer.addAt(scene.add.image(-70 + i * 24, 0, 'ammoPiece').
+                  setAlpha(this.ammo[i] / 10), i + 11);
+          }
+          for (let i = 0; i < 10; i++) {
+              this.barsContainer.addAt(scene.add.image(340 + i * 24, 0, 'moneyPiece').
+                  setAlpha(this.money[i] / 10), i + 21);
+          }
+      }
+      setX(newX) {
+          this.barsContainer.setX(newX);
+      }
+      changeHealth(delta) {
+          let ind = this.health.findIndex((el) => { return el == 0; });
+          if (ind == 0) {
+              console.log("ind = " + ind);
+          }
+          if (ind == -1) {
+              this.health[9] -= 5;
+              //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
+              //console.log(img.x);
+              this.barsContainer.getAt(10).
+                  setAlpha(this.health[9] / 10);
+          }
+          else {
+              this.health[ind - 1] -= 5;
+              this.barsContainer.getAt(ind).
+                  setAlpha(this.health[ind - 1] / 10);
+          }
+      }
+      changeAmmo(delta) {
+          let ind = this.ammo.findIndex((el) => { return el == 0; });
+          if (ind == 0) {
+              console.log("ind = " + ind);
+          }
+          if (ind == -1) {
+              this.ammo[9] -= 5;
+              //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
+              //console.log(img.x);
+              this.barsContainer.getAt(20).
+                  setAlpha(this.ammo[9] / 10);
+          }
+          else {
+              this.ammo[ind - 1] -= 5;
+              this.barsContainer.getAt(ind + 10).
+                  setAlpha(this.ammo[ind - 1] / 10);
+          }
+      }
+      changeMoney(delta) {
+          let ind = this.money.findIndex((el) => { return el == 0; });
+          if (ind != -1) {
+              this.money[ind] = 10;
+              this.barsContainer.getAt(ind + 21).
+                  setAlpha(1);
+          }
+      }
+  }
+  let myScoreChecker;
 
   class SceneA extends __webpack_exports__Scene {
       constructor() {
           super('sceneA');
-          // this.object1Map = {
-          //     fileName: 'assets/building0',
-          //     objKey: 'building0',
-          //     objectX: 547,
-          //     objectY: 410,
-          //     personArr: [{
-          //         deltaX: -359, deltaY: 77, animKey: "elAnim0",
-          //         hiddenArea: { dX: -336, dY: 28, w: 42, h: 55 },
-          //         activeArea: { dX: -420, dY: 30, w: 117, h: 113 }
-          //     },
-          //         {
-          //         deltaX: -23, deltaY: -151, animKey: "elAnim1",
-          //         hiddenArea: { dX: -86, dY: -84, w: 38, h: 36 },
-          //         activeArea: { dX: -67, dY: -255, w: 86, h: 116 }
-          //     },
-          //         {
-          //             deltaX: 493, deltaY: 78, animKey: "elAnim2",
-          //             hiddenArea: { dX: 379, dY: 22, w: 48, h: 74 },
-          //             activeArea: { dX: 396, dY: 12, w: 227, h: 141 }
-          //         } //1075,445
-          //     ]
-          // }
-          // this.object2Map = {
-          //     fileName: 'assets/building1',
-          //     objKey: 'building1',
-          //     objectX: 1869,
-          //     objectY: 410,
-          //     personArr: [{
-          //         deltaX: -50, deltaY: 86, animKey: "elAnim3",
-          //         hiddenArea: { dX: 0, dY: 60, w: 22, h: 40 },
-          //         activeArea: { dX: -126, dY: 54, w: 76, h: 76 }
-          //     },
-          //     {
-          //         deltaX: 463, deltaY: 35, animKey: "elAnim4",
-          //         hiddenArea: { dX: 313, dY: -34, w: 40, h: 60 },
-          //         activeArea: { dX: 433, dY: 10, w: 130, h: 122 }
-          //     }
-          //     ]
-          //}
           this.gunAimY = 350;
           //this.contrAngle = 60*Math.PI/180;
           //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
           //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
       }
       init(data) {
-          console.log(data);
-          if ('from' in data) {
-              this.prevScene = data.from;
-          }
-          else {
-              this.prevScene = "";
-          }
-          if ('gunAimY' in data) {
-              this.gunAimY = data.gunAimY;
+          if ("from" in data) {
+              if (data.from == "sceneC") {
+                  this.gunAimY = data.gunAimY;
+                  this.gunAimX = 600;
+              }
+              if (data.from == "sceneD") {
+                  this.gunAimY = data.gunAimY;
+                  this.gunAimX = 2999;
+              }
           }
       }
       create() {
@@ -241935,7 +241985,6 @@ var MyGame = (function (exports) {
           this.sceneObjArr = [objectsArr[0], objectsArr[1]];
           this.sceneObjArr[0].objectX = 547;
           this.sceneObjArr[0].objectY = 410;
-          //console.log(objectsArr[0].objectX);
           this.cameras.main.setBounds(0, 0, 3600, 675);
           this.physics.world.setBounds(0, 0, 3600, 675);
           this.add.image(600, 608, 'groundL');
@@ -241944,79 +241993,144 @@ var MyGame = (function (exports) {
           this.add.image(600, 273, 'landscapeL');
           this.add.image(1800, 273, 'landscapeL').setFlipX(true);
           this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          // краешек здания из следующей сцены
           this.add.image(3490, 358, 'building7'); //.setFlipX(true);
-          this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
+          // золотая монетка - бонус, премия за подбитого слона
+          this.goldEl = this.add.image(0, 0, "empty");
+          this.emptyAnchor = this.add.image(this.gunAimX, this.gunAimY, 'emptyAnchor');
           this.cursors = this.input.keyboard.createCursorKeys();
           // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
           this.cameras.main.startFollow(this.emptyAnchor, true);
           // добавляем картинку объекта
-          this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY, this.sceneObjArr[1].objKey);
+          // this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY,
+          //     this.sceneObjArr[1].objKey);
+          this.sceneObjArr.forEach((obj) => {
+              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              obj.personArr.forEach((person) => {
+                  person.flashSpriteArr = [];
+                  person.flashesArr.forEach((item) => {
+                      person.flashSpriteArr.push(this.add.sprite(obj.objectX +
+                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                  });
+                  // если перс ещё жив, добавляем картинку в зависимости от его состояния,
+                  // определяем для него таймлайн и функцию стрельбы
+                  if (person.state != STATE.EMPTY) {
+                      let sprKey = this.anims.get(person.animKey).
+                          frames[0].textureKey;
+                      if (person.state == STATE.HIDDEN) {
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      else if (person.state == STATE.ACTIVE) {
+                          let lastFrame = this.anims.get(person.animKey).
+                              frames.length - 1;
+                          sprKey = this.anims.get(person.animKey).
+                              frames[lastFrame].textureKey;
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      //}
+                      //person.shoot = () => { };
+                      person.shootTimeLine = this.add.timeline([
+                          {
+                              at: 100,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("empty");
+                                  }
+                                  myScoreChecker.changeHealth(-10);
+                              },
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("bigFlash");
+                                      this.cameras.main.flash(350, 255, 0, 0);
+                                      myScoreChecker.changeHealth(-10);
+                                  }
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("empty");
+                                  }
+                                  myScoreChecker.changeHealth(-10);
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  // if(person.flashSpriteArr.length > 1){
+                                  //     person.flashSpriteArr[1].setTexture("bigFlash");
+                                  // }
+                                  person.shootTimeLine.play(true);
+                              }
+                          }
+                      ]);
+                      person.fxClrMatrix = person.sprite.preFX.addColorMatrix();
+                  }
+              });
+          });
           // this.sceneObjArr[1].personArr.forEach((person) => {
-          //     let sprKey: string = ('fileName' in person) ? person.fileName :
-          //         this.anims.get(person.animKey).frames[0].textureKey;
-          //     person.sprite = this.add.sprite(this.sceneObjArr[1].objectX + person.deltaX,
-          //         this.sceneObjArr[1].objectY + person.deltaY, (sprKey as string));
-          // })
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              if (person.state != STATE.EMPTY) {
-                  let sprKey = this.anims.get(person.animKey).
-                      frames[0].textureKey;
-                  if (person.state == STATE.HIDDEN) {
-                      person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-                          person.deltaX, this.sceneObjArr[1].objectY +
-                          person.deltaY, sprKey);
-                  }
-                  else if (person.state == STATE.ACTIVE) {
-                      let lastFrame = this.anims.get(person.animKey).
-                          frames.length - 1;
-                      sprKey = this.anims.get(person.animKey).
-                          frames[lastFrame].textureKey;
-                      person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-                          person.deltaX, this.sceneObjArr[1].objectY +
-                          person.deltaY, sprKey);
-                  }
-              }
-          });
-          this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, this.sceneObjArr[0].objKey);
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              if (person.state != STATE.EMPTY) {
-                  let sprKey = this.anims.get(person.animKey).
-                      frames[0].textureKey;
-                  if (person.state == STATE.HIDDEN) {
-                      person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                          person.deltaX, this.sceneObjArr[0].objectY +
-                          person.deltaY, sprKey);
-                  }
-                  else if (person.state == STATE.ACTIVE) {
-                      let lastFrame = this.anims.get(person.animKey).
-                          frames.length - 1;
-                      sprKey = this.anims.get(person.animKey).
-                          frames[lastFrame].textureKey;
-                      person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                          person.deltaX, this.sceneObjArr[0].objectY +
-                          person.deltaY, sprKey);
-                  }
-              }
-          });
-          // this.sceneObjArr[0].personArr.forEach((person) => {
-          //     let sprKey: string = ('fileName' in person) ? person.fileName :
-          //         this.anims.get(person.animKey).frames[0].textureKey;
-          //     person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
-          //         this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
+          //     if (person.state != STATE.EMPTY) {
+          //         let sprKey: string = this.anims.get(person.animKey).
+          //             frames[0].textureKey;
+          //         if (person.state == STATE.HIDDEN) {
+          //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
+          //                 person.deltaX, this.sceneObjArr[1].objectY +
+          //             person.deltaY, (sprKey as string));
+          //         } else if (person.state == STATE.ACTIVE) {
+          //             let lastFrame: number = this.anims.get(person.animKey).
+          //                 frames.length - 1;
+          //             sprKey = this.anims.get(person.animKey).
+          //                 frames[lastFrame].textureKey;
+          //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
+          //                 person.deltaX, this.sceneObjArr[1].objectY +
+          //             person.deltaY, (sprKey as string));
+          //         }
+          //     }
           // }
           // )
-          // let myGraphics:Phaser.GameObjects.Graphics = this.add.graphics();
-          // myGraphics.lineStyle(50, 0xffffff);
-          //myGraphics.fillCircle(100,100,50)
+          // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
+          //     this.sceneObjArr[0].objKey);
+          // this.sceneObjArr[0].personArr.forEach((person) => {
+          //     if (person.state != STATE.EMPTY) {
+          //         let sprKey: string = this.anims.get(person.animKey).
+          //             frames[0].textureKey;
+          //         if (person.state == STATE.HIDDEN) {
+          //             person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+          //                 person.deltaX, this.sceneObjArr[0].objectY +
+          //             person.deltaY, (sprKey as string));
+          //         } else if (person.state == STATE.ACTIVE) {
+          //             let lastFrame: number = this.anims.get(person.animKey).
+          //                 frames.length - 1;
+          //             sprKey = this.anims.get(person.animKey).
+          //                 frames[lastFrame].textureKey;
+          //             person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+          //                 person.deltaX, this.sceneObjArr[0].objectY +
+          //             person.deltaY, (sprKey as string));
+          //         }
+          //     }
+          // }
+          // )
           this.debugText = this.add.text(10, 30, "");
           this.debugText.setFontSize(64);
-          //this.debugText.style.fontSize = '64px';
-          //myGraphics.lineBetween(100, 100, 600, 500);
           if (this.prevScene == "sceneB") {
               this.emptyAnchor.setX(3000);
               //this.cameras.main.scrollX = 2399;
           }
-          this.input.addPointer(2);
+          //this.input.addPointer(2)
           this.input.on('pointerdown', (pointer) => {
               if (pointer.x < this.cameras.main.scrollX) {
                   this.direction = "left";
@@ -242041,11 +242155,16 @@ var MyGame = (function (exports) {
                   this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
               }
           });
-          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.F);
+          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.S);
+          this.fireKey.on("down", (key, event) => {
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+          });
+          // this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
           // this.fireKey.on("down", (key, event) => {
           //     this.sceneObjArr.forEach((obj) => {
           //         if("personArr" in obj){
           //             obj.personArr.forEach((pers) => {
+          //                 // если перс прячется
           //                 if(pers.state == STATE.HIDDEN){
           //                     if( new Phaser.Geom.Rectangle(
           //                         obj.objectX+pers.hiddenArea.dX,
@@ -242055,51 +242174,49 @@ var MyGame = (function (exports) {
           //                     ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
           //                         pers.sprite.play(pers.animKey);
           //                         pers.state = STATE.ACTIVE;
+          //                         if("flashesArr" in pers){
+          //                             pers.flashesArr.forEach((value) => {
+          //                                 this.add.sprite(obj.objectX + value.dx,
+          //                                     obj.objectY + value.dy, "bigFlash");
+          //                             })
+          //                         }
+          //                     }
+          //                 }else if(pers.state == STATE.ACTIVE){
+          //                     if( new Phaser.Geom.Rectangle(
+          //                         obj.objectX+pers.activeArea.dX,
+          //                         obj.objectY+pers.activeArea.dY,
+          //                         pers.activeArea.w,
+          //                         pers.activeArea.h
+          //                     ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
+          //                         pers.sprite.setTexture("empty");
+          //                         pers.state = STATE.EMPTY;
           //                     }
           //                 }
           //             })
           //         }
           //     })
           // } )
-          this.fireKey.on("down", (key, event) => {
-              this.sceneObjArr.forEach((obj) => {
-                  if ("personArr" in obj) {
-                      obj.personArr.forEach((pers) => {
-                          // если перс прячется
-                          if (pers.state == STATE.HIDDEN) {
-                              if (new __webpack_exports__Geom.Rectangle(obj.objectX + pers.hiddenArea.dX, obj.objectY + pers.hiddenArea.dY, pers.hiddenArea.w, pers.hiddenArea.h).contains(this.emptyAnchor.x, this.emptyAnchor.y)) {
-                                  pers.sprite.play(pers.animKey);
-                                  pers.state = STATE.ACTIVE;
-                                  if ("flashesArr" in pers) {
-                                      pers.flashesArr.forEach((value) => {
-                                          this.add.sprite(obj.objectX + value.dx, obj.objectY + value.dy, "bigFlash");
-                                      });
-                                  }
-                              }
-                          }
-                          else if (pers.state == STATE.ACTIVE) {
-                              if (new __webpack_exports__Geom.Rectangle(obj.objectX + pers.activeArea.dX, obj.objectY + pers.activeArea.dY, pers.activeArea.w, pers.activeArea.h).contains(this.emptyAnchor.x, this.emptyAnchor.y)) {
-                                  pers.sprite.setTexture("empty");
-                                  pers.state = STATE.EMPTY;
-                              }
-                          }
-                      });
-                  }
-              });
-          });
           this.emptyAnchor.setDepth(1);
           this.emptyAnchor.y = this.gunAimY;
+          myScoreChecker.setX(this.cameras.main.scrollX + 600);
+          // this.barsContainer = this.add.container(600, 45);
+          // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
+          //         setAlpha(score.health[i]/10), i + 1);
+          // }
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
+          //         setAlpha(score.ammo[i]/10), i + 11);
+          // }
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
+          //         setAlpha(score.money[i]/10), i + 21);
+          // }
+          myScoreChecker.drawBars(this);
       }
       update(time, delta) {
           if (!this.startKey) {
-              // this.object1Map.personArr.forEach(person => {
-              //     person.sprite.play(person.animKey)
-              // })
-              // this.object2Map.personArr.forEach(person => {
-              //     person.sprite.play(person.animKey)
-              // })
-              // let ch = this.children.getChildren()
-              // console.log(ch.length)
               this.startKey = true;
           }
           if (this.direction == "left" && this.emptyAnchor.x > 0) {
@@ -242125,642 +242242,19 @@ var MyGame = (function (exports) {
               this.emptyAnchor.y += 1.5;
           }
           if (this.emptyAnchor.x > 3000) {
-              this.scene.start('sceneD', { from: "demo" });
-          }
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
-          // deltaAbsY :${this.deltaAbsY}
-          // left color:${this.bimbo}`)
-      }
-  }
-
-  class SceneB extends __webpack_exports__Scene {
-      constructor() {
-          super('sceneB');
-          this.dragIsStart = false;
-      }
-      init(data) {
-          console.log(data);
-      }
-      create() {
-          globalThis.currentScene = this;
-          this.startKey = false;
-          this.sceneObjArr = [objectsArr[2], objectsArr[3]];
-          this.cameras.main.setBounds(0, 0, 3600, 675);
-          this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL');
-          this.add.image(1800, 608, 'groundL').setFlipX(true);
-          this.add.image(3000, 608, 'groundL');
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
-          // краешек здания из obj5Map
-          this.add.image(3750, 320, objectsArr[4].objKey);
-          this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
-          this.cursors = this.input.keyboard.createCursorKeys();
-          // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
-          this.cameras.main.startFollow(this.emptyAnchor, true);
-          this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, this.sceneObjArr[0].objKey);
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              if (person.state != STATE.EMPTY) {
-                  let sprKey = this.anims.get(person.animKey).
-                      frames[0].textureKey;
-                  if (person.state == STATE.HIDDEN) {
-                      person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                          person.deltaX, this.sceneObjArr[0].objectY +
-                          person.deltaY, sprKey);
-                  }
-                  else if (person.state == STATE.ACTIVE) {
-                      let lastFrame = this.anims.get(person.animKey).
-                          frames.length - 1;
-                      sprKey = this.anims.get(person.animKey).
-                          frames[lastFrame].textureKey;
-                      person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                          person.deltaX, this.sceneObjArr[0].objectY +
-                          person.deltaY, sprKey);
-                  }
-              }
-          });
-          this.add.image(1400, 440, 'wantedStand');
-          this.add.image(192, 500, 'flowerStones');
-          this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY, this.sceneObjArr[1].objKey);
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              if (person.state != STATE.EMPTY) {
-                  let sprKey = this.anims.get(person.animKey).
-                      frames[0].textureKey;
-                  if (person.state == STATE.HIDDEN) {
-                      person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-                          person.deltaX, this.sceneObjArr[1].objectY +
-                          person.deltaY, sprKey);
-                  }
-                  else if (person.state == STATE.ACTIVE) {
-                      let lastFrame = this.anims.get(person.animKey).
-                          frames.length - 1;
-                      sprKey = this.anims.get(person.animKey).
-                          frames[lastFrame].textureKey;
-                      person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-                          person.deltaX, this.sceneObjArr[1].objectY +
-                          person.deltaY, sprKey);
-                  }
-              }
-          });
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
-          //this.input.addPointer(2)
-          this.input.on('pointerdown', (pointer) => {
-              if (pointer.x < this.cameras.main.scrollX) {
-                  this.direction = "left";
-              }
-              else if (pointer.x > this.cameras.main.scrollX) {
-                  this.direction = "right";
-              }
-          });
-          // отладочная инфа для выделения областей где перс прячется
-          // и откуда стреляет
-          this.graphics = this.add.graphics();
-          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.hiddenArea.dX, this.sceneObjArr[0].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-              this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.activeArea.dX, this.sceneObjArr[0].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-          });
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.hiddenArea.dX, this.sceneObjArr[1].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-          });
-          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.F);
-          this.fireKey.on("down", (key, event) => {
-              this.sceneObjArr.forEach((obj) => {
-                  if ("personArr" in obj) {
-                      obj.personArr.forEach((pers) => {
-                          // если перс прячется
-                          if (pers.state == STATE.HIDDEN) {
-                              if (new __webpack_exports__Geom.Rectangle(obj.objectX + pers.hiddenArea.dX, obj.objectY + pers.hiddenArea.dY, pers.hiddenArea.w, pers.hiddenArea.h).contains(this.emptyAnchor.x, this.emptyAnchor.y)) {
-                                  pers.sprite.play(pers.animKey);
-                                  pers.state = STATE.ACTIVE;
-                                  if ("flashesArr" in pers) {
-                                      pers.flashesArr.forEach((value) => {
-                                          this.add.sprite(obj.objectX + value.dx, obj.objectY + value.dy, "bigFlash");
-                                      });
-                                  }
-                              }
-                              // если перс уже выскочил
-                          }
-                          else if (pers.state == STATE.ACTIVE) {
-                              if (new __webpack_exports__Geom.Rectangle(obj.objectX + pers.activeArea.dX, obj.objectY + pers.activeArea.dY, pers.activeArea.w, pers.activeArea.h).contains(this.emptyAnchor.x, this.emptyAnchor.y)) {
-                                  pers.sprite.setTexture("doorBld4");
-                                  pers.state = STATE.EMPTY;
-                              }
-                          }
-                      });
-                  }
-              });
-          });
-          let pointer = this.input.activePointer;
-          console.log(pointer);
-          let res = this.input.addPointer(2);
-          console.log(res);
-          // this.input.on('pointerdown', (pointer) => {
-          //     var touchX = pointer.x;
-          //     var touchY = pointer.y;
-          //     // ...
-          // });
-          // this.input.on('drag', (pointer) => {
-          //     var touchX = pointer.x;
-          //     console.log(touchX);
-          //     var touchY = pointer.y;
-          //     // ...
-          // });
-          //this.events.st
-          // let tm = this.input.pointer1.;
-          //      console.log(tm.enabled)
-          // }
-          this.input.on('pointermove', (arg) => {
-              console.log(arg);
-              let pointer = this.input.activePointer;
-              console.log(pointer);
-          });
-          this.emptyAnchor.setDepth(1);
-      }
-      update(time, delta) {
-          if (!this.startKey) {
-              this.startKey = true;
-          }
-          if (this.direction == "left" && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
-              this.emptyAnchor.y -= 1.5;
-          }
-          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
-              this.emptyAnchor.y += 1.5;
+              this.scene.start('sceneD', { from: "sceneA" });
           }
           if (this.emptyAnchor.x < 600) {
-              this.scene.start('sceneA', { from: "sceneB" });
+              this.scene.start('sceneC', { from: "sceneA", gunAimY: this.gunAimY });
           }
-          if (this.emptyAnchor.x > 3000) {
-              this.scene.start('sceneC', { from: "demo", gunAimY: this.emptyAnchor.y });
-          }
+          myScoreChecker.setX(this.cameras.main.scrollX + 600);
           this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
           // deltaAbsY :${this.deltaAbsY}
           // left color:${this.bimbo}`)
       }
-  }
-
-  class SceneC extends __webpack_exports__Scene {
-      constructor() {
-          super('sceneC');
-          // this.object3Map = {
-          //     fileName: 'assets/building2',
-          //     objKey: 'building2',
-          //     objectX: 794,
-          //     objectY: 368,
-          //     personArr: [{ deltaX: 46, deltaY: 92, animKey: "elAnim5" },
-          //     ]
-          // }
-          // this.object1Map = {
-          //     fileName: 'assets/building0',
-          //     objKey: 'building0',
-          //     objectX: 2947,
-          //     objectY: 410,
-          //     personArr: [{
-          //         deltaX: -359, deltaY: 77, animKey: "elAnim0",
-          //         hiddenArea: { dX: -336, dY: 28, w: 42, h: 55 },
-          //         activeArea: { dX: -420, dY: 30, w: 117, h: 113 }
-          //     },
-          //     {
-          //         deltaX: -23, deltaY: -151, animKey: "elAnim1",
-          //         hiddenArea: { dX: -88, dY: -84, w: 38, h: 36 },
-          //         activeArea: { dX: -67, dY: -255, w: 86, h: 116 }
-          //     },
-          //     { deltaX: 493, deltaY: 78, animKey: "elAnim2" }
-          //     ]
-          // }
-          // this.object5Map = {
-          //     fileName: 'assets/building4',
-          //     objKey: 'building4',
-          //     objectX: 1350,
-          //     objectY: 320,
-          //     personArr: [{
-          //         deltaX: -4, deltaY: 86, animKey: "elAnim7",
-          //         hiddenArea: { dX: 55, dY: 55, w: 58, h: 40 },
-          //         activeArea: { dX: -75, dY: 23, w: 132, h: 230 }
-          //     }
-          //     ]
-          // }
-          this.gunAimY = 350;
-          //this.contrAngle = 60*Math.PI/180;
-          //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
-          //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
-      }
-      init(data) {
-          console.log(data);
-          if ('gunAimY' in data) {
-              this.gunAimY = data.gunAimY;
-          }
-      }
-      create() {
-          globalThis.currentScene = this;
-          this.startKey = false;
-          objectsArr[0].objectX = 2947;
-          objectsArr[0].objectY = 410;
-          this.sceneObjArr = [objectsArr[0], objectsArr[4]];
-          this.cameras.main.setBounds(0, 0, 3600, 675);
-          this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL');
-          this.add.image(1800, 608, 'groundL').setFlipX(true);
-          this.add.image(3000, 608, 'groundL');
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
-          //this.add.image(2400,273,'landscapeL');
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
-          this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
-          this.cursors = this.input.keyboard.createCursorKeys();
-          // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
-          this.cameras.main.startFollow(this.emptyAnchor, true);
-          this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, this.sceneObjArr[0].objKey);
-          // this.sceneObjArr[0].personArr.forEach((person) => {
-          //     let sprKey: string = ('fileName' in person) ? person.fileName :
-          //         this.anims.get(person.animKey).frames[0].textureKey;
-          //     person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
-          //         this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
-          // }
-          // )
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              if (person.state != STATE.EMPTY) {
-                  let sprKey = this.anims.get(person.animKey).
-                      frames[0].textureKey;
-                  if (person.state == STATE.HIDDEN) {
-                      person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                          person.deltaX, this.sceneObjArr[0].objectY +
-                          person.deltaY, sprKey);
-                  }
-                  else if (person.state == STATE.ACTIVE) {
-                      let lastFrame = this.anims.get(person.animKey).
-                          frames.length - 1;
-                      sprKey = this.anims.get(person.animKey).
-                          frames[lastFrame].textureKey;
-                      person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                          person.deltaX, this.sceneObjArr[0].objectY +
-                          person.deltaY, sprKey);
-                  }
-              }
-          });
-          this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY, this.sceneObjArr[1].objKey);
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              let sprKey = ('fileName' in person) ? person.fileName :
-                  this.anims.get(person.animKey).frames[0].textureKey;
-              person.sprite = this.add.sprite(this.sceneObjArr[1].objectX + person.deltaX, this.sceneObjArr[1].objectY + person.deltaY, sprKey);
-          });
-          this.add.image(-100, 320, 'building3');
-          //this.add.image(2947,410,'building0');
-          // this.add.image(1300,440,'wantedStand')
-          // this.add.image(192,500,'flowerStones')
-          // this.add.image(this.object4Map.objectX, this.object4Map.objectY,
-          //     this.object4Map.objKey);
-          // this.object4Map.personArr.forEach((person) => {
-          //     let sprKey: string = ('fileName' in person) ? person.fileName :
-          //         this.anims.get(person.animKey).frames[0].textureKey;
-          //     person.sprite = this.add.sprite(this.object4Map.objectX + person.deltaX,
-          //         this.object4Map.objectY + person.deltaY, (sprKey as string));
-          // }
-          // )
-          // this.add.image(636,296,'building4')
-          // this.add.image(632,382,"an7fr2")
-          this.input.addPointer(2);
-          this.input.on('pointerdown', (pointer) => {
-              if (pointer.x < this.cameras.main.scrollX) {
-                  this.direction = "left";
-              }
-              else if (pointer.x > this.cameras.main.scrollX) {
-                  this.direction = "right";
-              }
-          });
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
-          // отладочная инфа для выделения областей где перс прячется
-          // и откуда стреляет
-          this.graphics = this.add.graphics();
-          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.hiddenArea.dX, this.sceneObjArr[1].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-          });
-          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.F);
-          this.fireKey.on("down", (key, event) => {
-              this.sceneObjArr.forEach((obj) => {
-                  if ("personArr" in obj) {
-                      obj.personArr.forEach((pers) => {
-                          // если перс прячется
-                          if (pers.state == STATE.HIDDEN) {
-                              if (new __webpack_exports__Geom.Rectangle(obj.objectX + pers.hiddenArea.dX, obj.objectY + pers.hiddenArea.dY, pers.hiddenArea.w, pers.hiddenArea.h).contains(this.emptyAnchor.x, this.emptyAnchor.y)) {
-                                  pers.sprite.play(pers.animKey);
-                                  pers.state = STATE.ACTIVE;
-                                  if ("flashesArr" in pers) {
-                                      pers.flashesArr.forEach((value) => {
-                                          this.add.sprite(obj.objectX + value.dx, obj.objectY + value.dy, "bigFlash");
-                                      });
-                                  }
-                              }
-                          }
-                          else if (pers.state == STATE.ACTIVE) {
-                              if (new __webpack_exports__Geom.Rectangle(obj.objectX + pers.activeArea.dX, obj.objectY + pers.activeArea.dY, pers.activeArea.w, pers.activeArea.h).contains(this.emptyAnchor.x, this.emptyAnchor.y)) {
-                                  if (pers.animKey == "elAnim7") {
-                                      pers.sprite.setTexture("doorBld4");
-                                  }
-                                  else {
-                                      pers.sprite.setTexture("empty");
-                                  }
-                              }
-                          }
-                      });
-                  }
-              });
-          });
-          this.emptyAnchor.setDepth(1);
-          this.emptyAnchor.y = this.gunAimY;
-      }
-      update(time, delta) {
-          if (!this.startKey) {
-              // this.object5Map.personArr.forEach(person => {
-              //     person.sprite.play(person.animKey)
-              // })
-              // this.object5Map.personArr.forEach(person => {
-              //     person.sprite.play(person.animKey)
-              // })
-              this.startKey = true;
-          }
-          if (this.direction == "left" && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
-              this.emptyAnchor.y -= 1.5;
-          }
-          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
-              this.emptyAnchor.y += 1.5;
-          }
-          if (this.emptyAnchor.x < 600) {
-              this.scene.start('sceneA', { from: "sceneB" });
-          }
-          if (this.emptyAnchor.x > 3000) {
-              this.scene.start('sceneA', { from: "demo", gunAimY: this.emptyAnchor.y });
-          }
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
-          // deltaAbsY :${this.deltaAbsY}
-          // left color:${this.bimbo}`)
-      }
-  }
-
-  class SceneD extends __webpack_exports__Scene {
-      constructor() {
-          super('sceneD');
-          this.gunAimY = 350;
-          //this.contrAngle = 60*Math.PI/180;
-          //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
-          //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
-      }
-      init(data) {
-          console.log(data);
-          if ('from' in data) {
-              this.prevScene = data.from;
-          }
-          else {
-              this.prevScene = "";
-          }
-          if ('gunAimY' in data) {
-              this.gunAimY = data.gunAimY;
-          }
-      }
-      create() {
-          globalThis.currentScene = this;
-          this.startKey = false;
-          this.sceneObjArr = [objectsArr[5]];
-          this.flashesArr = [];
-          this.flashCounter = 1;
-          // this.sceneObjArr[0].objectX = 547;
-          // this.sceneObjArr[0].objectY = 410;
-          //console.log(objectsArr[0].objectX);
-          this.cameras.main.setBounds(0, 0, 3600, 675);
-          this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL').setFlipX(true);
-          this.add.image(1800, 608, 'groundL');
-          this.add.image(3000, 608, 'groundL').setFlipX(true);
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
-          this.add.image(3360, 415, 'landscapeEnd');
-          //960,415
-          //this.add.image(3700,368,'building2')//.setFlipX(true);
-          this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
-          this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
-          this.physicsAnchor.body.setCollideWorldBounds();
-          this.cursors = this.input.keyboard.createCursorKeys();
-          // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
-          this.cameras.main.startFollow(this.emptyAnchor, true);
-          // добавляем картинку объекта
-          // this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY,
-          //     this.sceneObjArr[1].objKey);
-          // this.sceneObjArr[1].personArr.forEach((person) => {
-          //     if (person.state != STATE.EMPTY) {
-          //         let sprKey: string = this.anims.get(person.animKey).
-          //             frames[0].textureKey;
-          //         if (person.state == STATE.HIDDEN) {
-          //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-          //                 person.deltaX, this.sceneObjArr[1].objectY +
-          //             person.deltaY, (sprKey as string));
-          //         } else if (person.state == STATE.ACTIVE) {
-          //             let lastFrame: number = this.anims.get(person.animKey).
-          //                 frames.length - 1;
-          //             sprKey = this.anims.get(person.animKey).
-          //                 frames[lastFrame].textureKey;
-          //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-          //                 person.deltaX, this.sceneObjArr[1].objectY +
-          //             person.deltaY, (sprKey as string));
-          //         }
-          //     }
-          // }
-          // )
-          this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, this.sceneObjArr[0].objKey);
-          //this.sceneObjArr[0].personArr[0]
-          if (this.sceneObjArr[0].personArr[0].state != STATE.EMPTY) {
-              let sprKey = this.anims.get(this.sceneObjArr[0].personArr[0].animKey).
-                  frames[0].textureKey;
-              this.sceneObjArr[0].personArr[0].sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                  this.sceneObjArr[0].personArr[0].deltaX, this.sceneObjArr[0].objectY +
-                  this.sceneObjArr[0].personArr[0].deltaY, sprKey);
-          }
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
-          if (this.prevScene == "sceneB") ;
-          this.input.addPointer(2);
-          this.input.on('pointerdown', (pointer) => {
-              if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x) {
-                  this.direction = "left";
-              }
-              else if (pointer.x + this.cameras.main.scrollX > this.physicsAnchor.x) {
-                  this.direction = "right";
-              }
-          });
-          this.input.on('pointermove', (pointer) => {
-              if (pointer.isDown) {
-                  this.physicsAnchor.setY(pointer.y);
-                  console.log(pointer);
-              }
-          });
-          let sprKey = this.sceneObjArr[0].personArr[0].animKey;
-          sprKey = this.anims.get(sprKey).frames[0].textureKey;
-          //this.add.sprite(this.sceneObjArr[0].objectX + this.sceneObjArr[0].personArr[0].deltaX,
-          // this.sceneObjArr[0].objectY + this.sceneObjArr[0].personArr[0].deltaY, (sprKey as string));
-          // this.sceneObjArr[0].personArr.forEach((person) => {
-          //     if ("flashesArr" in person) {
-          //         person.flashesArr.forEach((value) => {
-          //             this.add.sprite(this.sceneObjArr[0].objectX + value.dx,
-          //                 this.sceneObjArr[0].objectY + value.dy, "bigFlash");
-          //         })
-          //     }
-          // }
-          // )
-          // this.add.sprite(this.sceneObjArr[0].objectX + 247,
-          //     this.sceneObjArr[0].objectY + 126, "bigFlash")
-          // отладочная инфа для выделения областей где перс прячется
-          // и откуда стреляет
-          this.graphics = this.add.graphics();
-          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              if ("hiddenArea" in person) {
-                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.hiddenArea.dX, this.sceneObjArr[0].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.activeArea.dX, this.sceneObjArr[0].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-              }
-          });
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              if ("flashesArr" in person) {
-                  person.flashesArr.forEach((value) => {
-                      this.flashesArr.push(this.add.sprite(this.sceneObjArr[0].objectX +
-                          value.dx, this.sceneObjArr[0].objectY + value.dy, "empty"));
-                  });
-              }
-          });
-          this.elephShootTL = this.add.timeline([
-              {
-                  at: 100,
-                  run: () => {
-                      this.flashesArr[0].setTexture("empty");
-                      this.flashesArr[1].setTexture("bigFlash");
-                      this.cameras.main.flash(350, 255, 0, 0);
-                  },
-              },
-              {
-                  from: 300,
-                  run: () => {
-                      this.flashesArr[1].setTexture("empty");
-                  }
-              },
-              {
-                  from: 300,
-                  run: () => {
-                      this.flashesArr[0].setTexture("bigFlash");
-                      //this.flashesArr[1].setTexture("empty");
-                      this.cameras.main.flash(350, 255, 0, 0);
-                  }
-              },
-              {
-                  from: 300,
-                  run: () => {
-                      this.flashesArr[0].setTexture("empty");
-                      this.elephShootTL.play(true);
-                  }
-              }
-          ]);
-          // this.sceneObjArr[1].personArr.forEach((person) => {
-          //     if ("hiddenArea" in person) {
-          //         this.graphics.strokeRect(
-          //             this.sceneObjArr[1].objectX + person.hiddenArea.dX,
-          //             this.sceneObjArr[1].objectY + person.hiddenArea.dY,
-          //             person.hiddenArea.w, person.hiddenArea.h
-          //         );
-          //         this.graphics.strokeRect(
-          //             this.sceneObjArr[1].objectX + person.activeArea.dX,
-          //             this.sceneObjArr[1].objectY + person.activeArea.dY,
-          //             person.activeArea.w, person.activeArea.h
-          //         );
-          //     }
-          // })
-          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.F);
-          this.fireKey.on("down", (key, event) => {
-              this.shootBall(this.emptyAnchor.x, this.emptyAnchor.y);
-          });
-          this.emptyAnchor.setDepth(1);
-          this.emptyAnchor.y = this.gunAimY;
-      }
-      update(time, delta) {
-          if (!this.startKey) {
-              // this.sceneObjArr[0].personArr.forEach(person => {
-              //     person.sprite.play(person.animKey)
-              // })
-              this.startKey = true;
-          }
-          if (this.direction == "left" &&
-              this.physicsAnchor.body.velocity.x >= 0) {
-              this.physicsAnchor.setVelocityX(-180);
-          }
-          else if (this.direction == "right" &&
-              this.physicsAnchor.body.velocity.x <= 0) {
-              this.physicsAnchor.setVelocityX(180);
-          }
-          else {
-              this.physicsAnchor.setVelocityX(0);
-          }
-          if (this.direction == "left" && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
-              this.emptyAnchor.y -= 1.5;
-          }
-          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
-              this.emptyAnchor.y += 1.5;
-          }
-          if (this.emptyAnchor.x > 1800) ;
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
-      }
-      shootBall(x, y) {
+      shootToPerson(x, y) {
           let fireSphereArr = [];
+          let locPerson;
           this.add.timeline([
               {
                   at: 0,
@@ -242806,6 +242300,8 @@ var MyGame = (function (exports) {
                           duration: 300,
                           onComplete: () => {
                               fireSphereArr[2].destroy();
+                              //if(this.elephShootTL.paused)
+                              //this.elephShootTL.resume();
                           }
                       });
                   },
@@ -242814,77 +242310,1252 @@ var MyGame = (function (exports) {
                   run: () => {
                       this.sceneObjArr.forEach((obj) => {
                           if ("personArr" in obj) {
-                              // если перс прячется
-                              if (obj.personArr[0].state == STATE.HIDDEN) {
-                                  if (new __webpack_exports__Geom.Rectangle(obj.objectX + obj.personArr[0].hiddenArea.dX, obj.objectY + obj.personArr[0].hiddenArea.dY, obj.personArr[0].hiddenArea.w, obj.personArr[0].hiddenArea.h).contains(x, y) ||
-                                      new __webpack_exports__Geom.Rectangle(obj.objectX + obj.personArr[1].hiddenArea.dX, obj.objectY + obj.personArr[1].hiddenArea.dY, obj.personArr[1].hiddenArea.w, obj.personArr[1].hiddenArea.h).contains(x, y)) {
-                                      obj.personArr[0].state = STATE.APPIARENCE;
-                                      this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
-                                          if (progress === 1) {
-                                              obj.personArr[0].sprite.on(__webpack_exports__Animations.Events.ANIMATION_COMPLETE, () => {
-                                                  obj.personArr[0].state = STATE.ACTIVE;
-                                                  this.elephShootTL.play();
-                                              });
-                                              obj.personArr[0].sprite.play(obj.personArr[0].animKey);
-                                          }
-                                      });
+                              obj.personArr.forEach((person) => {
+                                  // если перс прячется
+                                  if (person.state == STATE.HIDDEN) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y) ||
+                                          new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y)) {
+                                          person.state = STATE.SHAKE;
+                                          this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
+                                              if (progress === 1) {
+                                                  person.sprite.on(__webpack_exports__Animations.Events.ANIMATION_COMPLETE, () => {
+                                                      person.state = STATE.ACTIVE;
+                                                      person.shootTimeLine.play();
+                                                      //this.shootToPlayer(obj.personArr[0]);
+                                                  });
+                                                  person.sprite.play(person.animKey);
+                                              }
+                                          });
+                                      }
                                   }
-                              }
-                              else if (obj.personArr[0].state == STATE.ACTIVE) {
-                                  if (new __webpack_exports__Geom.Rectangle(obj.objectX + obj.personArr[0].activeArea.dX, obj.objectY + obj.personArr[0].activeArea.dY, obj.personArr[0].activeArea.w, obj.personArr[0].activeArea.h).contains(x, y) ||
-                                      new __webpack_exports__Geom.Rectangle(obj.objectX + obj.personArr[1].activeArea.dX, obj.objectY + obj.personArr[1].activeArea.dY, obj.personArr[1].activeArea.w, obj.personArr[1].activeArea.h).contains(x, y)) {
-                                      this.elephShootTL.pause();
-                                      this.brightPerson(obj.personArr[0]);
+                                  else if (person.state == STATE.ACTIVE) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.activeArea.dX, obj.objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h).contains(x, y)) 
+                                      // ||
+                                      // new Phaser.Geom.Rectangle(
+                                      //     obj.objectX + obj.personArr[1].activeArea.dX,
+                                      //     obj.objectY + obj.personArr[1].activeArea.dY,
+                                      //     obj.personArr[1].activeArea.w,
+                                      //     obj.personArr[1].activeArea.h
+                                      // ).contains(x, y)) 
+                                      {
+                                          // this.elephShootTL.pause();
+                                          // this.brightPerson(obj.personArr[0])
+                                          locPerson = person;
+                                          person.shootTimeLine.pause();
+                                          person.fxClrMatrix.brightness(7);
+                                          //person.shootTimeLine.play();    
+                                      }
                                   }
-                              }
+                              });
                           }
                       });
+                  }
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
+                      if (locPerson != undefined) {
+                          locPerson.health -= 50;
+                          if (locPerson.health > 0) {
+                              locPerson.shootTimeLine.resume();
+                          }
+                          else {
+                              locPerson.sprite.setTexture("empty");
+                              locPerson.state = STATE.EMPTY;
+                              locPerson.flashSpriteArr.forEach((spr) => {
+                                  spr.setTexture("empty");
+                              });
+                              this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
+                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.tweens.add({
+                                  targets: this.goldEl,
+                                  scale: 0.3,
+                                  x: myScoreChecker.barsContainer.x + 280,
+                                  y: myScoreChecker.barsContainer.y,
+                                  duration: 1000,
+                                  onComplete: () => {
+                                      this.goldEl.setTexture("empty");
+                                      myScoreChecker.changeMoney(10);
+                                  }
+                              });
+                          }
+                      }
                   }
               }
           ]).play();
       }
-      brightPerson(persMap) {
-          let clrMatrix = persMap.sprite.preFX.addColorMatrix();
-          this.elephBrightTL = this.add.timeline([
+  }
+
+  class SceneB extends __webpack_exports__Scene {
+      constructor() {
+          super('sceneB');
+          this.dragIsStart = false;
+      }
+      init(data) {
+          if ("from" in data && data.from == "sceneC") {
+              //this.direction = "left";
+              this.anchorX = 2999;
+          }
+          else {
+              this.anchorX = 600;
+          }
+          if ("gunAimY" in data) {
+              this.anchorY = data.gunAimY;
+          }
+          else {
+              this.anchorY = 100;
+          }
+          //console.log(myScoreChecker.ammo[0]);
+      }
+      create() {
+          globalThis.currentScene = this;
+          this.startKey = false;
+          this.leftDir = 0;
+          this.rightDir = 0;
+          this.dirSgn = 0;
+          this.sceneObjArr = [objectsArr[2], objectsArr[3]];
+          this.cameras.main.setBounds(0, 0, 3600, 675);
+          this.physics.world.setBounds(0, 0, 3600, 675);
+          this.add.image(600, 608, 'groundL');
+          this.add.image(1800, 608, 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'groundL');
+          this.add.image(600, 273, 'landscapeL');
+          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
+          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          // краешек здания из obj5Map
+          this.add.image(3750, 320, objectsArr[4].objKey);
+          // золотая монетка - бонус, премия за подбитого слона
+          this.goldEl = this.add.image(0, 0, "empty");
+          // прицел
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+          this.emptyAnchor.setCollideWorldBounds();
+          // физическое тело - красный шар
+          this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
+          this.physicsAnchor.body.setCollideWorldBounds();
+          this.cursors = this.input.keyboard.createCursorKeys();
+          // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
+          this.cameras.main.startFollow(this.emptyAnchor, true);
+          // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
+          //     this.sceneObjArr[0].objKey);
+          // ИНИЦИАЛИЗАЦИЯ ПЕРСА
+          // каждому персу в каждом объекте добавляем в зависимости от его(перса) 
+          // состояния (он прячется(hidden), выскочил из укрытия(active),
+          //  уничтожен(empty)) соответствующий спрайт из анимации
+          this.sceneObjArr.forEach((obj) => {
+              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              obj.personArr.forEach((person) => {
+                  person.flashSpriteArr = [];
+                  person.flashesArr.forEach((item) => {
+                      person.flashSpriteArr.push(this.add.sprite(obj.objectX +
+                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                  });
+                  // если перс ещё жив, добавляем картинку в зависимости от его состояния,
+                  // определяем для него таймлайн и функцию стрельбы
+                  if (person.state != STATE.EMPTY) {
+                      let sprKey = this.anims.get(person.animKey).
+                          frames[0].textureKey;
+                      if (person.state == STATE.HIDDEN) {
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      else if (person.state == STATE.ACTIVE) {
+                          let lastFrame = this.anims.get(person.animKey).
+                              frames.length - 1;
+                          sprKey = this.anims.get(person.animKey).
+                              frames[lastFrame].textureKey;
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      //}
+                      //person.shoot = () => { };
+                      person.shootTimeLine = this.add.timeline([
+                          {
+                              at: 100,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[1].setTexture("bigFlash");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                                  myScoreChecker.changeHealth(-10);
+                              },
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[1].setTexture("empty");
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  //this.flashesArr[1].setTexture("empty");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.shootTimeLine.play(true);
+                              }
+                          }
+                      ]);
+                      person.fxClrMatrix = person.sprite.preFX.addColorMatrix();
+                  }
+              });
+          });
+          this.add.image(1400, 440, 'wantedStand');
+          this.add.image(192, 500, 'flowerStones');
+          this.debugText = this.add.text(10, 30, "");
+          this.debugText.setFontSize(64);
+          // отладочная инфа для выделения областей где перс прячется
+          // и откуда стреляет
+          this.graphics = this.add.graphics();
+          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+          this.sceneObjArr[0].personArr.forEach((person) => {
+              this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.hiddenArea.dX, this.sceneObjArr[0].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
+              this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.activeArea.dX, this.sceneObjArr[0].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
+          });
+          this.sceneObjArr[1].personArr.forEach((person) => {
+              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.hiddenArea.dX, this.sceneObjArr[1].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
+              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
+          });
+          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.S);
+          this.fireKey.on("down", (key, event) => {
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+          });
+          this.emptyAnchor.setDepth(1);
+          this.input.addPointer(1);
+          this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({ draggable: true });
+          this.leftZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              if (pntr.event.touches.length == 1)
+                  this.rightDir = 0;
+              this.leftDir = -1;
+              //console.log("leftDir = " +this.leftDir)
+          });
+          this.leftZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.leftDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.rightDir = 0;
+              //console.log("leftDir = " +this.leftDir)
+          });
+          this.leftZone.on('drag', (pntr, x, y, z) => {
+              //console.log("pntr.getDistanceY = " + pntr.getDistanceY());
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+              //console.log("pntr.downY = "+pntr.downY);
+          });
+          this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({ draggable: true });
+          this.rightZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              this.rightDir = 1;
+              if (pntr.event.touches.length == 1)
+                  this.leftDir = 0;
+              //console.log("rightDir = " +this.rightDir)
+          });
+          this.rightZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.rightDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.leftDir = 0;
+              //console.log("rightDir = " +this.rightDir)
+          });
+          // this.input.on('pointerdown', ((pointer: Phaser.Input.Pointer) => {
+          //     //console.log(pointer.button);
+          //     if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x
+          //     )
+          //     {
+          //         this.direction = "left";
+          //     }
+          //     else if (pointer.x  + this.cameras.main.scrollX > this.physicsAnchor.x
+          //     ) {
+          //         this.direction = "right";
+          //     }
+          // }));
+          this.rightZone.on('drag', (pntr, x, y, z) => {
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+              //console.log("pntr.downY = "+pntr.downY);
+          });
+          // this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+          //     console.log(pointer.button);
+          //     if(pointer.isDown){
+          //         this.physicsAnchor.setY(pointer.y)
+          //         console.log('pointerup');
+          //     }
+          // });
+          myScoreChecker.drawBars(this);
+      }
+      update(time, delta) {
+          this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir) * 180);
+          if (this.emptyAnchor.x <= 51)
+              this.leftDir = 0;
+          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+              this.emptyAnchor.x -= 1.5;
+              this.debugText.x -= 1.5;
+          }
+          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+              this.emptyAnchor.x += 1.5;
+              this.debugText.x += 1.5;
+          }
+          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+              this.emptyAnchor.y -= 1.5;
+          }
+          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+              this.emptyAnchor.y += 1.5;
+          }
+          if (this.emptyAnchor.x > 3000) {
+              this.scene.start('sceneC', { from: "sceneB", gunAimY: this.emptyAnchor.y });
+          }
+          //this.barsContainer.setX(this.cameras.main.scrollX + 600);
+          myScoreChecker.setX(this.cameras.main.scrollX + 600);
+          this.leftZone.setX(this.emptyAnchor.x - 350);
+          this.rightZone.setX(this.emptyAnchor.x + 600);
+          // this.graphics.strokeRect(this.rightZone.x - this.rightZone.width/2, 
+          //     this.rightZone.y - this.rightZone.height/2, this.rightZone.width,
+          //     this.rightZone.height
+          // )
+          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+          // deltaAbsY :${this.deltaAbsY}
+          // left color:${this.bimbo}`)
+      }
+      shootToPerson(x, y) {
+          let fireSphereArr = [];
+          let locPerson;
+          this.add.timeline([
+              {
+                  at: 0,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
+                      this.add.tween({
+                          targets: fireSphereArr[0],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[0].destroy();
+                              myScoreChecker.changeAmmo(-5);
+                              //this.changeScore("ammo", -5);
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
+                      this.add.tween({
+                          targets: fireSphereArr[1],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[1].destroy();
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
+                      this.add.tween({
+                          targets: fireSphereArr[2],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[2].destroy();
+                              //this.changeScore("ammo", -5);
+                              //if(this.elephShootTL.paused)
+                              //this.elephShootTL.resume();
+                          }
+                      });
+                  },
+              },
               {
                   run: () => {
-                      clrMatrix.brightness(7);
+                      this.sceneObjArr.forEach((obj) => {
+                          if ("personArr" in obj) {
+                              obj.personArr.forEach((person) => {
+                                  // если перс прячется
+                                  if (person.state == STATE.HIDDEN) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y) ||
+                                          new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y)) {
+                                          person.state = STATE.SHAKE;
+                                          this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
+                                              if (progress === 1) {
+                                                  person.sprite.on(__webpack_exports__Animations.Events.ANIMATION_COMPLETE, () => {
+                                                      person.state = STATE.ACTIVE;
+                                                      person.shootTimeLine.play();
+                                                      //this.shootToPlayer(obj.personArr[0]);
+                                                  });
+                                                  person.sprite.play(person.animKey);
+                                              }
+                                          });
+                                      }
+                                  }
+                                  else if (person.state == STATE.ACTIVE) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.activeArea.dX, obj.objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h).contains(x, y)) {
+                                          // this.elephShootTL.pause();
+                                          // this.brightPerson(obj.personArr[0])
+                                          locPerson = person;
+                                          person.shootTimeLine.pause();
+                                          person.fxClrMatrix.brightness(7);
+                                          //person.shootTimeLine.play();    
+                                      }
+                                  }
+                              });
+                          }
+                      });
                   }
               },
               {
-                  from: 100,
+                  from: 200,
                   run: () => {
-                      clrMatrix.reset();
+                      locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
+                      if (locPerson != undefined) {
+                          locPerson.health -= 50;
+                          if (locPerson.health > 0) {
+                              locPerson.shootTimeLine.resume();
+                          }
+                          else {
+                              locPerson.sprite.setTexture("empty");
+                              locPerson.state = STATE.EMPTY;
+                              locPerson.flashSpriteArr.forEach((spr) => {
+                                  spr.setTexture("empty");
+                              });
+                              this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
+                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.tweens.add({
+                                  targets: this.goldEl,
+                                  scale: 0.3,
+                                  x: myScoreChecker.barsContainer.x + 280,
+                                  y: myScoreChecker.barsContainer.y,
+                                  duration: 1000,
+                                  onComplete: () => {
+                                      this.goldEl.setTexture("empty");
+                                      myScoreChecker.changeMoney(10);
+                                  }
+                              });
+                          }
+                      }
+                      //locPerson?.shootTimeLine.resume();
                   }
-              },
-              {
-                  from: 100,
-                  run: () => {
-                      clrMatrix.brightness(7);
-                  }
-              },
-              {
-                  from: 100,
-                  run: () => {
-                      clrMatrix.reset();
-                  }
-              },
-              {
-                  from: 100,
-                  run: () => {
-                      clrMatrix.brightness(7);
-                  }
-              },
-              {
-                  from: 100,
-                  run: () => {
-                      clrMatrix.reset();
-                  }
-              },
-          ]);
-          this.elephBrightTL.play();
+              }
+          ]).play();
       }
   }
+
+  class SceneC extends __webpack_exports__Scene {
+      constructor() {
+          super('sceneC');
+          this.gunAimY = 350;
+          //this.contrAngle = 60*Math.PI/180;
+          //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
+          //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
+      }
+      init(data) {
+          if ("from" in data) {
+              if (data.from == "sceneB") {
+                  this.gunAimY = data.gunAimY;
+                  this.gunAimX = 600;
+              }
+              if (data.from == "sceneA") {
+                  this.gunAimY = data.gunAimY;
+                  this.gunAimX = 2999;
+              }
+          }
+      }
+      create() {
+          globalThis.currentScene = this;
+          this.startKey = false;
+          // объект находится и в соседней сцене
+          objectsArr[0].objectX = 2947;
+          objectsArr[0].objectY = 410;
+          this.sceneObjArr = [objectsArr[0], objectsArr[4]];
+          this.cameras.main.setBounds(0, 0, 3600, 675);
+          this.physics.world.setBounds(0, 0, 3600, 675);
+          this.add.image(600, 608, 'groundL');
+          this.add.image(1800, 608, 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'groundL');
+          this.add.image(600, 273, 'landscapeL');
+          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
+          //this.add.image(2400,273,'landscapeL');
+          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          this.emptyAnchor = this.add.image(this.gunAimX, this.gunAimY, 'emptyAnchor');
+          this.cursors = this.input.keyboard.createCursorKeys();
+          // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
+          this.cameras.main.startFollow(this.emptyAnchor, true);
+          this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, this.sceneObjArr[0].objKey);
+          this.sceneObjArr.forEach((obj) => {
+              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              obj.personArr.forEach((person) => {
+                  person.flashSpriteArr = [];
+                  person.flashesArr.forEach((item) => {
+                      person.flashSpriteArr.push(this.add.sprite(obj.objectX +
+                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                  });
+                  // если перс ещё жив, добавляем картинку в зависимости от его состояния,
+                  // определяем для него таймлайн и функцию стрельбы
+                  if (person.state != STATE.EMPTY) {
+                      let sprKey = this.anims.get(person.animKey).
+                          frames[0].textureKey;
+                      if (person.state == STATE.HIDDEN) {
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      else if (person.state == STATE.ACTIVE) {
+                          let lastFrame = this.anims.get(person.animKey).
+                              frames.length - 1;
+                          sprKey = this.anims.get(person.animKey).
+                              frames[lastFrame].textureKey;
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      //}
+                      //person.shoot = () => { };
+                      person.shootTimeLine = this.add.timeline([
+                          {
+                              at: 100,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("empty");
+                                  }
+                                  myScoreChecker.changeHealth(-10);
+                              },
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("bigFlash");
+                                      this.cameras.main.flash(350, 255, 0, 0);
+                                      myScoreChecker.changeHealth(-10);
+                                  }
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("empty");
+                                  }
+                                  myScoreChecker.changeHealth(-10);
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  // if(person.flashSpriteArr.length > 1){
+                                  //     person.flashSpriteArr[1].setTexture("bigFlash");
+                                  // }
+                                  person.shootTimeLine.play(true);
+                              }
+                          }
+                      ]);
+                      person.fxClrMatrix = person.sprite.preFX.addColorMatrix();
+                  }
+              });
+          });
+          this.add.image(-100, 320, 'building3');
+          // золотая монетка - бонус, премия за подбитого слона
+          this.goldEl = this.add.image(0, 0, "image");
+          this.input.on('pointerdown', (pointer) => {
+              if (pointer.x < this.cameras.main.scrollX) {
+                  this.direction = "left";
+              }
+              else if (pointer.x > this.cameras.main.scrollX) {
+                  this.direction = "right";
+              }
+          });
+          this.debugText = this.add.text(10, 30, "");
+          this.debugText.setFontSize(64);
+          // отладочная инфа для выделения областей где перс прячется
+          // и откуда стреляет
+          this.graphics = this.add.graphics();
+          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+          this.sceneObjArr[1].personArr.forEach((person) => {
+              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.hiddenArea.dX, this.sceneObjArr[1].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
+              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
+          });
+          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.S);
+          this.fireKey.on("down", (key, event) => {
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+          });
+          this.emptyAnchor.setDepth(1);
+          this.emptyAnchor.y = this.gunAimY;
+          // this.barsContainer = this.add.container(600, 45);
+          // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
+          //         setAlpha(score.health[i]/10), i + 1);
+          // }
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
+          //         setAlpha(score.ammo[i]/10), i + 11);
+          // }
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
+          //         setAlpha(score.money[i]/10), i + 21);
+          // }
+          myScoreChecker.drawBars(this);
+      }
+      update(time, delta) {
+          if (!this.startKey) {
+              this.startKey = true;
+          }
+          if (this.direction == "left" && this.emptyAnchor.x > 0) {
+              this.emptyAnchor.x -= 1.5;
+              this.debugText.x -= 1.5;
+          }
+          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
+              this.emptyAnchor.x += 1.5;
+              this.debugText.x += 1.5;
+          }
+          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+              this.emptyAnchor.x -= 1.5;
+              this.debugText.x -= 1.5;
+          }
+          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+              this.emptyAnchor.x += 1.5;
+              this.debugText.x += 1.5;
+          }
+          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+              this.emptyAnchor.y -= 1.5;
+          }
+          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+              this.emptyAnchor.y += 1.5;
+          }
+          if (this.emptyAnchor.x < 600) {
+              this.scene.start('sceneB', { from: "sceneC", gunAimY: this.emptyAnchor.y });
+          }
+          if (this.emptyAnchor.x > 3000) {
+              this.scene.start('sceneA', { from: "sceneC", gunAimY: this.emptyAnchor.y });
+          }
+          myScoreChecker.setX(this.cameras.main.scrollX + 600);
+          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+          // deltaAbsY :${this.deltaAbsY}
+          // left color:${this.bimbo}`)
+      }
+      shootToPerson(x, y) {
+          let fireSphereArr = [];
+          let locPerson;
+          this.add.timeline([
+              {
+                  at: 0,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
+                      this.add.tween({
+                          targets: fireSphereArr[0],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[0].destroy();
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
+                      this.add.tween({
+                          targets: fireSphereArr[1],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[1].destroy();
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
+                      this.add.tween({
+                          targets: fireSphereArr[2],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[2].destroy();
+                              myScoreChecker.changeAmmo(-5);
+                              //if(this.elephShootTL.paused)
+                              //this.elephShootTL.resume();
+                          }
+                      });
+                  },
+              },
+              {
+                  run: () => {
+                      this.sceneObjArr.forEach((obj) => {
+                          if ("personArr" in obj) {
+                              obj.personArr.forEach((person) => {
+                                  // если перс прячется
+                                  if (person.state == STATE.HIDDEN) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y) ||
+                                          new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y)) {
+                                          person.state = STATE.SHAKE;
+                                          this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
+                                              if (progress === 1) {
+                                                  person.sprite.on(__webpack_exports__Animations.Events.ANIMATION_COMPLETE, () => {
+                                                      person.state = STATE.ACTIVE;
+                                                      person.shootTimeLine.play();
+                                                      //this.shootToPlayer(obj.personArr[0]);
+                                                  });
+                                                  person.sprite.play(person.animKey);
+                                              }
+                                          });
+                                      }
+                                  }
+                                  else if (person.state == STATE.ACTIVE) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.activeArea.dX, obj.objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h).contains(x, y)) {
+                                          // this.elephShootTL.pause();
+                                          // this.brightPerson(obj.personArr[0])
+                                          locPerson = person;
+                                          person.shootTimeLine.pause();
+                                          person.fxClrMatrix.brightness(7);
+                                          //person.shootTimeLine.play();    
+                                      }
+                                  }
+                              });
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
+                      if (locPerson != undefined) {
+                          locPerson.health -= 50;
+                          if (locPerson.health > 0) {
+                              locPerson.shootTimeLine.resume();
+                          }
+                          else {
+                              if (locPerson.sprite.texture.key == "an7fr2") {
+                                  locPerson.sprite.setTexture("doorBld4");
+                              }
+                              else {
+                                  locPerson.sprite.setTexture("empty");
+                              }
+                              locPerson.state = STATE.EMPTY;
+                              locPerson.flashSpriteArr.forEach((spr) => {
+                                  spr.setTexture("empty");
+                              });
+                              this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
+                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.tweens.add({
+                                  targets: this.goldEl,
+                                  scale: 0.3,
+                                  x: myScoreChecker.barsContainer.x + 280,
+                                  y: myScoreChecker.barsContainer.y,
+                                  duration: 1000,
+                                  onComplete: () => {
+                                      this.goldEl.setTexture("empty");
+                                      myScoreChecker.changeMoney(10);
+                                  }
+                              });
+                          }
+                      }
+                  }
+              }
+          ]).play();
+      }
+  }
+
+  class SceneD extends __webpack_exports__Scene {
+      constructor() {
+          super('sceneD');
+          this.gunAimY = 350;
+          //this.contrAngle = 60*Math.PI/180;
+          //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
+          //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
+      }
+      init(data) {
+          console.log(data);
+          if ('from' in data) {
+              this.prevScene = data.from;
+          }
+          else {
+              this.prevScene = "";
+          }
+          if ('gunAimY' in data) {
+              this.gunAimY = data.gunAimY;
+          }
+      }
+      create() {
+          globalThis.currentScene = this;
+          this.startKey = false;
+          this.sceneObjArr = [objectsArr[5]];
+          this.flashesArr = [];
+          this.flashCounter = 1;
+          this.cameras.main.setBounds(0, 0, 3600, 675);
+          this.physics.world.setBounds(0, 0, 3600, 675);
+          this.add.image(600, 608, 'groundL').setFlipX(true);
+          this.add.image(1800, 608, 'groundL');
+          this.add.image(3000, 608, 'groundL').setFlipX(true);
+          this.add.image(600, 273, 'landscapeL');
+          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
+          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          this.add.image(3360, 415, 'landscapeEnd');
+          // золотая монетка - бонус, премия за подбитого слона
+          this.goldEl = this.add.image(0, 0, "empty");
+          this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
+          this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
+          this.physicsAnchor.body.setCollideWorldBounds();
+          this.cursors = this.input.keyboard.createCursorKeys();
+          this.cameras.main.startFollow(this.emptyAnchor, true);
+          // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
+          //     this.sceneObjArr[0].objKey);
+          this.sceneObjArr.forEach((obj) => {
+              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              obj.personArr.forEach((person) => {
+                  person.flashSpriteArr = [];
+                  person.flashesArr.forEach((item) => {
+                      person.flashSpriteArr.push(this.add.sprite(obj.objectX +
+                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                  });
+                  // если перс ещё жив, добавляем картинку в зависимости от его состояния,
+                  // определяем для него таймлайн и функцию стрельбы
+                  if (person.state != STATE.EMPTY) {
+                      let sprKey = this.anims.get(person.animKey).
+                          frames[0].textureKey;
+                      if (person.state == STATE.HIDDEN) {
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      else if (person.state == STATE.ACTIVE) {
+                          let lastFrame = this.anims.get(person.animKey).
+                              frames.length - 1;
+                          sprKey = this.anims.get(person.animKey).
+                              frames[lastFrame].textureKey;
+                          person.sprite = this.add.sprite(obj.objectX +
+                              person.deltaX, obj.objectY +
+                              person.deltaY, sprKey);
+                      }
+                      //}
+                      //person.shoot = () => { };
+                      person.shootTimeLine = this.add.timeline([
+                          {
+                              at: 100,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("empty");
+                                  }
+                                  myScoreChecker.changeHealth(-10);
+                              },
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("bigFlash");
+                                      this.cameras.main.flash(350, 255, 0, 0);
+                                      myScoreChecker.changeHealth(-10);
+                                  }
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  this.cameras.main.flash(350, 255, 0, 0);
+                                  if (person.flashSpriteArr.length > 1) {
+                                      person.flashSpriteArr[1].setTexture("empty");
+                                  }
+                                  myScoreChecker.changeHealth(-10);
+                              }
+                          },
+                          {
+                              from: 300,
+                              run: () => {
+                                  person.flashSpriteArr[0].setTexture("empty");
+                                  // if(person.flashSpriteArr.length > 1){
+                                  //     person.flashSpriteArr[1].setTexture("bigFlash");
+                                  // }
+                                  person.shootTimeLine.play(true);
+                              }
+                          }
+                      ]);
+                      person.fxClrMatrix = person.sprite.preFX.addColorMatrix();
+                  }
+              });
+          });
+          // if (this.sceneObjArr[0].personArr[0].state != STATE.EMPTY) {
+          //     let sprKey: string = this.anims.get(this.sceneObjArr[0].personArr[0].animKey).
+          //         frames[0].textureKey;
+          //     this.sceneObjArr[0].personArr[0].sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+          //         this.sceneObjArr[0].personArr[0].deltaX, this.sceneObjArr[0].objectY +
+          //     this.sceneObjArr[0].personArr[0].deltaY, (sprKey as string));
+          // }
+          this.debugText = this.add.text(10, 30, "");
+          this.debugText.setFontSize(64);
+          if (this.prevScene == "sceneB") ;
+          //this.input.addPointer(2)
+          this.input.on('pointerdown', (pointer) => {
+              if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x) {
+                  this.direction = "left";
+              }
+              else if (pointer.x + this.cameras.main.scrollX > this.physicsAnchor.x) {
+                  this.direction = "right";
+              }
+          });
+          this.input.on('pointermove', (pointer) => {
+              if (pointer.isDown) {
+                  this.physicsAnchor.setY(pointer.y);
+                  console.log(pointer);
+              }
+          });
+          let sprKey = this.sceneObjArr[0].personArr[0].animKey;
+          sprKey = this.anims.get(sprKey).frames[0].textureKey;
+          // отладочная инфа для выделения областей где перс прячется
+          // и откуда стреляет
+          this.graphics = this.add.graphics();
+          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+          this.sceneObjArr[0].personArr.forEach((person) => {
+              if ("hiddenArea" in person) {
+                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.hiddenArea.dX, this.sceneObjArr[0].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
+                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.activeArea.dX, this.sceneObjArr[0].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
+              }
+          });
+          this.sceneObjArr[0].personArr.forEach((person) => {
+              if ("flashesArr" in person) {
+                  person.flashesArr.forEach((value) => {
+                      this.flashesArr.push(this.add.sprite(this.sceneObjArr[0].objectX +
+                          value.dx, this.sceneObjArr[0].objectY + value.dy, "empty"));
+                  });
+              }
+          });
+          this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.S);
+          this.fireKey.on("down", (key, event) => {
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+          });
+          // for(let i = 0; i<10; i++){
+          //     this.add.image(112 + i*24, 45,'healthPiece');
+          //     this.add.image(530 + i*24,45,'ammoPiece').setAlpha(0.5);
+          //     this.add.image(940 + i*24,45,'moneyPiece').setAlpha(0);
+          //     // this.add.image(108 + i*24, 45,'healthPiece');
+          //     // this.add.image(526 + i*24,45,'ammoPiece');
+          //     // this.add.image(935 + i*24,45,'moneyPiece');
+          // }
+          //this.add.image(600,44,'unionBar');
+          this.emptyAnchor.setDepth(1);
+          this.emptyAnchor.y = this.gunAimY;
+          this.fxClrMatrix = this.sceneObjArr[0].personArr[0].sprite.preFX.addColorMatrix();
+          // this.barsContainer = this.add.container(600, 45);
+          // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
+          //         setAlpha(score.health[i]/10), i + 1);
+          // }
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
+          //         setAlpha(score.ammo[i]/10), i + 11);
+          // }
+          // for (let i = 0; i < 10; i++) {
+          //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
+          //         setAlpha(score.money[i]/10), i + 21);
+          // }
+          // for(let i=1; i < this.barsContainer.list.length; i++){
+          //     if(i%2 == 0) this.barsContainer.getAt(i).setAlpha(0.5);
+          // }
+          myScoreChecker.drawBars(this);
+      }
+      update(time, delta) {
+          if (!this.startKey) {
+              // this.sceneObjArr[0].personArr.forEach(person => {
+              //     person.sprite.play(person.animKey)
+              // })
+              this.startKey = true;
+          }
+          if (this.direction == "left" &&
+              this.physicsAnchor.body.velocity.x >= 0) {
+              this.physicsAnchor.setVelocityX(-180);
+          }
+          else if (this.direction == "right" &&
+              this.physicsAnchor.body.velocity.x <= 0) {
+              this.physicsAnchor.setVelocityX(180);
+          }
+          else {
+              this.physicsAnchor.setVelocityX(0);
+          }
+          if (this.direction == "left" && this.emptyAnchor.x > 0) {
+              this.emptyAnchor.x -= 1.5;
+              this.debugText.x -= 1.5;
+          }
+          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
+              this.emptyAnchor.x += 1.5;
+              this.debugText.x += 1.5;
+          }
+          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+              this.emptyAnchor.x -= 1.5;
+              this.debugText.x -= 1.5;
+          }
+          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+              this.emptyAnchor.x += 1.5;
+              this.debugText.x += 1.5;
+          }
+          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+              this.emptyAnchor.y -= 1.5;
+          }
+          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+              this.emptyAnchor.y += 1.5;
+          }
+          if (this.emptyAnchor.x < 600) {
+              this.scene.start('sceneA', { from: "sceneD", gunAimY: this.gunAimY });
+          }
+          myScoreChecker.setX(this.cameras.main.scrollX + 600);
+          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+      }
+      /** игрок стреляет в перса */
+      shootToPerson(x, y) {
+          let fireSphereArr = [];
+          let locPerson;
+          this.add.timeline([
+              {
+                  at: 0,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
+                      this.add.tween({
+                          targets: fireSphereArr[0],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[0].destroy();
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
+                      this.add.tween({
+                          targets: fireSphereArr[1],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[1].destroy();
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
+                      this.add.tween({
+                          targets: fireSphereArr[2],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[2].destroy();
+                              //if(this.elephShootTL.paused)
+                              //this.elephShootTL.resume();
+                          }
+                      });
+                  },
+              },
+              {
+                  run: () => {
+                      this.sceneObjArr.forEach((obj) => {
+                          if ("personArr" in obj) {
+                              obj.personArr.forEach((person) => {
+                                  // если перс прячется
+                                  if (person.state == STATE.HIDDEN) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y) ||
+                                          new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y)) {
+                                          person.state = STATE.SHAKE;
+                                          this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
+                                              if (progress === 1) {
+                                                  person.sprite.on(__webpack_exports__Animations.Events.ANIMATION_COMPLETE, () => {
+                                                      person.state = STATE.ACTIVE;
+                                                      person.shootTimeLine.play();
+                                                      //this.shootToPlayer(obj.personArr[0]);
+                                                  });
+                                                  person.sprite.play(person.animKey);
+                                              }
+                                          });
+                                      }
+                                  }
+                                  else if (person.state == STATE.ACTIVE) {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.activeArea.dX, obj.objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h).contains(x, y)) 
+                                      // ||
+                                      // new Phaser.Geom.Rectangle(
+                                      //     obj.objectX + obj.personArr[1].activeArea.dX,
+                                      //     obj.objectY + obj.personArr[1].activeArea.dY,
+                                      //     obj.personArr[1].activeArea.w,
+                                      //     obj.personArr[1].activeArea.h
+                                      // ).contains(x, y)) 
+                                      {
+                                          // this.elephShootTL.pause();
+                                          // this.brightPerson(obj.personArr[0])
+                                          locPerson = person;
+                                          person.shootTimeLine.pause();
+                                          person.fxClrMatrix.brightness(7);
+                                          //person.shootTimeLine.play();    
+                                      }
+                                  }
+                              });
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
+                      if (locPerson != undefined) {
+                          locPerson.health -= 50;
+                          if (locPerson.health > 0) {
+                              locPerson.shootTimeLine.resume();
+                          }
+                          else {
+                              locPerson.sprite.setTexture("empty");
+                              locPerson.state = STATE.EMPTY;
+                              locPerson.flashSpriteArr.forEach((spr) => {
+                                  spr.setTexture("empty");
+                              });
+                          }
+                      }
+                  }
+              }
+          ]).play();
+      }
+  }
+  /** перс стреляет в игрока */
+  //     shootToPlayer(pers: PersonMap){
+  //         this.elephShootTL = this.add.timeline([
+  //             {
+  //                 at: 100,
+  //                 run: () => {
+  //                     this.flashesArr[0].setTexture("empty");
+  //                     this.flashesArr[1].setTexture("bigFlash");
+  //                     this.cameras.main.flash(350, 255, 0, 0);
+  //                 },
+  //             },
+  //             {
+  //                 from:300,
+  //                 run: () => {
+  //                     this.flashesArr[1].setTexture("empty");
+  //                 }
+  //             },
+  //             {
+  //                 from: 300,
+  //                 run: () => {
+  //                     this.flashesArr[0].setTexture("bigFlash");
+  //                     //this.flashesArr[1].setTexture("empty");
+  //                     this.cameras.main.flash(350, 255, 0, 0);
+  //                 }
+  //             },
+  //             {
+  //                 from:300,
+  //                 run: () => {
+  //                     this.flashesArr[0].setTexture("empty");
+  //                     this.elephShootTL.play(true)
+  //                 }
+  //             }
+  //         ])
+  //         this.elephShootTL.play();
+  //     }
+  //     /** подсветка перса при попадании в него игрока */
+  //     brightPerson(persMap:PersonMap){
+  //         //let clrMatrix = persMap.sprite.preFX.addColorMatrix();
+  //         this.elephBrightTL = this.add.timeline([
+  //             {
+  //                 run: () => {
+  //                     this.fxClrMatrix.brightness(7);
+  //                 }
+  //             },
+  //             {
+  //                 from:100,
+  //                 run: () => {
+  //                     this.fxClrMatrix.reset()
+  //                 }
+  //             },
+  //             {
+  //                 from:100,
+  //                 run: () => {
+  //                     this.fxClrMatrix.brightness(7);
+  //                 }
+  //             },
+  //             {
+  //                 from:100,
+  //                 run: () => {
+  //                     this.fxClrMatrix.reset()
+  //                 }
+  //             },
+  //             {
+  //                 from:100,
+  //                 run: () => {
+  //                     this.fxClrMatrix.brightness(7);
+  //                 }
+  //             },
+  //             {
+  //                 from:100,
+  //                 run: () => {
+  //                     this.fxClrMatrix.reset()
+  //                 }
+  //             },
+  //             {
+  //                 from:100,
+  //                 run: () => {
+  //                     if(this.elephShootTL.paused)
+  //                         this.elephShootTL.resume()
+  //                 }
+  //             },
+  //         ])
+  //         this.elephBrightTL.play();
+  //     }
+  // }
 
   function startGame() {
       const config = {

@@ -3,6 +3,8 @@ import { PersonMap } from './preloader';
 import { ObjectMap } from './preloader';
 import { objectsArr } from './preloader';
 import {STATE } from './preloader';
+//import { score } from './preloader';
+import { myScoreChecker } from './preloader';
 
 export class SceneC extends Phaser.Scene
 {
@@ -18,59 +20,19 @@ export class SceneC extends Phaser.Scene
     /** массив объектов конфигураций для анимаций, используемых
      * для данной сцены */
     animsArr: Array<Phaser.Types.Animations.Animation>;
-    // object3Map: ObjectMap;
-    // object4Map: ObjectMap;
-    // object5Map: ObjectMap;
-    // object1Map: ObjectMap;
+    
+    gunAimX:number;
     gunAimY:number;
+
+    barsContainer:Phaser.GameObjects.Container;
 
     debugText:Phaser.GameObjects.Text;
     graphics: Phaser.GameObjects.Graphics;
+    goldEl:Phaser.GameObjects.Image;
 
     constructor ()
     {
         super('sceneC');
-
-        // this.object3Map = {
-        //     fileName: 'assets/building2',
-        //     objKey: 'building2',
-        //     objectX: 794,
-        //     objectY: 368,
-        //     personArr: [{ deltaX: 46, deltaY: 92, animKey: "elAnim5" },
-        //     ]
-        // }
-
-        // this.object1Map = {
-        //     fileName: 'assets/building0',
-        //     objKey: 'building0',
-        //     objectX: 2947,
-        //     objectY: 410,
-        //     personArr: [{
-        //         deltaX: -359, deltaY: 77, animKey: "elAnim0",
-        //         hiddenArea: { dX: -336, dY: 28, w: 42, h: 55 },
-        //         activeArea: { dX: -420, dY: 30, w: 117, h: 113 }
-        //     },
-        //     {
-        //         deltaX: -23, deltaY: -151, animKey: "elAnim1",
-        //         hiddenArea: { dX: -88, dY: -84, w: 38, h: 36 },
-        //         activeArea: { dX: -67, dY: -255, w: 86, h: 116 }
-        //     },
-        //     { deltaX: 493, deltaY: 78, animKey: "elAnim2" }
-        //     ]
-        // }
-
-        // this.object5Map = {
-        //     fileName: 'assets/building4',
-        //     objKey: 'building4',
-        //     objectX: 1350,
-        //     objectY: 320,
-        //     personArr: [{
-        //         deltaX: -4, deltaY: 86, animKey: "elAnim7",
-        //         hiddenArea: { dX: 55, dY: 55, w: 58, h: 40 },
-        //         activeArea: { dX: -75, dY: 23, w: 132, h: 230 }
-        //     }
-        //     ]
-        // }
 
         this.gunAimY = 350;
         //this.contrAngle = 60*Math.PI/180;
@@ -78,19 +40,25 @@ export class SceneC extends Phaser.Scene
         //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
     }  
 
-    init(data){
-        console.log(data)
-        if('gunAimY' in data){
-            this.gunAimY = data.gunAimY;
+    init(data) {
+        if ("from" in data) {
+            if (data.from == "sceneB") {
+                this.gunAimY = data.gunAimY;
+                this.gunAimX = 600;
+            }
+            if (data.from == "sceneA") {
+                this.gunAimY = data.gunAimY;
+                this.gunAimX = 2999;
+            }
         }
     }
-
-    
 
     create ()
     {
         globalThis.currentScene = this;
         this.startKey = false;
+
+        // объект находится и в соседней сцене
         objectsArr[0].objectX = 2947;
         objectsArr[0].objectY = 410;
 
@@ -109,7 +77,7 @@ export class SceneC extends Phaser.Scene
         //this.add.image(2400,273,'landscapeL');
         this.add.image(3000,273,'landscapeL')//.setFlipX(true);
 
-        this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
+        this.emptyAnchor = this.add.image(this.gunAimX, this.gunAimY, 'emptyAnchor');
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -120,67 +88,92 @@ export class SceneC extends Phaser.Scene
         this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
             this.sceneObjArr[0].objKey);
 
-        // this.sceneObjArr[0].personArr.forEach((person) => {
-        //     let sprKey: string = ('fileName' in person) ? person.fileName :
-        //         this.anims.get(person.animKey).frames[0].textureKey;
-        //     person.sprite = this.add.sprite(this.sceneObjArr[0].objectX + person.deltaX,
-        //         this.sceneObjArr[0].objectY + person.deltaY, (sprKey as string));
-        // }
-        // )
+        this.sceneObjArr.forEach((obj) => {
+            this.add.image(obj.objectX, obj.objectY, obj.objKey);
+            obj.personArr.forEach((person) => {
+                person.flashSpriteArr = [];
+                person.flashesArr.forEach((item) => {
+                    person.flashSpriteArr.push(this.add.sprite(obj.objectX +
+                        item.dx, obj.objectY + item.dy, "empty").setDepth(1)
+                    )
+                })
+                // если перс ещё жив, добавляем картинку в зависимости от его состояния,
+                // определяем для него таймлайн и функцию стрельбы
+                if (person.state != STATE.EMPTY) {
+                    let sprKey: string = this.anims.get(person.animKey).
+                        frames[0].textureKey;
+                    if (person.state == STATE.HIDDEN) {
+                        person.sprite = this.add.sprite(obj.objectX +
+                            person.deltaX, obj.objectY +
+                        person.deltaY, (sprKey as string));
+                    } else if (person.state == STATE.ACTIVE) {
+                        let lastFrame: number = this.anims.get(person.animKey).
+                            frames.length - 1;
+                        sprKey = this.anims.get(person.animKey).
+                            frames[lastFrame].textureKey;
+                        person.sprite = this.add.sprite(obj.objectX +
+                            person.deltaX, obj.objectY +
+                        person.deltaY, (sprKey as string));
+                    }
+                    //}
+                    //person.shoot = () => { };
+                    person.shootTimeLine = this.add.timeline([
+                        {
+                            at: 100,
+                            run: () => {
+                                person.flashSpriteArr[0].setTexture("bigFlash");
+                                this.cameras.main.flash(350, 255, 0, 0);
 
-        this.sceneObjArr[0].personArr.forEach((person) => {
-            if (person.state != STATE.EMPTY) {
-                let sprKey: string = this.anims.get(person.animKey).
-                    frames[0].textureKey;
-                if (person.state == STATE.HIDDEN) {
-                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                        person.deltaX, this.sceneObjArr[0].objectY +
-                    person.deltaY, (sprKey as string));
-                } else if (person.state == STATE.ACTIVE) {
-                    let lastFrame: number = this.anims.get(person.animKey).
-                        frames.length - 1;
-                    sprKey = this.anims.get(person.animKey).
-                        frames[lastFrame].textureKey;
-                    person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                        person.deltaX, this.sceneObjArr[0].objectY +
-                    person.deltaY, (sprKey as string));
+                                if(person.flashSpriteArr.length > 1){
+                                    person.flashSpriteArr[1].setTexture("empty");
+                                }
+                                myScoreChecker.changeHealth(-10);
+                            },
+                        },
+                        {
+                            from: 300,
+                            run: () => {
+                                person.flashSpriteArr[0].setTexture("empty");
+                                if(person.flashSpriteArr.length > 1){
+                                    person.flashSpriteArr[1].setTexture("bigFlash");
+                                    this.cameras.main.flash(350, 255, 0, 0);
+                                    myScoreChecker.changeHealth(-10);
+                                }
+                            }
+                        },
+                        {
+                            from: 300,
+                            run: () => {
+                                person.flashSpriteArr[0].setTexture("bigFlash");
+                                this.cameras.main.flash(350, 255, 0, 0);
+                                if(person.flashSpriteArr.length > 1){
+                                    person.flashSpriteArr[1].setTexture("empty");
+                                }
+                                myScoreChecker.changeHealth(-10);
+                            }
+                        },
+                        {
+                            from: 300,
+                            run: () => {
+                                person.flashSpriteArr[0].setTexture("empty");
+                                // if(person.flashSpriteArr.length > 1){
+                                //     person.flashSpriteArr[1].setTexture("bigFlash");
+                                // }
+                                person.shootTimeLine.play(true)
+                            }
+                        }
+                    ]);
+                    person.fxClrMatrix = person.sprite.preFX.addColorMatrix();
                 }
             }
-        }
-        )
-
-        this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY,
-            this.sceneObjArr[1].objKey);
-
-        this.sceneObjArr[1].personArr.forEach((person) => {
-            let sprKey: string = ('fileName' in person) ? person.fileName :
-                this.anims.get(person.animKey).frames[0].textureKey;
-            person.sprite = this.add.sprite(this.sceneObjArr[1].objectX + person.deltaX,
-                this.sceneObjArr[1].objectY + person.deltaY, (sprKey as string));
-        }
-        )
+            )
+        })
 
         this.add.image(-100,320,'building3');
-        //this.add.image(2947,410,'building0');
+        
+        // золотая монетка - бонус, премия за подбитого слона
+        this.goldEl = this.add.image(0,0, "image");
 
-        // this.add.image(1300,440,'wantedStand')
-        // this.add.image(192,500,'flowerStones')
-
-        // this.add.image(this.object4Map.objectX, this.object4Map.objectY,
-        //     this.object4Map.objKey);
-
-        // this.object4Map.personArr.forEach((person) => {
-        //     let sprKey: string = ('fileName' in person) ? person.fileName :
-        //         this.anims.get(person.animKey).frames[0].textureKey;
-        //     person.sprite = this.add.sprite(this.object4Map.objectX + person.deltaX,
-        //         this.object4Map.objectY + person.deltaY, (sprKey as string));
-        // }
-        // )
-
-        // this.add.image(636,296,'building4')
-        // this.add.image(632,382,"an7fr2")
-
-        this.input.addPointer(2)
 
         this.input.on('pointerdown', (pointer) => {
             
@@ -214,61 +207,35 @@ export class SceneC extends Phaser.Scene
             );
         })
 
-        this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.fireKey.on("down", (key, event) => {
-            this.sceneObjArr.forEach((obj) => {
-                if("personArr" in obj){
-                    obj.personArr.forEach((pers) => {
-                        // если перс прячется
-                        if(pers.state == STATE.HIDDEN){
-                            if( new Phaser.Geom.Rectangle(
-                                obj.objectX+pers.hiddenArea.dX,
-                                obj.objectY+pers.hiddenArea.dY,
-                                pers.hiddenArea.w,
-                                pers.hiddenArea.h
-                            ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
-                                pers.sprite.play(pers.animKey);
-                                pers.state = STATE.ACTIVE;
-                                if("flashesArr" in pers){
-                                    pers.flashesArr.forEach((value) => {
-                                        this.add.sprite(obj.objectX + value.dx,
-                                            obj.objectY + value.dy, "bigFlash");
-                                    })
-                                }
-                            }
-                        }else if(pers.state == STATE.ACTIVE){
-                            if( new Phaser.Geom.Rectangle(
-                                obj.objectX+pers.activeArea.dX,
-                                obj.objectY+pers.activeArea.dY,
-                                pers.activeArea.w,
-                                pers.activeArea.h
-                            ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
-                                if (pers.animKey == "elAnim7") {
-                                    pers.sprite.setTexture("doorBld4");
-                                } else {
-                                    pers.sprite.setTexture("empty");
-                                }
-                            }
-                        }
-                    })
-                }
-            })
-        } )
-        
+            this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+        })
+
         this.emptyAnchor.setDepth(1);
         this.emptyAnchor.y = this.gunAimY;
+
+        // this.barsContainer = this.add.container(600, 45);
+        // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
+
+        // for (let i = 0; i < 10; i++) {
+        //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
+        //         setAlpha(score.health[i]/10), i + 1);
+        // }
+        // for (let i = 0; i < 10; i++) {
+        //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
+        //         setAlpha(score.ammo[i]/10), i + 11);
+        // }
+        // for (let i = 0; i < 10; i++) {
+        //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
+        //         setAlpha(score.money[i]/10), i + 21);
+        // }
+
+        myScoreChecker.drawBars(this);
     }
 
     update(time: number, delta: number): void {
         if(!this.startKey){
-            // this.object5Map.personArr.forEach(person => {
-            //     person.sprite.play(person.animKey)
-            // })
-
-            // this.object5Map.personArr.forEach(person => {
-            //     person.sprite.play(person.animKey)
-            // })
-            
             this.startKey = true;
         }
 
@@ -297,16 +264,170 @@ export class SceneC extends Phaser.Scene
         }
 
         if (this.emptyAnchor.x < 600) {
-            this.scene.start('sceneA',{from:"sceneB"})
+            this.scene.start('sceneB',{from:"sceneC", gunAimY : this.emptyAnchor.y})
         }
 
         if(this.emptyAnchor.x > 3000){
-            this.scene.start('sceneA',{from:"demo", gunAimY : this.emptyAnchor.y});
+            this.scene.start('sceneA',{from:"sceneC", gunAimY : this.emptyAnchor.y});
         }
+
+        myScoreChecker.setX(this.cameras.main.scrollX + 600);
             
         this.debugText.setText(
             `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) ;
 // deltaAbsY :${this.deltaAbsY}
 // left color:${this.bimbo}`)
+    }
+
+    shootToPerson(x:number, y: number) {
+        let fireSphereArr: Array<Phaser.GameObjects.Image> = [];
+        let locPerson: PersonMap;
+        this.add.timeline([
+            {
+                at: 0,
+                run: () => {
+                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width,
+                        this.emptyAnchor.height / fireSphereArr[0].height);
+
+                    this.add.tween({
+                        targets: fireSphereArr[0],
+                        alpha: { from: 0, to: 1 },
+                        scale: 0.1,
+                        duration: 300,
+                        onComplete: () => {
+                            fireSphereArr[0].destroy()
+                        }
+                    })
+                },
+            },
+            {
+                from: 200,
+                run: () => {
+                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width,
+                        this.emptyAnchor.height / fireSphereArr[1].height);
+
+                    this.add.tween({
+                        targets: fireSphereArr[1],
+                        alpha: { from: 0, to: 1 },
+                        scale: 0.1,
+                        duration: 300,
+                        onComplete: () => {
+                            fireSphereArr[1].destroy()
+                        }
+                    })
+                },
+            },
+            {
+                from: 200,
+                run: () => {
+                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width,
+                        this.emptyAnchor.height / fireSphereArr[2].height);
+
+                    this.add.tween({
+                        targets: fireSphereArr[2],
+                        alpha: { from: 0, to: 1 },
+                        scale: 0.1,
+                        duration: 300,
+                        onComplete: () => {
+                            fireSphereArr[2].destroy();
+                            myScoreChecker.changeAmmo(-5);
+                            //if(this.elephShootTL.paused)
+                                //this.elephShootTL.resume();
+                        }
+                    })
+                },
+            },
+            {
+                run: () => {
+                this.sceneObjArr.forEach((obj) => {
+                    if ("personArr" in obj) {
+                        obj.personArr.forEach((person) => {
+                        // если перс прячется
+                        if (person.state == STATE.HIDDEN) {
+                            if (new Phaser.Geom.Rectangle(
+                                obj.objectX + person.hiddenArea.dX,
+                                obj.objectY + person.hiddenArea.dY,
+                                person.hiddenArea.w,
+                                person.hiddenArea.h
+                            ).contains(x, y) ||
+                                new Phaser.Geom.Rectangle(
+                                    obj.objectX + person.hiddenArea.dX,
+                                    obj.objectY + person.hiddenArea.dY,
+                                    person.hiddenArea.w,
+                                    person.hiddenArea.h
+                                ).contains(x, y)) {
+                                    person.state = STATE.SHAKE;
+                                    this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
+                                    if (progress === 1) {
+                                        person.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE,
+                                            () => {
+                                                person.state = STATE.ACTIVE;
+                                                person.shootTimeLine.play();
+                                                //this.shootToPlayer(obj.personArr[0]);
+                                             });
+                                             person.sprite.play(person.animKey);
+                                    }
+                                });
+                            }
+                        } else if (person.state == STATE.ACTIVE) {
+                            if (new Phaser.Geom.Rectangle(
+                                obj.objectX + person.activeArea.dX,
+                                obj.objectY + person.activeArea.dY,
+                                person.activeArea.w,
+                                person.activeArea.h
+                            ).contains(x, y)) 
+                                {
+                                    // this.elephShootTL.pause();
+                                    // this.brightPerson(obj.personArr[0])
+                                    locPerson = person;
+                                    person.shootTimeLine.pause();
+                                    person.fxClrMatrix.brightness(7)
+                                    //person.shootTimeLine.play();    
+                            }
+                        }
+                    },
+                        
+                    )
+                    }
+                })}},
+            {
+                from: 200,
+                run: () => {
+                    locPerson?.fxClrMatrix.reset();
+                    if(locPerson != undefined){
+                        locPerson.health -= 50;
+                        if(locPerson.health > 0){
+                             locPerson.shootTimeLine.resume();
+                        }else{
+                            if(locPerson.sprite.texture.key == "an7fr2"){
+                                locPerson.sprite.setTexture("doorBld4");
+                            }else{
+                                locPerson.sprite.setTexture("empty");
+                            }
+                            locPerson.state = STATE.EMPTY;
+                            locPerson.flashSpriteArr.forEach((spr) => {
+                                spr.setTexture("empty");
+                            })
+                            this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
+                            this.goldEl.setTexture("goldEl").setDepth(2);
+                            this.tweens.add({
+                                targets:this.goldEl,
+                                scale: 0.3,
+                                x: myScoreChecker.barsContainer.x + 280,
+                                y: myScoreChecker.barsContainer.y,
+                                duration: 1000,
+                                onComplete: () => {
+                                    this.goldEl.setTexture("empty");
+                                    myScoreChecker.changeMoney(10);
+                                }
+                            })
+                        }
+                    } 
+                }
+            }
+        ]).play();
     }
 }

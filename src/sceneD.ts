@@ -2,7 +2,10 @@ import * as Phaser from 'phaser';
 import { PersonMap } from './preloader';
 import { ObjectMap } from './preloader';
 import { objectsArr } from './preloader';
-import {STATE } from './preloader';
+import { STATE } from './preloader';
+//import { ScoreType } from './preloader';
+//import { score } from './preloader';
+import { myScoreChecker } from './preloader';
 
 export class SceneD extends Phaser.Scene
 {
@@ -19,9 +22,6 @@ export class SceneD extends Phaser.Scene
     animsArr: Array<Phaser.Types.Animations.Animation>;
 
     /** таймлайн для огненного шара */
-    //fbTimeLine:Phaser.Time.Timeline;
-
-    /** таймлайн для огненного шара */
     elephBrightTL: Phaser.Time.Timeline;
 
     elephShootTL: Phaser.Time.Timeline;
@@ -34,6 +34,9 @@ export class SceneD extends Phaser.Scene
     flashCounter:number;
     physicsAnchor: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     fxClrMatrix:Phaser.FX.ColorMatrix;
+
+    barsContainer:Phaser.GameObjects.Container;
+    goldEl:Phaser.GameObjects.Image;
 
     constructor ()
     {
@@ -56,7 +59,6 @@ export class SceneD extends Phaser.Scene
         }
     }
 
-
     create ()
     {
         globalThis.currentScene = this;
@@ -65,11 +67,6 @@ export class SceneD extends Phaser.Scene
         this.sceneObjArr = [objectsArr[5]];
         this.flashesArr=[];
         this.flashCounter = 1;
-
-        // this.sceneObjArr[0].objectX = 547;
-        // this.sceneObjArr[0].objectY = 410;
-
-        //console.log(objectsArr[0].objectX);
 
         this.cameras.main.setBounds(0,0,3600,675);
         this.physics.world.setBounds(0,0,3600,675);
@@ -82,10 +79,10 @@ export class SceneD extends Phaser.Scene
         this.add.image(1800,273,'landscapeL').setFlipX(true);
         this.add.image(3000,273,'landscapeL')//.setFlipX(true);
 
-        this.add.image(3360,415,'landscapeEnd')
-        
-        //960,415
-        //this.add.image(3700,368,'building2')//.setFlipX(true);
+        this.add.image(3360,415,'landscapeEnd');
+
+        // золотая монетка - бонус, премия за подбитого слона
+        this.goldEl = this.add.image(0,0, "empty")
 
         this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
         this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
@@ -93,46 +90,100 @@ export class SceneD extends Phaser.Scene
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
         this.cameras.main.startFollow(this.emptyAnchor, true);
         
-        // добавляем картинку объекта
-        // this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY,
-        //     this.sceneObjArr[1].objKey);
+        // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
+        //     this.sceneObjArr[0].objKey);
 
-        // this.sceneObjArr[1].personArr.forEach((person) => {
-        //     if (person.state != STATE.EMPTY) {
-        //         let sprKey: string = this.anims.get(person.animKey).
-        //             frames[0].textureKey;
-        //         if (person.state == STATE.HIDDEN) {
-        //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-        //                 person.deltaX, this.sceneObjArr[1].objectY +
-        //             person.deltaY, (sprKey as string));
-        //         } else if (person.state == STATE.ACTIVE) {
-        //             let lastFrame: number = this.anims.get(person.animKey).
-        //                 frames.length - 1;
-        //             sprKey = this.anims.get(person.animKey).
-        //                 frames[lastFrame].textureKey;
-        //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-        //                 person.deltaX, this.sceneObjArr[1].objectY +
-        //             person.deltaY, (sprKey as string));
-        //         }
-        //     }
-        // }
-        // )
+            this.sceneObjArr.forEach((obj) => {
+                this.add.image(obj.objectX, obj.objectY, obj.objKey);
+                obj.personArr.forEach((person) => {
+                    person.flashSpriteArr = [];
+                    person.flashesArr.forEach((item) => {
+                        person.flashSpriteArr.push(this.add.sprite(obj.objectX +
+                            item.dx, obj.objectY + item.dy, "empty").setDepth(1)
+                        )
+                    })
+                    // если перс ещё жив, добавляем картинку в зависимости от его состояния,
+                    // определяем для него таймлайн и функцию стрельбы
+                    if (person.state != STATE.EMPTY) {
+                        let sprKey: string = this.anims.get(person.animKey).
+                            frames[0].textureKey;
+                        if (person.state == STATE.HIDDEN) {
+                            person.sprite = this.add.sprite(obj.objectX +
+                                person.deltaX, obj.objectY +
+                            person.deltaY, (sprKey as string));
+                        } else if (person.state == STATE.ACTIVE) {
+                            let lastFrame: number = this.anims.get(person.animKey).
+                                frames.length - 1;
+                            sprKey = this.anims.get(person.animKey).
+                                frames[lastFrame].textureKey;
+                            person.sprite = this.add.sprite(obj.objectX +
+                                person.deltaX, obj.objectY +
+                            person.deltaY, (sprKey as string));
+                        }
+                        //}
+                        //person.shoot = () => { };
+                        person.shootTimeLine = this.add.timeline([
+                            {
+                                at: 100,
+                                run: () => {
+                                    person.flashSpriteArr[0].setTexture("bigFlash");
+                                    this.cameras.main.flash(350, 255, 0, 0);
+    
+                                    if(person.flashSpriteArr.length > 1){
+                                        person.flashSpriteArr[1].setTexture("empty");
+                                    }
+                                    myScoreChecker.changeHealth(-10);
+                                },
+                            },
+                            {
+                                from: 300,
+                                run: () => {
+                                    person.flashSpriteArr[0].setTexture("empty");
+                                    if(person.flashSpriteArr.length > 1){
+                                        person.flashSpriteArr[1].setTexture("bigFlash");
+                                        this.cameras.main.flash(350, 255, 0, 0);
+                                        myScoreChecker.changeHealth(-10);
+                                    }
+                                }
+                            },
+                            {
+                                from: 300,
+                                run: () => {
+                                    person.flashSpriteArr[0].setTexture("bigFlash");
+                                    this.cameras.main.flash(350, 255, 0, 0);
+                                    if(person.flashSpriteArr.length > 1){
+                                        person.flashSpriteArr[1].setTexture("empty");
+                                    }
+                                    myScoreChecker.changeHealth(-10);
+                                }
+                            },
+                            {
+                                from: 300,
+                                run: () => {
+                                    person.flashSpriteArr[0].setTexture("empty");
+                                    // if(person.flashSpriteArr.length > 1){
+                                    //     person.flashSpriteArr[1].setTexture("bigFlash");
+                                    // }
+                                    person.shootTimeLine.play(true)
+                                }
+                            }
+                        ]);
+                        person.fxClrMatrix = person.sprite.preFX.addColorMatrix();
+                    }
+                }
+                )
+            })
 
-        this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
-            this.sceneObjArr[0].objKey);
-
-        //this.sceneObjArr[0].personArr[0]
-        if (this.sceneObjArr[0].personArr[0].state != STATE.EMPTY) {
-            let sprKey: string = this.anims.get(this.sceneObjArr[0].personArr[0].animKey).
-                frames[0].textureKey;
-            this.sceneObjArr[0].personArr[0].sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-                this.sceneObjArr[0].personArr[0].deltaX, this.sceneObjArr[0].objectY +
-            this.sceneObjArr[0].personArr[0].deltaY, (sprKey as string));
+        // if (this.sceneObjArr[0].personArr[0].state != STATE.EMPTY) {
+        //     let sprKey: string = this.anims.get(this.sceneObjArr[0].personArr[0].animKey).
+        //         frames[0].textureKey;
+        //     this.sceneObjArr[0].personArr[0].sprite = this.add.sprite(this.sceneObjArr[0].objectX +
+        //         this.sceneObjArr[0].personArr[0].deltaX, this.sceneObjArr[0].objectY +
+        //     this.sceneObjArr[0].personArr[0].deltaY, (sprKey as string));
             
-        }
+        // }
         
         this.debugText = this.add.text(10,30,"");
         this.debugText.setFontSize(64)
@@ -141,7 +192,7 @@ export class SceneD extends Phaser.Scene
             //this.emptyAnchor.setX(3000)
         }
 
-        this.input.addPointer(2)
+        //this.input.addPointer(2)
 
         this.input.on('pointerdown', (pointer) => {
             
@@ -165,21 +216,6 @@ export class SceneD extends Phaser.Scene
 
         let sprKey: string = this.sceneObjArr[0].personArr[0].animKey;
         sprKey = this.anims.get(sprKey).frames[0].textureKey;
-        //this.add.sprite(this.sceneObjArr[0].objectX + this.sceneObjArr[0].personArr[0].deltaX,
-           // this.sceneObjArr[0].objectY + this.sceneObjArr[0].personArr[0].deltaY, (sprKey as string));
-
-        // this.sceneObjArr[0].personArr.forEach((person) => {
-        //     if ("flashesArr" in person) {
-        //         person.flashesArr.forEach((value) => {
-        //             this.add.sprite(this.sceneObjArr[0].objectX + value.dx,
-        //                 this.sceneObjArr[0].objectY + value.dy, "bigFlash");
-        //         })
-        //     }
-        // }
-        // )
-
-        // this.add.sprite(this.sceneObjArr[0].objectX + 247,
-        //     this.sceneObjArr[0].objectY + 126, "bigFlash")
 
         // отладочная инфа для выделения областей где перс прячется
         // и откуда стреляет
@@ -211,63 +247,47 @@ export class SceneD extends Phaser.Scene
         }
         )
 
-        this.elephShootTL = this.add.timeline([
-            {
-                at: 100,
-                run: () => {
-                    this.flashesArr[0].setTexture("empty");
-                    this.flashesArr[1].setTexture("bigFlash");
-                    this.cameras.main.flash(350, 255, 0, 0);
-                },
-            },
-            {
-                from:300,
-                run: () => {
-                    this.flashesArr[1].setTexture("empty");
-                }
-            },
-            {
-                from: 300,
-                run: () => {
-                    this.flashesArr[0].setTexture("bigFlash");
-                    //this.flashesArr[1].setTexture("empty");
-                    this.cameras.main.flash(350, 255, 0, 0);
-                }
-            },
-            {
-                from:300,
-                run: () => {
-                    this.flashesArr[0].setTexture("empty");
-                    this.elephShootTL.play(true)
-                }
-            }
-        ])
-
-        
-
-        // this.sceneObjArr[1].personArr.forEach((person) => {
-        //     if ("hiddenArea" in person) {
-        //         this.graphics.strokeRect(
-        //             this.sceneObjArr[1].objectX + person.hiddenArea.dX,
-        //             this.sceneObjArr[1].objectY + person.hiddenArea.dY,
-        //             person.hiddenArea.w, person.hiddenArea.h
-        //         );
-        //         this.graphics.strokeRect(
-        //             this.sceneObjArr[1].objectX + person.activeArea.dX,
-        //             this.sceneObjArr[1].objectY + person.activeArea.dY,
-        //             person.activeArea.w, person.activeArea.h
-        //         );
-        //     }
-        // })
-
-        this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         this.fireKey.on("down", (key, event) => {
-            this.shootBall(this.emptyAnchor.x, this.emptyAnchor.y);
+            this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
         })
         
+        // for(let i = 0; i<10; i++){
+        //     this.add.image(112 + i*24, 45,'healthPiece');
+        //     this.add.image(530 + i*24,45,'ammoPiece').setAlpha(0.5);
+        //     this.add.image(940 + i*24,45,'moneyPiece').setAlpha(0);
+        //     // this.add.image(108 + i*24, 45,'healthPiece');
+        //     // this.add.image(526 + i*24,45,'ammoPiece');
+        //     // this.add.image(935 + i*24,45,'moneyPiece');
+        // }
+        
+        //this.add.image(600,44,'unionBar');
         this.emptyAnchor.setDepth(1);
         this.emptyAnchor.y = this.gunAimY;
+        this.fxClrMatrix = this.sceneObjArr[0].personArr[0].sprite.preFX.addColorMatrix();
+
+        // this.barsContainer = this.add.container(600, 45);
+        // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
+
+        // for (let i = 0; i < 10; i++) {
+        //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
+        //         setAlpha(score.health[i]/10), i + 1);
+        // }
+        // for (let i = 0; i < 10; i++) {
+        //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
+        //         setAlpha(score.ammo[i]/10), i + 11);
+        // }
+        // for (let i = 0; i < 10; i++) {
+        //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
+        //         setAlpha(score.money[i]/10), i + 21);
+        // }
+
+        // for(let i=1; i < this.barsContainer.list.length; i++){
+        //     if(i%2 == 0) this.barsContainer.getAt(i).setAlpha(0.5);
+        // }
+
+        myScoreChecker.drawBars(this);
     }
 
     update(time: number, delta: number): void {
@@ -312,17 +332,20 @@ export class SceneD extends Phaser.Scene
                 this.emptyAnchor.y +=1.5
             }
 
-            if(this.emptyAnchor.x > 1800){
-                //this.scene.start('sceneB',{from:"sceneD"});
+            if(this.emptyAnchor.x < 600){
+                this.scene.start('sceneA',{from:"sceneD", gunAimY: this.gunAimY});
             }
+
+            myScoreChecker.setX(this.cameras.main.scrollX + 600);
             
          this.debugText.setText(
              `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}` )
     }
 
-    shootBall(x:number, y: number) {
+    /** игрок стреляет в перса */
+    shootToPerson(x:number, y: number) {
         let fireSphereArr: Array<Phaser.GameObjects.Image> = [];
-
+        let locPerson: PersonMap;
         this.add.timeline([
             {
                 at: 0,
@@ -373,7 +396,9 @@ export class SceneD extends Phaser.Scene
                         scale: 0.1,
                         duration: 300,
                         onComplete: () => {
-                            fireSphereArr[2].destroy()
+                            fireSphereArr[2].destroy();
+                            //if(this.elephShootTL.paused)
+                                //this.elephShootTL.resume();
                         }
                     })
                 },
@@ -382,95 +407,167 @@ export class SceneD extends Phaser.Scene
                 run: () => {
                 this.sceneObjArr.forEach((obj) => {
                     if ("personArr" in obj) {
+                        obj.personArr.forEach((person) => {
                         // если перс прячется
-                        if (obj.personArr[0].state == STATE.HIDDEN) {
+                        if (person.state == STATE.HIDDEN) {
                             if (new Phaser.Geom.Rectangle(
-                                obj.objectX + obj.personArr[0].hiddenArea.dX,
-                                obj.objectY + obj.personArr[0].hiddenArea.dY,
-                                obj.personArr[0].hiddenArea.w,
-                                obj.personArr[0].hiddenArea.h
+                                obj.objectX + person.hiddenArea.dX,
+                                obj.objectY + person.hiddenArea.dY,
+                                person.hiddenArea.w,
+                                person.hiddenArea.h
                             ).contains(x, y) ||
                                 new Phaser.Geom.Rectangle(
-                                    obj.objectX + obj.personArr[1].hiddenArea.dX,
-                                    obj.objectY + obj.personArr[1].hiddenArea.dY,
-                                    obj.personArr[1].hiddenArea.w,
-                                    obj.personArr[1].hiddenArea.h
+                                    obj.objectX + person.hiddenArea.dX,
+                                    obj.objectY + person.hiddenArea.dY,
+                                    person.hiddenArea.w,
+                                    person.hiddenArea.h
                                 ).contains(x, y)) {
-                                    obj.personArr[0].state = STATE.APPIARENCE;
+                                    person.state = STATE.SHAKE;
                                     this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
                                     if (progress === 1) {
-                                        obj.personArr[0].sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE,
+                                        person.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE,
                                             () => {
-                                                obj.personArr[0].state = STATE.ACTIVE;
-                                                this.elephShootTL.play();
+                                                person.state = STATE.ACTIVE;
+                                                person.shootTimeLine.play();
+                                                //this.shootToPlayer(obj.personArr[0]);
                                              });
-                                        obj.personArr[0].sprite.play(obj.personArr[0].animKey);
+                                             person.sprite.play(person.animKey);
                                     }
                                 });
                             }
-                        } else if (obj.personArr[0].state == STATE.ACTIVE) {
+                        } else if (person.state == STATE.ACTIVE) {
                             if (new Phaser.Geom.Rectangle(
-                                obj.objectX + obj.personArr[0].activeArea.dX,
-                                obj.objectY + obj.personArr[0].activeArea.dY,
-                                obj.personArr[0].activeArea.w,
-                                obj.personArr[0].activeArea.h
-                            ).contains(x, y) ||
-                                new Phaser.Geom.Rectangle(
-                                    obj.objectX + obj.personArr[1].activeArea.dX,
-                                    obj.objectY + obj.personArr[1].activeArea.dY,
-                                    obj.personArr[1].activeArea.w,
-                                    obj.personArr[1].activeArea.h
-                                ).contains(x, y)) {
-                                    this.elephShootTL.pause();
-                                this.brightPerson(obj.personArr[0])
+                                obj.objectX + person.activeArea.dX,
+                                obj.objectY + person.activeArea.dY,
+                                person.activeArea.w,
+                                person.activeArea.h
+                            ).contains(x, y)) 
+                                // ||
+                                // new Phaser.Geom.Rectangle(
+                                //     obj.objectX + obj.personArr[1].activeArea.dX,
+                                //     obj.objectY + obj.personArr[1].activeArea.dY,
+                                //     obj.personArr[1].activeArea.w,
+                                //     obj.personArr[1].activeArea.h
+                                // ).contains(x, y)) 
+                                {
+                                    // this.elephShootTL.pause();
+                                    // this.brightPerson(obj.personArr[0])
+                                    locPerson = person;
+                                    person.shootTimeLine.pause();
+                                    person.fxClrMatrix.brightness(7)
+                                    //person.shootTimeLine.play();    
                             }
                         }
+                    },
+                        
+                    )
                     }
-                })
-            }
+                })}},
+            {
+                from: 200,
+                run: () => {
+                    locPerson?.fxClrMatrix.reset();
+                    if(locPerson != undefined){
+                        locPerson.health -= 50;
+                        if(locPerson.health > 0){
+                             locPerson.shootTimeLine.resume();
+                        }else{
+                            locPerson.sprite.setTexture("empty");
+                            locPerson.state = STATE.EMPTY;
+                            locPerson.flashSpriteArr.forEach((spr) => {
+                                spr.setTexture("empty");
+                            })
+                        }
+                    }
+                }
             }
         ]).play();
     }
-
-    brightPerson(persMap:PersonMap){
-        let clrMatrix = persMap.sprite.preFX.addColorMatrix();
-        this.elephBrightTL = this.add.timeline([
-            {
-                run: () => {
-                    clrMatrix.brightness(7);
-                }
-            },
-            {
-                from:100,
-                run: () => {
-                    clrMatrix.reset()
-                }
-            },
-            {
-                from:100,
-                run: () => {
-                    clrMatrix.brightness(7);
-                }
-            },
-            {
-                from:100,
-                run: () => {
-                    clrMatrix.reset()
-                }
-            },
-            {
-                from:100,
-                run: () => {
-                    clrMatrix.brightness(7);
-                }
-            },
-            {
-                from:100,
-                run: () => {
-                    clrMatrix.reset()
-                }
-            },
-        ])
-        this.elephBrightTL.play();
-    }
 }
+
+    /** перс стреляет в игрока */
+//     shootToPlayer(pers: PersonMap){
+//         this.elephShootTL = this.add.timeline([
+//             {
+//                 at: 100,
+//                 run: () => {
+//                     this.flashesArr[0].setTexture("empty");
+//                     this.flashesArr[1].setTexture("bigFlash");
+//                     this.cameras.main.flash(350, 255, 0, 0);
+//                 },
+//             },
+//             {
+//                 from:300,
+//                 run: () => {
+//                     this.flashesArr[1].setTexture("empty");
+//                 }
+//             },
+//             {
+//                 from: 300,
+//                 run: () => {
+//                     this.flashesArr[0].setTexture("bigFlash");
+//                     //this.flashesArr[1].setTexture("empty");
+//                     this.cameras.main.flash(350, 255, 0, 0);
+//                 }
+//             },
+//             {
+//                 from:300,
+//                 run: () => {
+//                     this.flashesArr[0].setTexture("empty");
+//                     this.elephShootTL.play(true)
+//                 }
+//             }
+//         ])
+//         this.elephShootTL.play();
+//     }
+
+//     /** подсветка перса при попадании в него игрока */
+//     brightPerson(persMap:PersonMap){
+//         //let clrMatrix = persMap.sprite.preFX.addColorMatrix();
+//         this.elephBrightTL = this.add.timeline([
+//             {
+//                 run: () => {
+//                     this.fxClrMatrix.brightness(7);
+//                 }
+//             },
+//             {
+//                 from:100,
+//                 run: () => {
+//                     this.fxClrMatrix.reset()
+//                 }
+//             },
+//             {
+//                 from:100,
+//                 run: () => {
+//                     this.fxClrMatrix.brightness(7);
+//                 }
+//             },
+//             {
+//                 from:100,
+//                 run: () => {
+//                     this.fxClrMatrix.reset()
+//                 }
+//             },
+//             {
+//                 from:100,
+//                 run: () => {
+//                     this.fxClrMatrix.brightness(7);
+//                 }
+//             },
+//             {
+//                 from:100,
+//                 run: () => {
+//                     this.fxClrMatrix.reset()
+//                 }
+//             },
+//             {
+//                 from:100,
+//                 run: () => {
+//                     if(this.elephShootTL.paused)
+//                         this.elephShootTL.resume()
+//                 }
+//             },
+//         ])
+//         this.elephBrightTL.play();
+//     }
+// }
