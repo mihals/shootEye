@@ -241876,6 +241876,13 @@ var MyGame = (function (exports) {
           // this.load.image('an7fr0','assets/an7fr0.png');
           // this.load.image('an7fr1','assets/an7fr1.png');
           // this.load.image('an7fr2','assets/an7fr2.png');
+          this.load.image('hand', 'assets/hand.png');
+          this.load.image('tutorBld', 'assets/tutorBld.png');
+          this.load.image('tutorBox', 'assets/tutorBox.png');
+          this.load.image('tutFr1', 'assets/tutFr1.png');
+          this.load.image('tutFr2', 'assets/tutFr2.png');
+          this.load.image('tutFr3', 'assets/tutFr3.png');
+          this.load.image('tutFr4', 'assets/tutFr4.png');
       }
       create() {
           // создаём анимации по конфигам из массива animsArr
@@ -241883,7 +241890,7 @@ var MyGame = (function (exports) {
               this.anims.create(anim);
           });
           myScoreChecker = new ScoreChecker();
-          this.scene.start('sceneB', { from: "preloader" });
+          this.scene.start('tutorScene', { from: "preloader" });
       }
   }
   class ScoreChecker {
@@ -241968,20 +241975,25 @@ var MyGame = (function (exports) {
           //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
       }
       init(data) {
-          if ("from" in data) {
-              if (data.from == "sceneC") {
-                  this.gunAimY = data.gunAimY;
-                  this.gunAimX = 600;
-              }
-              if (data.from == "sceneD") {
-                  this.gunAimY = data.gunAimY;
-                  this.gunAimX = 2999;
-              }
+          if ("from" in data && data.from == "sceneC") {
+              this.anchorX = 600;
+              this.anchorY = data.gunAimY;
+              this.gunAimY = data.gunAimY;
+              this.gunAimX = 600;
+          }
+          else {
+              this.anchorX = 2999;
+              //this.gunAimY = data.gunAimY;
+              this.gunAimY = data.gunAimY;
+              this.gunAimX = 2999;
           }
       }
       create() {
           globalThis.currentScene = this;
           this.startKey = false;
+          this.leftDir = 0;
+          this.rightDir = 0;
+          this.dirSgn = 0;
           this.sceneObjArr = [objectsArr[0], objectsArr[1]];
           this.sceneObjArr[0].objectX = 547;
           this.sceneObjArr[0].objectY = 410;
@@ -241997,8 +242009,32 @@ var MyGame = (function (exports) {
           this.add.image(3490, 358, 'building7'); //.setFlipX(true);
           // золотая монетка - бонус, премия за подбитого слона
           this.goldEl = this.add.image(0, 0, "empty");
-          this.emptyAnchor = this.add.image(this.gunAimX, this.gunAimY, 'emptyAnchor');
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
           this.cursors = this.input.keyboard.createCursorKeys();
+          this.cursors.right.on('down', (evt) => {
+              globalThis.directions.toRight = true;
+          });
+          this.cursors.right.on('up', (evt) => {
+              globalThis.directions.toRight = false;
+          });
+          this.cursors.left.on('down', (evt) => {
+              globalThis.directions.toLeft = true;
+          });
+          this.cursors.left.on('up', (evt) => {
+              globalThis.directions.toLeft = false;
+          });
+          this.cursors.up.on('down', (evt) => {
+              globalThis.directions.toUp = true;
+          });
+          this.cursors.up.on('up', (evt) => {
+              globalThis.directions.toUp = false;
+          });
+          this.cursors.down.on('down', (evt) => {
+              globalThis.directions.toDown = true;
+          });
+          this.cursors.down.on('up', (evt) => {
+              globalThis.directions.toDown = false;
+          });
           // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
           this.cameras.main.startFollow(this.emptyAnchor, true);
           // добавляем картинку объекта
@@ -242082,173 +242118,157 @@ var MyGame = (function (exports) {
                   }
               });
           });
-          // this.sceneObjArr[1].personArr.forEach((person) => {
-          //     if (person.state != STATE.EMPTY) {
-          //         let sprKey: string = this.anims.get(person.animKey).
-          //             frames[0].textureKey;
-          //         if (person.state == STATE.HIDDEN) {
-          //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-          //                 person.deltaX, this.sceneObjArr[1].objectY +
-          //             person.deltaY, (sprKey as string));
-          //         } else if (person.state == STATE.ACTIVE) {
-          //             let lastFrame: number = this.anims.get(person.animKey).
-          //                 frames.length - 1;
-          //             sprKey = this.anims.get(person.animKey).
-          //                 frames[lastFrame].textureKey;
-          //             person.sprite = this.add.sprite(this.sceneObjArr[1].objectX +
-          //                 person.deltaX, this.sceneObjArr[1].objectY +
-          //             person.deltaY, (sprKey as string));
-          //         }
-          //     }
-          // }
-          // )
-          // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
-          //     this.sceneObjArr[0].objKey);
-          // this.sceneObjArr[0].personArr.forEach((person) => {
-          //     if (person.state != STATE.EMPTY) {
-          //         let sprKey: string = this.anims.get(person.animKey).
-          //             frames[0].textureKey;
-          //         if (person.state == STATE.HIDDEN) {
-          //             person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-          //                 person.deltaX, this.sceneObjArr[0].objectY +
-          //             person.deltaY, (sprKey as string));
-          //         } else if (person.state == STATE.ACTIVE) {
-          //             let lastFrame: number = this.anims.get(person.animKey).
-          //                 frames.length - 1;
-          //             sprKey = this.anims.get(person.animKey).
-          //                 frames[lastFrame].textureKey;
-          //             person.sprite = this.add.sprite(this.sceneObjArr[0].objectX +
-          //                 person.deltaX, this.sceneObjArr[0].objectY +
-          //             person.deltaY, (sprKey as string));
-          //         }
-          //     }
-          // }
-          // )
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
+          // this.debugText = this.add.text(10,30,"");
+          // this.debugText.setFontSize(64)
           if (this.prevScene == "sceneB") {
               this.emptyAnchor.setX(3000);
               //this.cameras.main.scrollX = 2399;
           }
-          //this.input.addPointer(2)
-          this.input.on('pointerdown', (pointer) => {
-              if (pointer.x < this.cameras.main.scrollX) {
-                  this.direction = "left";
-              }
-              else if (pointer.x > this.cameras.main.scrollX) {
-                  this.direction = "right";
-              }
-          });
           // отладочная инфа для выделения областей где перс прячется
           // и откуда стреляет
-          this.graphics = this.add.graphics();
-          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              if ("hiddenArea" in person) {
-                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.hiddenArea.dX, this.sceneObjArr[0].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.activeArea.dX, this.sceneObjArr[0].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-              }
-          });
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              if ("hiddenArea" in person) {
-                  this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.hiddenArea.dX, this.sceneObjArr[1].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-                  this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-              }
-          });
+          // this.graphics =  this.add.graphics();
+          // this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+          // this.sceneObjArr[0].personArr.forEach((person) => {
+          //     if ("hiddenArea" in person) {
+          //         this.graphics.strokeRect(
+          //             this.sceneObjArr[0].objectX + person.hiddenArea.dX,
+          //             this.sceneObjArr[0].objectY + person.hiddenArea.dY,
+          //             person.hiddenArea.w, person.hiddenArea.h
+          //         );
+          //         this.graphics.strokeRect(
+          //             this.sceneObjArr[0].objectX + person.activeArea.dX,
+          //             this.sceneObjArr[0].objectY + person.activeArea.dY,
+          //             person.activeArea.w, person.activeArea.h
+          //         );
+          //     }
+          // })
+          // this.sceneObjArr[1].personArr.forEach((person) => {
+          //     if ("hiddenArea" in person) {
+          //         this.graphics.strokeRect(
+          //             this.sceneObjArr[1].objectX + person.hiddenArea.dX,
+          //             this.sceneObjArr[1].objectY + person.hiddenArea.dY,
+          //             person.hiddenArea.w, person.hiddenArea.h
+          //         );
+          //         this.graphics.strokeRect(
+          //             this.sceneObjArr[1].objectX + person.activeArea.dX,
+          //             this.sceneObjArr[1].objectY + person.activeArea.dY,
+          //             person.activeArea.w, person.activeArea.h
+          //         );
+          //     }
+          // })
           this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.S);
           this.fireKey.on("down", (key, event) => {
               this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
           });
-          // this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
-          // this.fireKey.on("down", (key, event) => {
-          //     this.sceneObjArr.forEach((obj) => {
-          //         if("personArr" in obj){
-          //             obj.personArr.forEach((pers) => {
-          //                 // если перс прячется
-          //                 if(pers.state == STATE.HIDDEN){
-          //                     if( new Phaser.Geom.Rectangle(
-          //                         obj.objectX+pers.hiddenArea.dX,
-          //                         obj.objectY+pers.hiddenArea.dY,
-          //                         pers.hiddenArea.w,
-          //                         pers.hiddenArea.h
-          //                     ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
-          //                         pers.sprite.play(pers.animKey);
-          //                         pers.state = STATE.ACTIVE;
-          //                         if("flashesArr" in pers){
-          //                             pers.flashesArr.forEach((value) => {
-          //                                 this.add.sprite(obj.objectX + value.dx,
-          //                                     obj.objectY + value.dy, "bigFlash");
-          //                             })
-          //                         }
-          //                     }
-          //                 }else if(pers.state == STATE.ACTIVE){
-          //                     if( new Phaser.Geom.Rectangle(
-          //                         obj.objectX+pers.activeArea.dX,
-          //                         obj.objectY+pers.activeArea.dY,
-          //                         pers.activeArea.w,
-          //                         pers.activeArea.h
-          //                     ).contains(this.emptyAnchor.x, this.emptyAnchor.y)){
-          //                         pers.sprite.setTexture("empty");
-          //                         pers.state = STATE.EMPTY;
-          //                     }
-          //                 }
-          //             })
-          //         }
-          //     })
-          // } )
           this.emptyAnchor.setDepth(1);
           this.emptyAnchor.y = this.gunAimY;
-          myScoreChecker.setX(this.cameras.main.scrollX + 600);
-          // this.barsContainer = this.add.container(600, 45);
-          // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
-          // for (let i = 0; i < 10; i++) {
-          //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
-          //         setAlpha(score.health[i]/10), i + 1);
-          // }
-          // for (let i = 0; i < 10; i++) {
-          //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
-          //         setAlpha(score.ammo[i]/10), i + 11);
-          // }
-          // for (let i = 0; i < 10; i++) {
-          //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
-          //         setAlpha(score.money[i]/10), i + 21);
-          // }
+          //myScoreChecker.setX(this.cameras.main.scrollX + 600);
+          this.input.addPointer(1);
+          this.input.dragDistanceThreshold = 32;
+          this.centerZone = this.add.zone(600, 335, 200, 670).setInteractive();
+          this.centerZone.on('pointerdown', (pntr) => {
+              //if(pntr.event.type != "touchstart") return;
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+              //this.leftDir = -1;
+          });
+          this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({ draggable: true });
+          this.leftZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              if (pntr.event.touches.length == 1)
+                  this.rightDir = 0;
+              this.leftDir = -1;
+          });
+          this.leftZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.leftDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.rightDir = 0;
+          });
+          this.leftZone.on('drag', (pntr, x, y, z) => {
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+          });
+          this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({ draggable: true });
+          this.rightZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              this.rightDir = 1;
+              if (pntr.event.touches.length == 1)
+                  this.leftDir = 0;
+              //console.log("rightDir = " +this.rightDir)
+          });
+          this.rightZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.rightDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.leftDir = 0;
+              //console.log("rightDir = " +this.rightDir)
+          });
+          this.rightZone.on('drag', (pntr, x, y, z) => {
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+          });
           myScoreChecker.drawBars(this);
       }
       update(time, delta) {
-          if (!this.startKey) {
-              this.startKey = true;
-          }
-          if (this.direction == "left" && this.emptyAnchor.x > 0) {
+          this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir) * 180);
+          // if (!this.startKey) {
+          //     this.startKey = true;
+          // }
+          // if (this.direction == "left" && this.emptyAnchor.x > 0) {
+          //     this.emptyAnchor.x -= 1.5;
+          //     this.debugText.x -= 1.5;
+          // } else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
+          //     this.emptyAnchor.x += 1.5;
+          //     this.debugText.x += 1.5;
+          // }
+          // if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+          //     this.emptyAnchor.x -= 1.5;
+          //     //this.debugText.x -= 1.5;
+          // }
+          // else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+          //     this.emptyAnchor.x += 1.5;
+          //     //this.debugText.x += 1.5;
+          // }
+          if (globalThis.directions.toLeft && this.emptyAnchor.x > 0) {
               this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
+              //this.debugText.x -= 1.5;
           }
-          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
+          else if (globalThis.directions.toRight && this.emptyAnchor.x < 3600) {
               this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
+              //this.debugText.x += 1.5;
           }
-          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+          if (globalThis.directions.toUp && this.emptyAnchor.y > 0) {
               this.emptyAnchor.y -= 1.5;
           }
-          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+          else if (globalThis.directions.toDown && this.emptyAnchor.y < 675) {
               this.emptyAnchor.y += 1.5;
           }
           if (this.emptyAnchor.x > 3000) {
-              this.scene.start('sceneD', { from: "sceneA" });
+              this.scene.start('sceneD', { from: "sceneA", gunAimY: this.emptyAnchor.y });
           }
           if (this.emptyAnchor.x < 600) {
-              this.scene.start('sceneC', { from: "sceneA", gunAimY: this.gunAimY });
+              this.scene.start('sceneC', { from: "sceneA", gunAimY: this.emptyAnchor.y });
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+          this.centerZone.setX(this.emptyAnchor.x);
+          this.leftZone.setX(this.emptyAnchor.x - 350);
+          this.rightZone.setX(this.emptyAnchor.x + 600);
+          // this.debugText.setText(
+          //     `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`)
           // deltaAbsY :${this.deltaAbsY}
           // left color:${this.bimbo}`)
       }
@@ -242394,7 +242414,7 @@ var MyGame = (function (exports) {
       }
       init(data) {
           if ("from" in data && data.from == "sceneC") {
-              //this.direction = "left";
+              this.direction = "left";
               this.anchorX = 2999;
           }
           else {
@@ -242406,7 +242426,6 @@ var MyGame = (function (exports) {
           else {
               this.anchorY = 100;
           }
-          //console.log(myScoreChecker.ammo[0]);
       }
       create() {
           globalThis.currentScene = this;
@@ -242434,6 +242453,31 @@ var MyGame = (function (exports) {
           this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
           this.physicsAnchor.body.setCollideWorldBounds();
           this.cursors = this.input.keyboard.createCursorKeys();
+          this.cursors.right.on('down', (evt) => {
+              globalThis.directions.toRight = true;
+          });
+          this.cursors.right.on('up', (evt) => {
+              globalThis.directions.toRight = false;
+          });
+          this.cursors.left.on('down', (evt) => {
+              globalThis.directions.toLeft = true;
+          });
+          this.cursors.left.on('up', (evt) => {
+              globalThis.directions.toLeft = false;
+          });
+          this.cursors.up.on('down', (evt) => {
+              globalThis.directions.toUp = true;
+          });
+          this.cursors.up.on('up', (evt) => {
+              globalThis.directions.toUp = false;
+          });
+          this.cursors.down.on('down', (evt) => {
+              globalThis.directions.toDown = true;
+          });
+          this.cursors.down.on('up', (evt) => {
+              globalThis.directions.toDown = false;
+          });
+          console.log(globalThis.directions.toDown);
           // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
           this.cameras.main.startFollow(this.emptyAnchor, true);
           // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
@@ -242469,8 +242513,6 @@ var MyGame = (function (exports) {
                               person.deltaX, obj.objectY +
                               person.deltaY, sprKey);
                       }
-                      //}
-                      //person.shoot = () => { };
                       person.shootTimeLine = this.add.timeline([
                           {
                               at: 100,
@@ -242509,26 +242551,49 @@ var MyGame = (function (exports) {
           });
           this.add.image(1400, 440, 'wantedStand');
           this.add.image(192, 500, 'flowerStones');
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
+          // this.debugText = this.add.text(10,30,"");
+          // this.debugText.setFontSize(64)
           // отладочная инфа для выделения областей где перс прячется
           // и откуда стреляет
-          this.graphics = this.add.graphics();
-          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.hiddenArea.dX, this.sceneObjArr[0].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-              this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.activeArea.dX, this.sceneObjArr[0].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-          });
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.hiddenArea.dX, this.sceneObjArr[1].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-          });
+          // this.graphics =  this.add.graphics();
+          // this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+          // this.sceneObjArr[0].personArr.forEach((person) => {
+          //     this.graphics.strokeRect(
+          //         this.sceneObjArr[0].objectX + person.hiddenArea.dX,
+          //         this.sceneObjArr[0].objectY + person.hiddenArea.dY,
+          //         person.hiddenArea.w, person.hiddenArea.h
+          //     );
+          //     this.graphics.strokeRect(
+          //         this.sceneObjArr[0].objectX + person.activeArea.dX,
+          //         this.sceneObjArr[0].objectY + person.activeArea.dY,
+          //         person.activeArea.w, person.activeArea.h
+          //     );
+          // })
+          // this.sceneObjArr[1].personArr.forEach((person) => {
+          //     this.graphics.strokeRect(
+          //         this.sceneObjArr[1].objectX + person.hiddenArea.dX,
+          //         this.sceneObjArr[1].objectY + person.hiddenArea.dY,
+          //         person.hiddenArea.w, person.hiddenArea.h
+          //     );
+          //     this.graphics.strokeRect(
+          //         this.sceneObjArr[1].objectX + person.activeArea.dX,
+          //         this.sceneObjArr[1].objectY + person.activeArea.dY,
+          //         person.activeArea.w, person.activeArea.h
+          //     );
+          // })
           this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.S);
           this.fireKey.on("down", (key, event) => {
               this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
           });
           this.emptyAnchor.setDepth(1);
           this.input.addPointer(1);
+          this.input.dragDistanceThreshold = 32;
+          this.centerZone = this.add.zone(600, 335, 200, 670).setInteractive();
+          this.centerZone.on('pointerdown', (pntr) => {
+              //if(pntr.event.type != "touchstart") return;
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+              //this.leftDir = -1;
+          });
           this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({ draggable: true });
           this.leftZone.on('pointerdown', (pntr) => {
               if (pntr.event.type != "touchstart")
@@ -242536,7 +242601,6 @@ var MyGame = (function (exports) {
               if (pntr.event.touches.length == 1)
                   this.rightDir = 0;
               this.leftDir = -1;
-              //console.log("leftDir = " +this.leftDir)
           });
           this.leftZone.on('pointerup', (pntr) => {
               if (pntr.event.type != "touchend")
@@ -242544,10 +242608,8 @@ var MyGame = (function (exports) {
               this.leftDir = 0;
               if (pntr.event.touches.length == 0)
                   this.rightDir = 0;
-              //console.log("leftDir = " +this.leftDir)
           });
           this.leftZone.on('drag', (pntr, x, y, z) => {
-              //console.log("pntr.getDistanceY = " + pntr.getDistanceY());
               this.emptyAnchor.y += pntr.velocity.y / 5;
               if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
                   this.emptyAnchor.y = 0;
@@ -242555,7 +242617,6 @@ var MyGame = (function (exports) {
               else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
                   this.emptyAnchor.y = 675;
               }
-              //console.log("pntr.downY = "+pntr.downY);
           });
           this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({ draggable: true });
           this.rightZone.on('pointerdown', (pntr) => {
@@ -242574,18 +242635,6 @@ var MyGame = (function (exports) {
                   this.leftDir = 0;
               //console.log("rightDir = " +this.rightDir)
           });
-          // this.input.on('pointerdown', ((pointer: Phaser.Input.Pointer) => {
-          //     //console.log(pointer.button);
-          //     if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x
-          //     )
-          //     {
-          //         this.direction = "left";
-          //     }
-          //     else if (pointer.x  + this.cameras.main.scrollX > this.physicsAnchor.x
-          //     ) {
-          //         this.direction = "right";
-          //     }
-          // }));
           this.rightZone.on('drag', (pntr, x, y, z) => {
               this.emptyAnchor.y += pntr.velocity.y / 5;
               if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
@@ -242594,47 +242643,52 @@ var MyGame = (function (exports) {
               else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
                   this.emptyAnchor.y = 675;
               }
-              //console.log("pntr.downY = "+pntr.downY);
           });
-          // this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-          //     console.log(pointer.button);
-          //     if(pointer.isDown){
-          //         this.physicsAnchor.setY(pointer.y)
-          //         console.log('pointerup');
-          //     }
-          // });
           myScoreChecker.drawBars(this);
       }
       update(time, delta) {
           this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir) * 180);
           if (this.emptyAnchor.x <= 51)
               this.leftDir = 0;
-          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+          // if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+          //     this.emptyAnchor.x -= 1.5;
+          //     //this.debugText.x -= 1.5;
+          // }
+          // else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+          //     this.emptyAnchor.x += 1.5;
+          //     //this.debugText.x += 1.5;
+          // }
+          // if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+          //     this.emptyAnchor.y -= 1.5
+          // } else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+          //     this.emptyAnchor.y += 1.5
+          // }
+          // if (this.emptyAnchor.x > 3000) {
+          //     this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
+          // }
+          if (globalThis.directions.toLeft && this.emptyAnchor.x > 0) {
               this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
+              //this.debugText.x -= 1.5;
           }
-          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+          else if (globalThis.directions.toRight && this.emptyAnchor.x < 3600) {
               this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
+              //this.debugText.x += 1.5;
           }
-          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+          if (globalThis.directions.toUp && this.emptyAnchor.y > 0) {
               this.emptyAnchor.y -= 1.5;
           }
-          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+          else if (globalThis.directions.toDown && this.emptyAnchor.y < 675) {
               this.emptyAnchor.y += 1.5;
           }
           if (this.emptyAnchor.x > 3000) {
               this.scene.start('sceneC', { from: "sceneB", gunAimY: this.emptyAnchor.y });
           }
-          //this.barsContainer.setX(this.cameras.main.scrollX + 600);
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
+          this.centerZone.setX(this.emptyAnchor.x);
           this.leftZone.setX(this.emptyAnchor.x - 350);
           this.rightZone.setX(this.emptyAnchor.x + 600);
-          // this.graphics.strokeRect(this.rightZone.x - this.rightZone.width/2, 
-          //     this.rightZone.y - this.rightZone.height/2, this.rightZone.width,
-          //     this.rightZone.height
-          // )
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+          // this.debugText.setText(
+          //     `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) 
           // deltaAbsY :${this.deltaAbsY}
           // left color:${this.bimbo}`)
       }
@@ -242688,9 +242742,6 @@ var MyGame = (function (exports) {
                           duration: 300,
                           onComplete: () => {
                               fireSphereArr[2].destroy();
-                              //this.changeScore("ammo", -5);
-                              //if(this.elephShootTL.paused)
-                              //this.elephShootTL.resume();
                           }
                       });
                   },
@@ -242710,7 +242761,6 @@ var MyGame = (function (exports) {
                                                   person.sprite.on(__webpack_exports__Animations.Events.ANIMATION_COMPLETE, () => {
                                                       person.state = STATE.ACTIVE;
                                                       person.shootTimeLine.play();
-                                                      //this.shootToPlayer(obj.personArr[0]);
                                                   });
                                                   person.sprite.play(person.animKey);
                                               }
@@ -242719,12 +242769,9 @@ var MyGame = (function (exports) {
                                   }
                                   else if (person.state == STATE.ACTIVE) {
                                       if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.activeArea.dX, obj.objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h).contains(x, y)) {
-                                          // this.elephShootTL.pause();
-                                          // this.brightPerson(obj.personArr[0])
                                           locPerson = person;
                                           person.shootTimeLine.pause();
                                           person.fxClrMatrix.brightness(7);
-                                          //person.shootTimeLine.play();    
                                       }
                                   }
                               });
@@ -242762,7 +242809,6 @@ var MyGame = (function (exports) {
                               });
                           }
                       }
-                      //locPerson?.shootTimeLine.resume();
                   }
               }
           ]).play();
@@ -242780,18 +242826,28 @@ var MyGame = (function (exports) {
       init(data) {
           if ("from" in data) {
               if (data.from == "sceneB") {
+                  this.firstUpdate = "right";
+                  this.anchorX = 600;
+                  this.anchorY = data.gunAimY;
                   this.gunAimY = data.gunAimY;
                   this.gunAimX = 600;
+                  this.direction = "right";
               }
               if (data.from == "sceneA") {
                   this.gunAimY = data.gunAimY;
                   this.gunAimX = 2999;
+                  this.anchorX = 2999;
+                  this.anchorY = data.gunAimY;
+                  this.direction = "left";
               }
           }
       }
       create() {
           globalThis.currentScene = this;
           this.startKey = false;
+          this.leftDir = 0;
+          this.rightDir = 0;
+          this.dirSgn = 0;
           // объект находится и в соседней сцене
           objectsArr[0].objectX = 2947;
           objectsArr[0].objectY = 410;
@@ -242805,8 +242861,43 @@ var MyGame = (function (exports) {
           this.add.image(1800, 273, 'landscapeL').setFlipX(true);
           //this.add.image(2400,273,'landscapeL');
           this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
-          this.emptyAnchor = this.add.image(this.gunAimX, this.gunAimY, 'emptyAnchor');
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
           this.cursors = this.input.keyboard.createCursorKeys();
+          this.cursors.right.on('down', (evt) => {
+              globalThis.directions.toRight = true;
+          });
+          this.cursors.right.on('up', (evt) => {
+              globalThis.directions.toRight = false;
+          });
+          this.cursors.left.on('down', (evt) => {
+              globalThis.directions.toLeft = true;
+          });
+          this.cursors.left.on('up', (evt) => {
+              globalThis.directions.toLeft = false;
+          });
+          this.cursors.up.on('down', (evt) => {
+              globalThis.directions.toUp = true;
+          });
+          this.cursors.up.on('up', (evt) => {
+              globalThis.directions.toUp = false;
+          });
+          this.cursors.down.on('down', (evt) => {
+              globalThis.directions.toDown = true;
+          });
+          this.cursors.down.on('up', (evt) => {
+              globalThis.directions.toDown = false;
+          });
+          // let k = this.input.keyboard.addKeys('RIGHT, LEFT');
+          // k.LEFT.once('down', (key,event) => {
+          //     console.log(k);
+          // })
+          // this.cursors.right.isUp = false;
+          // this.cursors.right.isDown = true;
+          // if(this.direction == "right") this.cursors.right.isDown = true;
+          // else if(this.direction == "left") this.cursors.left.isDown = true;
+          // this.cursors.right.once('up', (evt,key) => {
+          //     this.firstUpdate = 'none';
+          // })
           // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
           this.cameras.main.startFollow(this.emptyAnchor, true);
           this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, this.sceneObjArr[0].objKey);
@@ -242890,71 +242981,145 @@ var MyGame = (function (exports) {
           });
           this.add.image(-100, 320, 'building3');
           // золотая монетка - бонус, премия за подбитого слона
-          this.goldEl = this.add.image(0, 0, "image");
-          this.input.on('pointerdown', (pointer) => {
-              if (pointer.x < this.cameras.main.scrollX) {
-                  this.direction = "left";
-              }
-              else if (pointer.x > this.cameras.main.scrollX) {
-                  this.direction = "right";
-              }
-          });
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
+          this.goldEl = this.add.image(0, 0, "empty");
+          // this.input.on('pointerdown', (pointer) => {
+          //     if (pointer.x < this.cameras.main.scrollX)
+          //     {
+          //         this.direction = "left";
+          //     }
+          //     else if (pointer.x > this.cameras.main.scrollX) {
+          //         this.direction = "right";
+          //     }
+          // })
+          // this.debugText = this.add.text(10,30,"");
+          // this.debugText.setFontSize(64)
           // отладочная инфа для выделения областей где перс прячется
           // и откуда стреляет
-          this.graphics = this.add.graphics();
-          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
-          this.sceneObjArr[1].personArr.forEach((person) => {
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.hiddenArea.dX, this.sceneObjArr[1].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-              this.graphics.strokeRect(this.sceneObjArr[1].objectX + person.activeArea.dX, this.sceneObjArr[1].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-          });
+          // this.graphics =  this.add.graphics();
+          // this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+          // this.sceneObjArr[1].personArr.forEach((person) => {
+          //     this.graphics.strokeRect(
+          //         this.sceneObjArr[1].objectX + person.hiddenArea.dX,
+          //         this.sceneObjArr[1].objectY + person.hiddenArea.dY,
+          //         person.hiddenArea.w, person.hiddenArea.h
+          //     );
+          //     this.graphics.strokeRect(
+          //         this.sceneObjArr[1].objectX + person.activeArea.dX,
+          //         this.sceneObjArr[1].objectY + person.activeArea.dY,
+          //         person.activeArea.w, person.activeArea.h
+          //     );
+          // })
           this.fireKey = this.input.keyboard.addKey(__webpack_exports__Input.Keyboard.KeyCodes.S);
           this.fireKey.on("down", (key, event) => {
               this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
           });
           this.emptyAnchor.setDepth(1);
-          this.emptyAnchor.y = this.gunAimY;
-          // this.barsContainer = this.add.container(600, 45);
-          // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
-          // for (let i = 0; i < 10; i++) {
-          //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
-          //         setAlpha(score.health[i]/10), i + 1);
-          // }
-          // for (let i = 0; i < 10; i++) {
-          //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
-          //         setAlpha(score.ammo[i]/10), i + 11);
-          // }
-          // for (let i = 0; i < 10; i++) {
-          //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
-          //         setAlpha(score.money[i]/10), i + 21);
-          // }
+          this.input.addPointer(1);
+          this.centerZone = this.add.zone(600, 335, 200, 670).setInteractive();
+          this.centerZone.on('pointerdown', (pntr) => {
+              //if(pntr.event.type != "touchstart") return;
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+              //this.leftDir = -1;
+          });
+          this.input.dragDistanceThreshold = 32;
+          this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({ draggable: true });
+          this.leftZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              if (pntr.event.touches.length == 1)
+                  this.rightDir = 0;
+              this.leftDir = -1;
+          });
+          this.leftZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.leftDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.rightDir = 0;
+          });
+          this.leftZone.on('drag', (pntr, x, y, z) => {
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+          });
+          this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({ draggable: true });
+          this.rightZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              this.rightDir = 1;
+              if (pntr.event.touches.length == 1)
+                  this.leftDir = 0;
+          });
+          this.rightZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.rightDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.leftDir = 0;
+          });
+          this.rightZone.on('drag', (pntr, x, y, z) => {
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+          });
           myScoreChecker.drawBars(this);
       }
       update(time, delta) {
+          this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir) * 180);
+          //if(this.emptyAnchor.x <= 51) this.leftDir =0;
           if (!this.startKey) {
               this.startKey = true;
           }
-          if (this.direction == "left" && this.emptyAnchor.x > 0) {
+          // if(this.direction == "left" && this.emptyAnchor.x > 0){
+          //     this.emptyAnchor.x -= 1.5;
+          //     this.debugText.x -= 1.5;
+          // }else if(this.direction == "right" && this.emptyAnchor.x < 3600){
+          //     this.emptyAnchor.x += 1.5;
+          //     this.debugText.x+=1.5;
+          // }
+          // if ((this.cursors.left.isDown && this.emptyAnchor.x > 0) ||
+          //     this.firstUpdate == 'left') {
+          //     this.firstUpdate = 'none';
+          //     this.emptyAnchor.x -= 1.5;
+          //     //this.debugText.x-=1.5;
+          // }
+          // else if ((this.cursors.right.isDown && this.emptyAnchor.x < 3600) ||
+          //     this.firstUpdate == 'right') {
+          //     //  if(this.cursors.right.isDown){
+          //     //     this.firstUpdate = 'none';
+          //     // }  
+          //     this.emptyAnchor.x += 1.5;
+          //     //this.debugText.x+=1.5;
+          // }
+          // if(this.cursors.up.isDown && this.emptyAnchor.y > 0){
+          //     this.emptyAnchor.y -=1.5
+          // }else if(this.cursors.down.isDown && this.emptyAnchor.y < 675){
+          //     this.emptyAnchor.y +=1.5
+          // }
+          // if (this.emptyAnchor.x < 600) {
+          //     this.scene.start('sceneB',{from:"sceneC", gunAimY : this.emptyAnchor.y})
+          // }
+          // if(this.emptyAnchor.x > 3000){
+          //     this.scene.start('sceneA',{from:"sceneC", gunAimY : this.emptyAnchor.y});
+          // }
+          if (globalThis.directions.toLeft && this.emptyAnchor.x > 0) {
               this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
           }
-          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
+          else if (globalThis.directions.toRight && this.emptyAnchor.x < 3600) {
               this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
           }
-          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+          if (globalThis.directions.toUp && this.emptyAnchor.y > 0) {
               this.emptyAnchor.y -= 1.5;
           }
-          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+          else if (globalThis.directions.toDown && this.emptyAnchor.y < 675) {
               this.emptyAnchor.y += 1.5;
           }
           if (this.emptyAnchor.x < 600) {
@@ -242964,7 +243129,11 @@ var MyGame = (function (exports) {
               this.scene.start('sceneA', { from: "sceneC", gunAimY: this.emptyAnchor.y });
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+          this.centerZone.setX(this.emptyAnchor.x);
+          this.leftZone.setX(this.emptyAnchor.x - 350);
+          this.rightZone.setX(this.emptyAnchor.x + 600);
+          // this.debugText.setText(
+          //     `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) ;
           // deltaAbsY :${this.deltaAbsY}
           // left color:${this.bimbo}`)
       }
@@ -243110,20 +243279,29 @@ var MyGame = (function (exports) {
           //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
       }
       init(data) {
-          console.log(data);
-          if ('from' in data) {
-              this.prevScene = data.from;
+          if ("from" in data && data.from == "sceneA") {
+              //this.direction = "left";
+              this.anchorX = 600;
+              this.anchorY = data.gunAimY;
+              this.gunAimY = data.gunAimY;
+              this.gunAimX = 600;
           }
           else {
-              this.prevScene = "";
+              this.anchorX = 600;
           }
-          if ('gunAimY' in data) {
-              this.gunAimY = data.gunAimY;
+          if ("gunAimY" in data) {
+              this.anchorY = data.gunAimY;
+          }
+          else {
+              this.anchorY = 100;
           }
       }
       create() {
           globalThis.currentScene = this;
           this.startKey = false;
+          this.leftDir = 0;
+          this.rightDir = 0;
+          this.dirSgn = 0;
           this.sceneObjArr = [objectsArr[5]];
           this.flashesArr = [];
           this.flashCounter = 1;
@@ -243138,10 +243316,36 @@ var MyGame = (function (exports) {
           this.add.image(3360, 415, 'landscapeEnd');
           // золотая монетка - бонус, премия за подбитого слона
           this.goldEl = this.add.image(0, 0, "empty");
-          this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
+          // прицел
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+          this.emptyAnchor.setCollideWorldBounds();
           this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
           this.physicsAnchor.body.setCollideWorldBounds();
           this.cursors = this.input.keyboard.createCursorKeys();
+          this.cursors.right.on('down', (evt) => {
+              globalThis.directions.toRight = true;
+          });
+          this.cursors.right.on('up', (evt) => {
+              globalThis.directions.toRight = false;
+          });
+          this.cursors.left.on('down', (evt) => {
+              globalThis.directions.toLeft = true;
+          });
+          this.cursors.left.on('up', (evt) => {
+              globalThis.directions.toLeft = false;
+          });
+          this.cursors.up.on('down', (evt) => {
+              globalThis.directions.toUp = true;
+          });
+          this.cursors.up.on('up', (evt) => {
+              globalThis.directions.toUp = false;
+          });
+          this.cursors.down.on('down', (evt) => {
+              globalThis.directions.toDown = true;
+          });
+          this.cursors.down.on('up', (evt) => {
+              globalThis.directions.toDown = false;
+          });
           this.cameras.main.startFollow(this.emptyAnchor, true);
           // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
           //     this.sceneObjArr[0].objKey);
@@ -243230,36 +243434,47 @@ var MyGame = (function (exports) {
           //         this.sceneObjArr[0].personArr[0].deltaX, this.sceneObjArr[0].objectY +
           //     this.sceneObjArr[0].personArr[0].deltaY, (sprKey as string));
           // }
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
+          // this.debugText = this.add.text(10,30,"");
+          // this.debugText.setFontSize(64)
           if (this.prevScene == "sceneB") ;
           //this.input.addPointer(2)
-          this.input.on('pointerdown', (pointer) => {
-              if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x) {
-                  this.direction = "left";
-              }
-              else if (pointer.x + this.cameras.main.scrollX > this.physicsAnchor.x) {
-                  this.direction = "right";
-              }
-          });
-          this.input.on('pointermove', (pointer) => {
-              if (pointer.isDown) {
-                  this.physicsAnchor.setY(pointer.y);
-                  console.log(pointer);
-              }
-          });
+          // this.input.on('pointerdown', (pointer) => {
+          //     if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x
+          //     )
+          //     {
+          //         this.direction = "left";
+          //     }
+          //     else if (pointer.x  + this.cameras.main.scrollX > this.physicsAnchor.x
+          //     ) {
+          //         this.direction = "right";
+          //     }
+          // })
+          // this.input.on('pointermove', (pointer) => {
+          //     if(pointer.isDown){
+          //         this.physicsAnchor.setY(pointer.y)
+          //         console.log(pointer);
+          //     }
+          // });
           let sprKey = this.sceneObjArr[0].personArr[0].animKey;
           sprKey = this.anims.get(sprKey).frames[0].textureKey;
           // отладочная инфа для выделения областей где перс прячется
           // и откуда стреляет
-          this.graphics = this.add.graphics();
-          this.graphics.lineStyle(5, 0xFF00FF, 1.0);
-          this.sceneObjArr[0].personArr.forEach((person) => {
-              if ("hiddenArea" in person) {
-                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.hiddenArea.dX, this.sceneObjArr[0].objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h);
-                  this.graphics.strokeRect(this.sceneObjArr[0].objectX + person.activeArea.dX, this.sceneObjArr[0].objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h);
-              }
-          });
+          // this.graphics =  this.add.graphics();
+          // this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+          // this.sceneObjArr[0].personArr.forEach((person) => {
+          //     if ("hiddenArea" in person) {
+          //         this.graphics.strokeRect(
+          //             this.sceneObjArr[0].objectX + person.hiddenArea.dX,
+          //             this.sceneObjArr[0].objectY + person.hiddenArea.dY,
+          //             person.hiddenArea.w, person.hiddenArea.h
+          //         );
+          //         this.graphics.strokeRect(
+          //             this.sceneObjArr[0].objectX + person.activeArea.dX,
+          //             this.sceneObjArr[0].objectY + person.activeArea.dY,
+          //             person.activeArea.w, person.activeArea.h
+          //         );
+          //     }
+          // })
           this.sceneObjArr[0].personArr.forEach((person) => {
               if ("flashesArr" in person) {
                   person.flashesArr.forEach((value) => {
@@ -243272,18 +243487,66 @@ var MyGame = (function (exports) {
           this.fireKey.on("down", (key, event) => {
               this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
           });
-          // for(let i = 0; i<10; i++){
-          //     this.add.image(112 + i*24, 45,'healthPiece');
-          //     this.add.image(530 + i*24,45,'ammoPiece').setAlpha(0.5);
-          //     this.add.image(940 + i*24,45,'moneyPiece').setAlpha(0);
-          //     // this.add.image(108 + i*24, 45,'healthPiece');
-          //     // this.add.image(526 + i*24,45,'ammoPiece');
-          //     // this.add.image(935 + i*24,45,'moneyPiece');
-          // }
-          //this.add.image(600,44,'unionBar');
           this.emptyAnchor.setDepth(1);
           this.emptyAnchor.y = this.gunAimY;
-          this.fxClrMatrix = this.sceneObjArr[0].personArr[0].sprite.preFX.addColorMatrix();
+          //this.fxClrMatrix = this.sceneObjArr[0].personArr[0].sprite.preFX.addColorMatrix();
+          this.centerZone = this.add.zone(600, 335, 200, 670).setInteractive();
+          this.centerZone.on('pointerdown', (pntr) => {
+              //if(pntr.event.type != "touchstart") return;
+              this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+              //this.leftDir = -1;
+          });
+          this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({ draggable: true });
+          this.leftZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              if (pntr.event.touches.length == 1)
+                  this.rightDir = 0;
+              this.leftDir = -1;
+          });
+          this.leftZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.leftDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.rightDir = 0;
+          });
+          this.leftZone.on('drag', (pntr, x, y, z) => {
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+          });
+          this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({ draggable: true });
+          this.rightZone.on('pointerdown', (pntr) => {
+              if (pntr.event.type != "touchstart")
+                  return;
+              this.rightDir = 1;
+              if (pntr.event.touches.length == 1)
+                  this.leftDir = 0;
+              //console.log("rightDir = " +this.rightDir)
+          });
+          this.rightZone.on('pointerup', (pntr) => {
+              if (pntr.event.type != "touchend")
+                  return;
+              this.rightDir = 0;
+              if (pntr.event.touches.length == 0)
+                  this.leftDir = 0;
+              //console.log("rightDir = " +this.rightDir)
+          });
+          this.rightZone.on('drag', (pntr, x, y, z) => {
+              this.emptyAnchor.y += pntr.velocity.y / 5;
+              if (this.emptyAnchor.y + pntr.velocity.y / 5 < 0) {
+                  this.emptyAnchor.y = 0;
+              }
+              else if (this.emptyAnchor.y + pntr.velocity.y / 5 > 675) {
+                  this.emptyAnchor.y = 675;
+              }
+          });
+          //this.add.image(600,44,'unionBar');
           // this.barsContainer = this.add.container(600, 45);
           // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
           // for (let i = 0; i < 10; i++) {
@@ -243304,50 +243567,35 @@ var MyGame = (function (exports) {
           myScoreChecker.drawBars(this);
       }
       update(time, delta) {
-          if (!this.startKey) {
-              // this.sceneObjArr[0].personArr.forEach(person => {
-              //     person.sprite.play(person.animKey)
-              // })
-              this.startKey = true;
-          }
-          if (this.direction == "left" &&
-              this.physicsAnchor.body.velocity.x >= 0) {
-              this.physicsAnchor.setVelocityX(-180);
-          }
-          else if (this.direction == "right" &&
-              this.physicsAnchor.body.velocity.x <= 0) {
-              this.physicsAnchor.setVelocityX(180);
-          }
-          else {
-              this.physicsAnchor.setVelocityX(0);
-          }
-          if (this.direction == "left" && this.emptyAnchor.x > 0) {
+          this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir) * 180);
+          if (this.emptyAnchor.x <= 51)
+              this.leftDir = 0;
+          if (globalThis.directions.toLeft && this.emptyAnchor.x > 0) {
               this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
+              //this.debugText.x -= 1.5;
           }
-          else if (this.direction == "right" && this.emptyAnchor.x < 3600) {
+          else if (globalThis.directions.toRight && this.emptyAnchor.x < 3600) {
               this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
+              //this.debugText.x += 1.5;
           }
-          if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
-              this.emptyAnchor.x -= 1.5;
-              this.debugText.x -= 1.5;
-          }
-          else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
-              this.emptyAnchor.x += 1.5;
-              this.debugText.x += 1.5;
-          }
-          if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+          if (globalThis.directions.toUp && this.emptyAnchor.y > 0) {
               this.emptyAnchor.y -= 1.5;
           }
-          else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+          else if (globalThis.directions.toDown && this.emptyAnchor.y < 675) {
               this.emptyAnchor.y += 1.5;
           }
+          // if (this.emptyAnchor.x > 3000) {
+          //     this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
+          // }
           if (this.emptyAnchor.x < 600) {
-              this.scene.start('sceneA', { from: "sceneD", gunAimY: this.gunAimY });
+              this.scene.start('sceneA', { from: "sceneD", gunAimY: this.emptyAnchor.y });
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+          this.centerZone.setX(this.emptyAnchor.x);
+          this.leftZone.setX(this.emptyAnchor.x - 350);
+          this.rightZone.setX(this.emptyAnchor.x + 600);
+          //  this.debugText.setText(
+          //      `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}` )
       }
       /** игрок стреляет в перса */
       shootToPerson(x, y) {
@@ -243398,8 +243646,7 @@ var MyGame = (function (exports) {
                           duration: 300,
                           onComplete: () => {
                               fireSphereArr[2].destroy();
-                              //if(this.elephShootTL.paused)
-                              //this.elephShootTL.resume();
+                              myScoreChecker.changeAmmo(-5);
                           }
                       });
                   },
@@ -243463,6 +243710,19 @@ var MyGame = (function (exports) {
                               locPerson.state = STATE.EMPTY;
                               locPerson.flashSpriteArr.forEach((spr) => {
                                   spr.setTexture("empty");
+                              });
+                              this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
+                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.tweens.add({
+                                  targets: this.goldEl,
+                                  scale: 0.3,
+                                  x: myScoreChecker.barsContainer.x + 280,
+                                  y: myScoreChecker.barsContainer.y,
+                                  duration: 1000,
+                                  onComplete: () => {
+                                      this.goldEl.setTexture("empty");
+                                      myScoreChecker.changeMoney(10);
+                                  }
                               });
                           }
                       }
@@ -243557,6 +243817,649 @@ var MyGame = (function (exports) {
   //     }
   // }
 
+  class TutorScene extends __webpack_exports__Scene {
+      constructor() {
+          super('tutorScene');
+          this.gunAimY = 350;
+          this.msgTxtObjRu = {
+              tapRight: "На тачскрине жми справа, чтобы двигать прицел вправо.",
+              tapLeft: "На тачскрине жми слева, чтобы двигать прицел влево.",
+              dragAim: "Перетаскивай прицел вверх-вниз.",
+              pushToAim: "Жми на прицел, стреляй ему в ухо, чтобы выманить.",
+              killGang: "Уничтожь бандита и получи награду.",
+              forDesktop: "На десктопе стреляет клавиша 'S', прицел перемещается клавишами-стрелками.",
+              titleMsg: "Управление на десктопе и тачскрине.",
+              skipTutor: "Пропустить."
+          };
+          this.msgTxtObjEn = {
+              tapRight: "On the touchscreen, press on the right to move the gunsight to the right.",
+              tapLeft: "On the touchscreen, press left to move the gunsight to the left.",
+              dragAim: "Drag the gunsight up and down.",
+              pushToAim: "Click on the gunsight, shoot him in the ear to lure him out.",
+              killGang: "Destroy the bandit and get a reward.",
+              forDesktop: "The 'S' key fires on the desktop, the gunsight moves with the arrow keys.",
+              titleMsg: "Control on the desktop and touchscreen.",
+              skipTutor: "&nbspSKIP.&nbsp"
+          };
+          this.msgTxtObj = this.msgTxtObjRu;
+          globalThis.directions = { toRight: false, toLeft: false,
+              toUp: false, toDown: false };
+          //this.contrAngle = 60*Math.PI/180;
+          //0.7071067812 = sqrt(2)/2 = sin(45) = cos(45)
+          //113,137084992 = 160(половина размаха ушей бимбы) * cos(45)
+      }
+      create() {
+          globalThis.currentScene = this;
+          // объект находится и в соседней сцене
+          objectsArr[0].objectX = 2947;
+          objectsArr[0].objectY = 410;
+          //this.sceneObjArr = [objectsArr[0], objectsArr[4]];
+          this.cameras.main.setBounds(0, 0, 3600, 675);
+          this.physics.world.setBounds(0, 0, 3600, 675);
+          this.add.image(600, 608, 'groundL');
+          this.add.image(1800, 608, 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'groundL');
+          this.add.image(600, 273, 'landscapeL');
+          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
+          //this.add.image(2400,273,'landscapeL');
+          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          this.add.image(657, 352, 'tutorBld');
+          this.anims.create({
+              key: 'tutorAnim',
+              frames: [
+                  { key: 'tutFr1' },
+                  { key: 'tutFr2' },
+                  { key: 'tutFr3' },
+                  { key: 'tutFr4' }
+              ],
+              frameRate: 5,
+              repeat: 0
+          });
+          this.tutEl = this.add.sprite(692, 449, 'tutFr1');
+          //this.tutEl.play('tutorAnim');
+          this.add.image(572, 456, 'tutorBox');
+          this.emptyAnchor = this.physics.add.image(600, 150, 'emptyAnchor').setDepth(5);
+          this.cameras.main.startFollow(this.emptyAnchor, true);
+          this.hand = this.add.image(1000, 300, 'hand').setAlpha(0);
+          this.leftHand = this.add.image(700, 300, "hand").setFlipX(true).setAlpha(0);
+          this.flashSpr = this.add.sprite(710, 460, "empty");
+          // золотая монетка - бонус, премия за подбитого слона
+          this.goldEl = this.add.image(0, 0, "empty");
+          this.debugText = this.add.text(10, 30, "");
+          this.debugText.setFontSize(64);
+          myScoreChecker.drawBars(this);
+          this.prepareBubbles();
+          let domStr = `<div id="flexContainer">
+            <div id="msgDiv"><span>` + this.msgTxtObj.titleMsg + `</span></div>
+            <div id="btnDiv"><button><span class="skipTxt">` + this.msgTxtObj.skipTutor +
+              `</span></button></div></div>`;
+          this.domElement = this.add.dom(600, 625, 'div');
+          this.domElement.setHTML(domStr);
+          this.domElement.addListener('click');
+          this.domElement.on('click', (evt) => {
+              let btnDiv = document.getElementById("btnDiv");
+              if (btnDiv.contains(evt.target)) {
+                  this.domElement.removeAllListeners('click');
+                  this.tweens.add({
+                      targets: this.domElement,
+                      y: 800,
+                      duration: 1000,
+                      loop: 0,
+                      onComplete: () => {
+                          this.scene.start("sceneB");
+                      }
+                  });
+              }
+          });
+          this.tutTimeLine = this.add.timeline([
+              {
+                  at: 500,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.bubbleForText, this.txtForBubble],
+                          props: { alpha: { value: 1, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 3500,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.bubbleForText, this.txtForBubble],
+                          props: { alpha: { value: 0, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.bubbleForText.setPosition(992, 112);
+                      this.txtForBubble.setText(this.msgTxtObj.tapRight);
+                      let txtBnd = this.txtForBubble.getBounds();
+                      this.txtForBubble.setPosition(this.bubbleForText.x - txtBnd.width / 2 - 5, this.bubbleForText.y - txtBnd.height / 2 - 5);
+                      this.add.tween({
+                          targets: [this.bubbleForText, this.txtForBubble],
+                          props: { alpha: { value: 1, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.bubbleForText, this.txtForBubble],
+                          props: { alpha: { value: 1, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.add.tween({
+                          targets: this.hand,
+                          props: { alpha: { value: 1, duration: 2000 } }
+                      });
+                  }
+              },
+              {
+                  from: 2100,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.emptyAnchor, this.hand, this.bubbleForText,
+                              this.txtForBubble, this.domElement],
+                          props: {
+                              x: { value: '+=500', duration: 4000 },
+                              //y:{value:300, duration: 1200}
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 4100,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.hand, this.bubbleForText, this.txtForBubble],
+                          props: { alpha: { value: 0, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 600,
+                  run: () => {
+                      this.bubbleForText.setPosition(742, 112);
+                      this.txtForBubble.setText(this.msgTxtObj.tapLeft);
+                      let txtBnd = this.txtForBubble.getBounds();
+                      this.txtForBubble.setPosition(this.bubbleForText.x - txtBnd.width / 2 - 5, this.bubbleForText.y - txtBnd.height / 2 - 5);
+                      this.add.tween({
+                          targets: [this.leftHand, this.txtForBubble, this.bubbleForText],
+                          props: { alpha: { value: 1, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 600,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.emptyAnchor, this.leftHand, this.txtForBubble,
+                              this.bubbleForText, this.domElement],
+                          props: {
+                              x: { value: '-=450', duration: 4000 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 4000,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.txtForBubble, this.bubbleForText],
+                          props: {
+                              alpha: { value: 0, duration: 500 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.txtForBubble, this.bubbleForText],
+                          props: {
+                              alpha: { value: 0, duration: 500 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.hand.setX(1000);
+                      this.bubbleForText.setPosition(942, 112);
+                      this.txtForBubble.setText(this.msgTxtObj.dragAim);
+                      let txtBnd = this.txtForBubble.getBounds();
+                      this.txtForBubble.setPosition(this.bubbleForText.x - txtBnd.width / 2 - 5, this.bubbleForText.y - txtBnd.height / 2 - 5);
+                      this.add.tween({
+                          targets: [this.hand, this.txtForBubble, this.bubbleForText],
+                          props: {
+                              alpha: { value: 1, duration: 400 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 600,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.emptyAnchor, this.hand],
+                          props: {
+                              y: { value: '+=270', duration: 2000 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 2100,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.leftHand, this.hand],
+                          props: {
+                              alpha: { value: 0, duration: 200 },
+                          }
+                      });
+                  }
+              },
+              // убираем предыдущую надпись, выводим надпись "Жми на прицел..."
+              {
+                  from: 300,
+                  run: () => {
+                      this.add.tween({
+                          targets: this.txtForBubble,
+                          props: {
+                              alpha: { value: 0, duration: 200 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.txtForBubble.setText(this.msgTxtObj.pushToAim);
+                      let txtBnd = this.txtForBubble.getBounds();
+                      this.txtForBubble.setPosition(this.bubbleForText.x - txtBnd.width / 2 - 5, this.bubbleForText.y - txtBnd.height / 2 - 5);
+                      this.add.tween({
+                          targets: this.txtForBubble,
+                          props: {
+                              alpha: { value: 1, duration: 300 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.hand.setX(this.emptyAnchor.x).setY(this.emptyAnchor.y).
+                          setDepth(7);
+                      this.add.tween({
+                          targets: this.hand,
+                          props: {
+                              alpha: { value: 1, duration: 200 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.add.tween({
+                          targets: this.hand,
+                          props: {
+                              scale: { value: 0.5, duration: 200 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.add.tween({
+                          targets: this.hand,
+                          props: {
+                              alpha: { value: 0, duration: 200 },
+                          }
+                      });
+                      this.tutEl.play('tutorAnim');
+                  }
+              },
+              // 710, 460   660,460
+              // слон начинает стрельбу
+              {
+                  from: 1000,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.txtForBubble, this.bubbleForText],
+                          props: {
+                              alpha: { value: 0, duration: 500 }
+                          }
+                      });
+                      this.flashSpr.setPosition(710, 460).setTexture("bigFlash");
+                      this.cameras.main.flash(350, 255, 0, 0);
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.flashSpr.setPosition(710, 460).setTexture("empty");
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.flashSpr.setPosition(660, 460).setTexture("bigFlash");
+                      this.cameras.main.flash(350, 255, 0, 0);
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.flashSpr.setTexture("empty");
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.flashSpr.setPosition(710, 460).setTexture("bigFlash");
+                      this.cameras.main.flash(350, 255, 0, 0);
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.flashSpr.setTexture("empty");
+                  }
+              },
+              {
+                  from: 100,
+                  run: () => {
+                      this.txtForBubble.setText(this.msgTxtObj.killGang);
+                      let txtBnd = this.txtForBubble.getBounds();
+                      this.txtForBubble.setPosition(this.bubbleForText.x - txtBnd.width / 2 - 5, this.bubbleForText.y - txtBnd.height / 2 - 5);
+                      this.add.tween({
+                          targets: [this.txtForBubble, this.bubbleForText],
+                          props: { alpha: { value: 1, duration: 500 } }
+                      });
+                      this.flashSpr.setTexture("empty");
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.hand.setX(this.emptyAnchor.x).setY(this.emptyAnchor.y).
+                          setDepth(7);
+                      this.add.tween({
+                          targets: this.hand,
+                          props: {
+                              alpha: { value: 1, duration: 200 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 300,
+                  run: () => {
+                      this.add.tween({
+                          targets: this.hand,
+                          props: {
+                              scale: { value: 0.5, duration: 200 },
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+                  }
+              },
+              {
+                  from: 1500,
+                  run: () => {
+                      this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+                  }
+              },
+              {
+                  from: 1500,
+                  run: () => {
+                      this.add.tween({
+                          targets: [this.txtForBubble, this.bubbleForText, this.tutEl],
+                          props: { alpha: { value: 0, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 500,
+                  run: () => {
+                      this.goldEl.setPosition(680, 460);
+                      this.goldEl.setTexture("goldEl").setDepth(5);
+                      this.tweens.add({
+                          targets: this.goldEl,
+                          scale: 0.3,
+                          x: myScoreChecker.barsContainer.x + 280,
+                          y: myScoreChecker.barsContainer.y,
+                          duration: 1000,
+                          onComplete: () => {
+                              this.goldEl.setTexture("empty");
+                              myScoreChecker.changeMoney(10);
+                          }
+                      });
+                  }
+              },
+              {
+                  from: 1000,
+                  run: () => {
+                      this.bubbleForText.setPosition(600, 112);
+                      this.txtForBubble.setText(this.msgTxtObj.forDesktop);
+                      let txtBnd = this.txtForBubble.getBounds();
+                      this.txtForBubble.setPosition(this.bubbleForText.x - txtBnd.width / 2 - 5, this.bubbleForText.y - txtBnd.height / 2 - 5);
+                      this.add.tween({
+                          targets: [this.bubbleForText, this.txtForBubble],
+                          props: { alpha: { value: 1, duration: 500 } }
+                      });
+                  }
+              },
+              {
+                  from: 2000,
+                  run: () => {
+                      this.domElement.removeAllListeners('click');
+                      this.tweens.add({
+                          targets: this.domElement,
+                          y: 800,
+                          duration: 1000,
+                          loop: 0,
+                          onComplete: () => {
+                              this.scene.start("sceneB");
+                          }
+                      });
+                  }
+              },
+          ]).play();
+      }
+      update(time, delta) {
+          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+      }
+      shootToPerson(x, y) {
+          let fireSphereArr = [];
+          this.add.timeline([
+              {
+                  at: 0,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
+                      this.add.tween({
+                          targets: fireSphereArr[0],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[0].destroy();
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
+                      this.add.tween({
+                          targets: fireSphereArr[1],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[1].destroy();
+                          }
+                      });
+                  },
+              },
+              {
+                  from: 200,
+                  run: () => {
+                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
+                      this.add.tween({
+                          targets: fireSphereArr[2],
+                          alpha: { from: 0, to: 1 },
+                          scale: 0.1,
+                          duration: 300,
+                          onComplete: () => {
+                              fireSphereArr[2].destroy();
+                              myScoreChecker.changeAmmo(-5);
+                              //if(this.elephShootTL.paused)
+                              //this.elephShootTL.resume();
+                          }
+                      });
+                  },
+              },
+              // {
+              //     run: () => {
+              //     this.sceneObjArr.forEach((obj) => {
+              //         if ("personArr" in obj) {
+              //             obj.personArr.forEach((person) => {
+              //             // если перс прячется
+              //             if (person.state == STATE.HIDDEN) {
+              //                 if (new Phaser.Geom.Rectangle(
+              //                     obj.objectX + person.hiddenArea.dX,
+              //                     obj.objectY + person.hiddenArea.dY,
+              //                     person.hiddenArea.w,
+              //                     person.hiddenArea.h
+              //                 ).contains(x, y) ||
+              //                     new Phaser.Geom.Rectangle(
+              //                         obj.objectX + person.hiddenArea.dX,
+              //                         obj.objectY + person.hiddenArea.dY,
+              //                         person.hiddenArea.w,
+              //                         person.hiddenArea.h
+              //                     ).contains(x, y)) {
+              //                         person.state = STATE.SHAKE;
+              //                         this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
+              //                         if (progress === 1) {
+              //                             person.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE,
+              //                                 () => {
+              //                                     person.state = STATE.ACTIVE;
+              //                                     person.shootTimeLine.play();
+              //                                     //this.shootToPlayer(obj.personArr[0]);
+              //                                  });
+              //                                  person.sprite.play(person.animKey);
+              //                         }
+              //                     });
+              //                 }
+              //             } else if (person.state == STATE.ACTIVE) {
+              //                 if (new Phaser.Geom.Rectangle(
+              //                     obj.objectX + person.activeArea.dX,
+              //                     obj.objectY + person.activeArea.dY,
+              //                     person.activeArea.w,
+              //                     person.activeArea.h
+              //                 ).contains(x, y)) 
+              //                     {
+              //                         // this.elephShootTL.pause();
+              //                         // this.brightPerson(obj.personArr[0])
+              //                         locPerson = person;
+              //                         person.shootTimeLine.pause();
+              //                         person.fxClrMatrix.brightness(7)
+              //                         //person.shootTimeLine.play();    
+              //                 }
+              //             }
+              //         },
+              //         )
+              //         }
+              //     })}},
+              // {
+              //     from: 200,
+              //     run: () => {
+              //         locPerson?.fxClrMatrix.reset();
+              //         if(locPerson != undefined){
+              //             locPerson.health -= 50;
+              //             if(locPerson.health > 0){
+              //                  locPerson.shootTimeLine.resume();
+              //             }else{
+              //                 if(locPerson.sprite.texture.key == "an7fr2"){
+              //                     locPerson.sprite.setTexture("doorBld4");
+              //                 }else{
+              //                     locPerson.sprite.setTexture("empty");
+              //                 }
+              //                 locPerson.state = STATE.EMPTY;
+              //                 locPerson.flashSpriteArr.forEach((spr) => {
+              //                     spr.setTexture("empty");
+              //                 })
+              //                 this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
+              //                 this.goldEl.setTexture("goldEl").setDepth(2);
+              //                 this.tweens.add({
+              //                     targets:this.goldEl,
+              //                     scale: 0.3,
+              //                     x: myScoreChecker.barsContainer.x + 280,
+              //                     y: myScoreChecker.barsContainer.y,
+              //                     duration: 1000,
+              //                     onComplete: () => {
+              //                         this.goldEl.setTexture("empty");
+              //                         myScoreChecker.changeMoney(10);
+              //                     }
+              //                 })
+              //             }
+              //         } 
+              //     }
+              // }
+          ]).play();
+      }
+      prepareBubbles() {
+          const bubble = this.add.graphics();
+          // 992,112 w,h = 378,196
+          // bubble = this.add.graphics({x:0, y:0})
+          bubble.fillStyle(0x222222, 0.5);
+          bubble.fillRoundedRect(6, 6, 378, 196, 16);
+          //  Bubble color
+          bubble.fillStyle(0xffffff, 1);
+          //  Bubble outline line style
+          bubble.lineStyle(4, 0x565656, 1);
+          //  Bubble shape and outline
+          bubble.strokeRoundedRect(0, 0, 378, 196, 16);
+          bubble.fillRoundedRect(0, 0, 378, 196, 16);
+          //this.rightTapBubble = 
+          bubble.generateTexture('bubbleForText', 385, 204);
+          bubble.clear();
+          this.bubbleForText = this.add.image(600, 112, "bubbleForText").setAlpha(0);
+          this.txtForBubble = this.add.text(0, 0, this.msgTxtObj.forDesktop, { fontFamily: 'Arial, Roboto', fontStyle: 'bold', fontSize: '30px',
+              color: '#000000', align: 'center', wordWrap: { width: 360 } }).
+              setAlpha(0);
+          let txtBnd = this.txtForBubble.getBounds();
+          this.txtForBubble.setPosition(this.bubbleForText.x - txtBnd.width / 2 - 5, this.bubbleForText.y - txtBnd.height / 2 - 5).setDepth(2);
+      }
+  }
+
   function startGame() {
       const config = {
           type: __webpack_exports__WEBGL,
@@ -243564,17 +244467,20 @@ var MyGame = (function (exports) {
           width: 1200,
           height: 675,
           parent: 'gameContainer',
+          dom: {
+              createContainer: true
+          },
           physics: {
               default: 'arcade',
               arcade: {
-                  debug: true,
+                  debug: false,
               }
           },
           scale: {
               autoCenter: __webpack_exports__Scale.CENTER_HORIZONTALLY,
               mode: __webpack_exports__Scale.FIT
           },
-          scene: [Preloader, SceneC, SceneB, SceneA, SceneD],
+          scene: [Preloader, TutorScene, SceneC, SceneB, SceneA, SceneD],
           //render :render,
       };
       new __webpack_exports__Game(config);

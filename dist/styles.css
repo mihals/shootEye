@@ -1,1 +1,14 @@
 body {background-color: bisque; margin: 0;}
+#flexContainer { display: flex; background-color: #e9a423; align-items: center;
+    padding-top: 10px; padding-bottom: 10px; width: 1200px;}
+#msgDiv {flex-grow: 2; text-align: center; font-family: Arial, Roboto; 
+    font-weight: bold; font-size: 30px;}
+#btnDiv button {margin-right: 20px; border-radius: 15px; background-color: #861229;
+    padding: 10px; }
+#btnDiv {align-content: center;}
+.skipTxt {
+    color: #fafafa;
+    font-family: Arial, Roboto, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+}

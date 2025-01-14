@@ -30,6 +30,7 @@ export class SceneB extends Phaser.Scene
     graphics:Phaser.GameObjects.Graphics;
     //fxClrMatrix:Phaser.FX.ColorMatrix;
 
+    centerZone:Phaser.GameObjects.Zone;
     leftZone:Phaser.GameObjects.Zone;
     rightZone:Phaser.GameObjects.Zone;
     leftDir:number;
@@ -45,7 +46,7 @@ export class SceneB extends Phaser.Scene
 
     init(data){
         if("from" in data && data.from == "sceneC"){
-            //this.direction = "left";
+            this.direction = "left";
             this.anchorX = 2999;
         }else{
             this.anchorX = 600;
@@ -56,8 +57,6 @@ export class SceneB extends Phaser.Scene
         }else{
             this.anchorY = 100; 
         }
-
-        //console.log(myScoreChecker.ammo[0]);
     }
 
     create ()
@@ -97,6 +96,36 @@ export class SceneB extends Phaser.Scene
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        this.cursors.right.on('down', (evt) => {
+            globalThis.directions.toRight = true; 
+        });
+        this.cursors.right.on('up', (evt) => {
+            globalThis.directions.toRight = false; 
+        });
+
+        this.cursors.left.on('down', (evt) => {
+            globalThis.directions.toLeft = true; 
+        });
+        this.cursors.left.on('up', (evt) => {
+            globalThis.directions.toLeft = false; 
+        });
+
+        this.cursors.up.on('down', (evt) => {
+            globalThis.directions.toUp = true; 
+        });
+        this.cursors.up.on('up', (evt) => {
+            globalThis.directions.toUp = false; 
+        });
+
+        this.cursors.down.on('down', (evt) => {
+            globalThis.directions.toDown = true; 
+        });
+        this.cursors.down.on('up', (evt) => {
+            globalThis.directions.toDown = false; 
+        });
+
+        console.log(globalThis.directions.toDown);
+
         // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
         this.cameras.main.startFollow(this.emptyAnchor, true);
 
@@ -134,8 +163,6 @@ export class SceneB extends Phaser.Scene
                             person.deltaX, obj.objectY +
                         person.deltaY, (sprKey as string));
                     }
-                    //}
-                    //person.shoot = () => { };
                     person.shootTimeLine = this.add.timeline([
                         {
                             at: 100,
@@ -177,39 +204,39 @@ export class SceneB extends Phaser.Scene
         this.add.image(1400,440,'wantedStand')
         this.add.image(192,500,'flowerStones')
 
-        this.debugText = this.add.text(10,30,"");
-        this.debugText.setFontSize(64)
+        // this.debugText = this.add.text(10,30,"");
+        // this.debugText.setFontSize(64)
 
         // отладочная инфа для выделения областей где перс прячется
         // и откуда стреляет
-        this.graphics =  this.add.graphics();
-        this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+        // this.graphics =  this.add.graphics();
+        // this.graphics.lineStyle(5, 0xFF00FF, 1.0);
 
-        this.sceneObjArr[0].personArr.forEach((person) => {
-            this.graphics.strokeRect(
-                this.sceneObjArr[0].objectX + person.hiddenArea.dX,
-                this.sceneObjArr[0].objectY + person.hiddenArea.dY,
-                person.hiddenArea.w, person.hiddenArea.h
-            );
-            this.graphics.strokeRect(
-                this.sceneObjArr[0].objectX + person.activeArea.dX,
-                this.sceneObjArr[0].objectY + person.activeArea.dY,
-                person.activeArea.w, person.activeArea.h
-            );
-        })
+        // this.sceneObjArr[0].personArr.forEach((person) => {
+        //     this.graphics.strokeRect(
+        //         this.sceneObjArr[0].objectX + person.hiddenArea.dX,
+        //         this.sceneObjArr[0].objectY + person.hiddenArea.dY,
+        //         person.hiddenArea.w, person.hiddenArea.h
+        //     );
+        //     this.graphics.strokeRect(
+        //         this.sceneObjArr[0].objectX + person.activeArea.dX,
+        //         this.sceneObjArr[0].objectY + person.activeArea.dY,
+        //         person.activeArea.w, person.activeArea.h
+        //     );
+        // })
 
-        this.sceneObjArr[1].personArr.forEach((person) => {
-            this.graphics.strokeRect(
-                this.sceneObjArr[1].objectX + person.hiddenArea.dX,
-                this.sceneObjArr[1].objectY + person.hiddenArea.dY,
-                person.hiddenArea.w, person.hiddenArea.h
-            );
-            this.graphics.strokeRect(
-                this.sceneObjArr[1].objectX + person.activeArea.dX,
-                this.sceneObjArr[1].objectY + person.activeArea.dY,
-                person.activeArea.w, person.activeArea.h
-            );
-        })
+        // this.sceneObjArr[1].personArr.forEach((person) => {
+        //     this.graphics.strokeRect(
+        //         this.sceneObjArr[1].objectX + person.hiddenArea.dX,
+        //         this.sceneObjArr[1].objectY + person.hiddenArea.dY,
+        //         person.hiddenArea.w, person.hiddenArea.h
+        //     );
+        //     this.graphics.strokeRect(
+        //         this.sceneObjArr[1].objectX + person.activeArea.dX,
+        //         this.sceneObjArr[1].objectY + person.activeArea.dY,
+        //         person.activeArea.w, person.activeArea.h
+        //     );
+        // })
 
         this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.fireKey.on("down", (key, event) => {
@@ -219,6 +246,15 @@ export class SceneB extends Phaser.Scene
         this.emptyAnchor.setDepth(1);
 
         let res =this.input.addPointer(1);
+        this.input.dragDistanceThreshold = 32;
+
+        this.centerZone = this.add.zone(600,335,200,670).setInteractive();
+        this.centerZone.on('pointerdown', (pntr) => {
+            //if(pntr.event.type != "touchstart") return;
+
+            this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+            //this.leftDir = -1;
+        });
 
         this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({draggable:true});
         this.leftZone.on('pointerdown', (pntr) => {
@@ -226,7 +262,6 @@ export class SceneB extends Phaser.Scene
 
             if((pntr.event as TouchEvent).touches.length == 1) this.rightDir =0;
             this.leftDir = -1;
-            //console.log("leftDir = " +this.leftDir)
         });
 
         this.leftZone.on('pointerup', (pntr) => {
@@ -234,18 +269,15 @@ export class SceneB extends Phaser.Scene
 
             this.leftDir = 0;
             if((pntr.event as TouchEvent).touches.length == 0) this.rightDir =0;
-            //console.log("leftDir = " +this.leftDir)
         });
 
         this.leftZone.on('drag', (pntr:Phaser.Input.Pointer,x,y,z) => {
-            //console.log("pntr.getDistanceY = " + pntr.getDistanceY());
             this.emptyAnchor.y += pntr.velocity.y/5
             if(this.emptyAnchor.y + pntr.velocity.y/5 < 0){
                 this.emptyAnchor.y = 0;
             }else if(this.emptyAnchor.y + pntr.velocity.y/5 > 675){
                 this.emptyAnchor.y = 675;
             }
-            //console.log("pntr.downY = "+pntr.downY);
         });
 
         
@@ -266,22 +298,7 @@ export class SceneB extends Phaser.Scene
             if((pntr.event as TouchEvent).touches.length == 0) this.leftDir =0;
             //console.log("rightDir = " +this.rightDir)
         });
-
-        // this.input.on('pointerdown', ((pointer: Phaser.Input.Pointer) => {
-
-        //     //console.log(pointer.button);
-
-        //     if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x
-        //     )
-        //     {
-        //         this.direction = "left";
-        //     }
-        //     else if (pointer.x  + this.cameras.main.scrollX > this.physicsAnchor.x
-        //     ) {
-        //         this.direction = "right";
-        //     }
-        // }));
-
+        
         this.rightZone.on('drag', (pntr:Phaser.Input.Pointer,x,y,z) => {
             this.emptyAnchor.y += pntr.velocity.y/5
             if(this.emptyAnchor.y + pntr.velocity.y/5 < 0){
@@ -289,22 +306,9 @@ export class SceneB extends Phaser.Scene
             }else if(this.emptyAnchor.y + pntr.velocity.y/5 > 675){
                 this.emptyAnchor.y = 675;
             }
-            //console.log("pntr.downY = "+pntr.downY);
         });
-
-        // this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
-
-        //     console.log(pointer.button);
-
-        //     if(pointer.isDown){
-        //         this.physicsAnchor.setY(pointer.y)
-        //         console.log('pointerup');
-        //     }
-        // });
-
-
+        
         myScoreChecker.drawBars(this);
-
     }
 
     update(time: number, delta: number): void {
@@ -312,40 +316,52 @@ export class SceneB extends Phaser.Scene
 
         if(this.emptyAnchor.x <= 51) this.leftDir =0;
 
-        if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+        // if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+        //     this.emptyAnchor.x -= 1.5;
+        //     //this.debugText.x -= 1.5;
+        // }
+        // else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+        //     this.emptyAnchor.x += 1.5;
+        //     //this.debugText.x += 1.5;
+        // }
+
+        // if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+        //     this.emptyAnchor.y -= 1.5
+        // } else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+        //     this.emptyAnchor.y += 1.5
+        // }
+
+        // if (this.emptyAnchor.x > 3000) {
+        //     this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
+        // }
+
+        if (globalThis.directions.toLeft && this.emptyAnchor.x > 0) {
             this.emptyAnchor.x -= 1.5;
-            this.debugText.x -= 1.5;
+            //this.debugText.x -= 1.5;
         }
-        else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+        else if (globalThis.directions.toRight && this.emptyAnchor.x < 3600) {
             this.emptyAnchor.x += 1.5;
-            this.debugText.x += 1.5;
+            //this.debugText.x += 1.5;
         }
 
-        if (this.cursors.up.isDown && this.emptyAnchor.y > 0) {
+        if (globalThis.directions.toUp && this.emptyAnchor.y > 0) {
             this.emptyAnchor.y -= 1.5
-        } else if (this.cursors.down.isDown && this.emptyAnchor.y < 675) {
+        } else if (globalThis.directions.toDown && this.emptyAnchor.y < 675) {
             this.emptyAnchor.y += 1.5
         }
-
 
         if (this.emptyAnchor.x > 3000) {
             this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
         }
 
-        //this.barsContainer.setX(this.cameras.main.scrollX + 600);
-
         myScoreChecker.setX(this.cameras.main.scrollX + 600);
 
+        this.centerZone.setX(this.emptyAnchor.x);
         this.leftZone.setX(this.emptyAnchor.x - 350);
         this.rightZone.setX(this.emptyAnchor.x + 600);
-
-        // this.graphics.strokeRect(this.rightZone.x - this.rightZone.width/2, 
-        //     this.rightZone.y - this.rightZone.height/2, this.rightZone.width,
-        //     this.rightZone.height
-        // )
             
-        this.debugText.setText(
-            `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) 
+        // this.debugText.setText(
+        //     `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) 
 // deltaAbsY :${this.deltaAbsY}
 // left color:${this.bimbo}`)
     }
@@ -406,9 +422,6 @@ export class SceneB extends Phaser.Scene
                         duration: 300,
                         onComplete: () => {
                             fireSphereArr[2].destroy();
-                            //this.changeScore("ammo", -5);
-                            //if(this.elephShootTL.paused)
-                                //this.elephShootTL.resume();
                         }
                     })
                 },
@@ -439,7 +452,6 @@ export class SceneB extends Phaser.Scene
                                             () => {
                                                 person.state = STATE.ACTIVE;
                                                 person.shootTimeLine.play();
-                                                //this.shootToPlayer(obj.personArr[0]);
                                              });
                                              person.sprite.play(person.animKey);
                                     }
@@ -453,12 +465,9 @@ export class SceneB extends Phaser.Scene
                                 person.activeArea.h
                             ).contains(x, y)) 
                                 {
-                                    // this.elephShootTL.pause();
-                                    // this.brightPerson(obj.personArr[0])
                                     locPerson = person;
                                     person.shootTimeLine.pause();
                                     person.fxClrMatrix.brightness(7)
-                                    //person.shootTimeLine.play();    
                             }
                         }
                     },
@@ -495,38 +504,8 @@ export class SceneB extends Phaser.Scene
                             })
                         }
                     } 
-                    //locPerson?.shootTimeLine.resume();
                 }
             }
         ]).play();
     }
-
-    // changeScore(scoreArr:string, value:number){
-    //     let base:number;
-    //     let ind = score[scoreArr].findIndex((el) => {return el==0});
-    //     if(ind == 0) return;
-    //     switch(scoreArr){
-    //         case "health":
-    //             base=0;
-    //             break;
-    //         case "ammo":
-    //             base=1;
-    //             break;
-    //         case "money":
-    //             base=2;
-    //             break;
-    //     }
-    //     if(ind == -1){
-    //         score[scoreArr][9]-=5;
-    //         let img = this.barsContainer.getAt(1+base*10) as Phaser.GameObjects.Image;
-    //         console.log(img.x);
-    //         (this.barsContainer.getAt(10+base*10) as Phaser.GameObjects.Image).
-    //             setAlpha(score[scoreArr][9]/10);
-    //     }else {
-    //         score[scoreArr][ind-1]-=5;
-    //         (this.barsContainer.getAt(ind+base*10) as Phaser.GameObjects.Image).
-    //             setAlpha(score[scoreArr][ind-1]/10);
-    //     }
-    //     //console.log(ind);
-    // }
 }

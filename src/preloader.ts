@@ -372,7 +372,7 @@ export class Preloader extends Phaser.Scene
         this.load.image('healthPiece','assets/healthPiece.png');
         this.load.image('moneyPiece','assets/moneyPiece.png');
         this.load.image('ammoPiece','assets/ammoPiece.png');
-        this.load.image('goldEl','assets/goldEl.png')
+        this.load.image('goldEl','assets/goldEl.png');
 
         // this.load.image(this.object1Map.objKey, this.object1Map.fileName + ".png");
         // this.load.image(this.object2Map.objKey, this.object2Map.fileName + ".png");
@@ -396,6 +396,14 @@ export class Preloader extends Phaser.Scene
         // this.load.image('an7fr0','assets/an7fr0.png');
         // this.load.image('an7fr1','assets/an7fr1.png');
         // this.load.image('an7fr2','assets/an7fr2.png');
+
+        this.load.image('hand','assets/hand.png');
+        this.load.image('tutorBld','assets/tutorBld.png');
+        this.load.image('tutorBox','assets/tutorBox.png');
+        this.load.image('tutFr1','assets/tutFr1.png');
+        this.load.image('tutFr2','assets/tutFr2.png');
+        this.load.image('tutFr3','assets/tutFr3.png');
+        this.load.image('tutFr4','assets/tutFr4.png');
     }
 
     create(){
@@ -404,7 +412,7 @@ export class Preloader extends Phaser.Scene
             this.anims.create(anim);
         })
         myScoreChecker = new ScoreChecker();
-        this.scene.start('sceneB',{from:"preloader"});
+        this.scene.start('tutorScene',{from:"preloader"});
     }
 }
 

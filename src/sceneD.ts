@@ -14,7 +14,7 @@ export class SceneD extends Phaser.Scene
     fireKey:Phaser.Input.Keyboard.Key;
 
     startKey:boolean;
-    emptyAnchor:Phaser.GameObjects.Image;
+    emptyAnchor:Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     cursors:Phaser.Types.Input.Keyboard.CursorKeys;
 
     /** массив объектов конфигураций для анимаций, используемых
@@ -29,11 +29,22 @@ export class SceneD extends Phaser.Scene
     prevScene:string;
     direction:string;
     graphics: Phaser.GameObjects.Graphics;
-    gunAimY: number;
+    centerZone:Phaser.GameObjects.Zone;
+    leftZone:Phaser.GameObjects.Zone;
+    rightZone:Phaser.GameObjects.Zone;
+    leftDir:number;
+    rightDir:number;
+    dirSgn:number;
+
+    gunAimX:number;
+    gunAimY:number;
+
     flashesArr:Array<Phaser.GameObjects.Sprite>;
     flashCounter:number;
     physicsAnchor: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
-    fxClrMatrix:Phaser.FX.ColorMatrix;
+    anchorX:number;
+    anchorY:number;
+    //fxClrMatrix:Phaser.FX.ColorMatrix;
 
     barsContainer:Phaser.GameObjects.Container;
     goldEl:Phaser.GameObjects.Image;
@@ -50,12 +61,20 @@ export class SceneD extends Phaser.Scene
     }  
 
     init(data){
-        console.log(data)
-        if('from' in data){
-            this.prevScene = data.from;
-        }else{this.prevScene = ""}
-        if('gunAimY' in data){
+        if("from" in data && data.from == "sceneA"){
+            //this.direction = "left";
+            this.anchorX = 600;
+            this.anchorY = data.gunAimY;
             this.gunAimY = data.gunAimY;
+            this.gunAimX = 600;
+        }else{
+            this.anchorX = 600;
+        }
+
+        if("gunAimY" in data){
+            this.anchorY = data.gunAimY;
+        }else{
+            this.anchorY = 100; 
         }
     }
 
@@ -63,6 +82,9 @@ export class SceneD extends Phaser.Scene
     {
         globalThis.currentScene = this;
         this.startKey = false;
+        this.leftDir = 0;
+        this.rightDir = 0;
+        this.dirSgn = 0;
 
         this.sceneObjArr = [objectsArr[5]];
         this.flashesArr=[];
@@ -84,11 +106,41 @@ export class SceneD extends Phaser.Scene
         // золотая монетка - бонус, премия за подбитого слона
         this.goldEl = this.add.image(0,0, "empty")
 
-        this.emptyAnchor = this.add.image(600, 100, 'emptyAnchor');
+        // прицел
+        this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+        this.emptyAnchor.setCollideWorldBounds();
+
         this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
         this.physicsAnchor.body.setCollideWorldBounds();
 
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursors.right.on('down', (evt) => {
+            globalThis.directions.toRight = true; 
+        });
+        this.cursors.right.on('up', (evt) => {
+            globalThis.directions.toRight = false; 
+        });
+
+        this.cursors.left.on('down', (evt) => {
+            globalThis.directions.toLeft = true; 
+        });
+        this.cursors.left.on('up', (evt) => {
+            globalThis.directions.toLeft = false; 
+        });
+
+        this.cursors.up.on('down', (evt) => {
+            globalThis.directions.toUp = true; 
+        });
+        this.cursors.up.on('up', (evt) => {
+            globalThis.directions.toUp = false; 
+        });
+
+        this.cursors.down.on('down', (evt) => {
+            globalThis.directions.toDown = true; 
+        });
+        this.cursors.down.on('up', (evt) => {
+            globalThis.directions.toDown = false; 
+        });
 
         this.cameras.main.startFollow(this.emptyAnchor, true);
         
@@ -185,8 +237,8 @@ export class SceneD extends Phaser.Scene
             
         // }
         
-        this.debugText = this.add.text(10,30,"");
-        this.debugText.setFontSize(64)
+        // this.debugText = this.add.text(10,30,"");
+        // this.debugText.setFontSize(64)
         
         if(this.prevScene == "sceneB"){
             //this.emptyAnchor.setX(3000)
@@ -194,48 +246,48 @@ export class SceneD extends Phaser.Scene
 
         //this.input.addPointer(2)
 
-        this.input.on('pointerdown', (pointer) => {
+        // this.input.on('pointerdown', (pointer) => {
             
-            if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x
-            )
-            {
-                this.direction = "left";
-            }
-            else if (pointer.x  + this.cameras.main.scrollX > this.physicsAnchor.x
-            ) {
-                this.direction = "right";
-            }
-        })
+        //     if (pointer.x + this.cameras.main.scrollX < this.physicsAnchor.x
+        //     )
+        //     {
+        //         this.direction = "left";
+        //     }
+        //     else if (pointer.x  + this.cameras.main.scrollX > this.physicsAnchor.x
+        //     ) {
+        //         this.direction = "right";
+        //     }
+        // })
 
-        this.input.on('pointermove', (pointer) => {
-            if(pointer.isDown){
-                this.physicsAnchor.setY(pointer.y)
-                console.log(pointer);
-            }
-        });
+        // this.input.on('pointermove', (pointer) => {
+        //     if(pointer.isDown){
+        //         this.physicsAnchor.setY(pointer.y)
+        //         console.log(pointer);
+        //     }
+        // });
 
         let sprKey: string = this.sceneObjArr[0].personArr[0].animKey;
         sprKey = this.anims.get(sprKey).frames[0].textureKey;
 
         // отладочная инфа для выделения областей где перс прячется
         // и откуда стреляет
-        this.graphics =  this.add.graphics();
-        this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+        // this.graphics =  this.add.graphics();
+        // this.graphics.lineStyle(5, 0xFF00FF, 1.0);
 
-        this.sceneObjArr[0].personArr.forEach((person) => {
-            if ("hiddenArea" in person) {
-                this.graphics.strokeRect(
-                    this.sceneObjArr[0].objectX + person.hiddenArea.dX,
-                    this.sceneObjArr[0].objectY + person.hiddenArea.dY,
-                    person.hiddenArea.w, person.hiddenArea.h
-                );
-                this.graphics.strokeRect(
-                    this.sceneObjArr[0].objectX + person.activeArea.dX,
-                    this.sceneObjArr[0].objectY + person.activeArea.dY,
-                    person.activeArea.w, person.activeArea.h
-                );
-            }
-        })
+        // this.sceneObjArr[0].personArr.forEach((person) => {
+        //     if ("hiddenArea" in person) {
+        //         this.graphics.strokeRect(
+        //             this.sceneObjArr[0].objectX + person.hiddenArea.dX,
+        //             this.sceneObjArr[0].objectY + person.hiddenArea.dY,
+        //             person.hiddenArea.w, person.hiddenArea.h
+        //         );
+        //         this.graphics.strokeRect(
+        //             this.sceneObjArr[0].objectX + person.activeArea.dX,
+        //             this.sceneObjArr[0].objectY + person.activeArea.dY,
+        //             person.activeArea.w, person.activeArea.h
+        //         );
+        //     }
+        // })
 
         this.sceneObjArr[0].personArr.forEach((person) => {
             if ("flashesArr" in person) {
@@ -253,19 +305,73 @@ export class SceneD extends Phaser.Scene
             this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
         })
         
-        // for(let i = 0; i<10; i++){
-        //     this.add.image(112 + i*24, 45,'healthPiece');
-        //     this.add.image(530 + i*24,45,'ammoPiece').setAlpha(0.5);
-        //     this.add.image(940 + i*24,45,'moneyPiece').setAlpha(0);
-        //     // this.add.image(108 + i*24, 45,'healthPiece');
-        //     // this.add.image(526 + i*24,45,'ammoPiece');
-        //     // this.add.image(935 + i*24,45,'moneyPiece');
-        // }
-        
-        //this.add.image(600,44,'unionBar');
         this.emptyAnchor.setDepth(1);
         this.emptyAnchor.y = this.gunAimY;
-        this.fxClrMatrix = this.sceneObjArr[0].personArr[0].sprite.preFX.addColorMatrix();
+        //this.fxClrMatrix = this.sceneObjArr[0].personArr[0].sprite.preFX.addColorMatrix();
+
+        this.centerZone = this.add.zone(600,335,200,670).setInteractive();
+        this.centerZone.on('pointerdown', (pntr) => {
+            //if(pntr.event.type != "touchstart") return;
+
+            this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+            //this.leftDir = -1;
+        });
+
+        this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({draggable:true});
+        this.leftZone.on('pointerdown', (pntr) => {
+            if(pntr.event.type != "touchstart") return;
+
+            if((pntr.event as TouchEvent).touches.length == 1) this.rightDir =0;
+            this.leftDir = -1;
+        });
+
+        this.leftZone.on('pointerup', (pntr) => {
+            if(pntr.event.type != "touchend") return;
+
+            this.leftDir = 0;
+            if((pntr.event as TouchEvent).touches.length == 0) this.rightDir =0;
+        });
+
+        this.leftZone.on('drag', (pntr:Phaser.Input.Pointer,x,y,z) => {
+            this.emptyAnchor.y += pntr.velocity.y/5
+            if(this.emptyAnchor.y + pntr.velocity.y/5 < 0){
+                this.emptyAnchor.y = 0;
+            }else if(this.emptyAnchor.y + pntr.velocity.y/5 > 675){
+                this.emptyAnchor.y = 675;
+            }
+        });
+
+        
+
+        this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({draggable:true});
+        this.rightZone.on('pointerdown', (pntr) => {
+            if(pntr.event.type != "touchstart") return;
+
+            this.rightDir = 1;
+            if((pntr.event as TouchEvent).touches.length == 1) this.leftDir =0;
+            //console.log("rightDir = " +this.rightDir)
+        });
+
+        this.rightZone.on('pointerup', (pntr) => {
+            if(pntr.event.type != "touchend") return;
+
+            this.rightDir = 0;
+            if((pntr.event as TouchEvent).touches.length == 0) this.leftDir =0;
+            //console.log("rightDir = " +this.rightDir)
+        });
+        
+        this.rightZone.on('drag', (pntr:Phaser.Input.Pointer,x,y,z) => {
+            this.emptyAnchor.y += pntr.velocity.y/5
+            if(this.emptyAnchor.y + pntr.velocity.y/5 < 0){
+                this.emptyAnchor.y = 0;
+            }else if(this.emptyAnchor.y + pntr.velocity.y/5 > 675){
+                this.emptyAnchor.y = 675;
+            }
+        });
+        
+        
+        //this.add.image(600,44,'unionBar');
+        
 
         // this.barsContainer = this.add.container(600, 45);
         // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
@@ -292,54 +398,40 @@ export class SceneD extends Phaser.Scene
 
     update(time: number, delta: number): void {
         
-        if(!this.startKey){
-            // this.sceneObjArr[0].personArr.forEach(person => {
-            //     person.sprite.play(person.animKey)
-            // })
-            this.startKey = true;
-        }
+        this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir)*180);
 
-        if(this.direction == "left" && 
-            this.physicsAnchor.body.velocity.x >= 0){
-                this.physicsAnchor.setVelocityX(-180);
-            } else if(this.direction == "right" && 
-            this.physicsAnchor.body.velocity.x <= 0){
-                this.physicsAnchor.setVelocityX(180);
-            } else {this.physicsAnchor.setVelocityX(0);}
+        if(this.emptyAnchor.x <= 51) this.leftDir =0;
 
-        if(this.direction == "left" && this.emptyAnchor.x > 0){
+        if (globalThis.directions.toLeft && this.emptyAnchor.x > 0) {
             this.emptyAnchor.x -= 1.5;
-            this.debugText.x -= 1.5;
-        }else if(this.direction == "right" && this.emptyAnchor.x < 3600){
+            //this.debugText.x -= 1.5;
+        }
+        else if (globalThis.directions.toRight && this.emptyAnchor.x < 3600) {
             this.emptyAnchor.x += 1.5;
-            this.debugText.x += 1.5;
+            //this.debugText.x += 1.5;
         }
 
-        if (this.cursors.left.isDown && this.emptyAnchor.x > 0)
-            {
-                this.emptyAnchor.x -= 1.5;
-                this.debugText.x -= 1.5;
-            }
-            else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600)
-            {
-                this.emptyAnchor.x += 1.5;
-                this.debugText.x += 1.5;
-            }
+        if (globalThis.directions.toUp && this.emptyAnchor.y > 0) {
+            this.emptyAnchor.y -= 1.5
+        } else if (globalThis.directions.toDown && this.emptyAnchor.y < 675) {
+            this.emptyAnchor.y += 1.5
+        }
 
-            if(this.cursors.up.isDown && this.emptyAnchor.y > 0){
-                this.emptyAnchor.y -=1.5
-            }else if(this.cursors.down.isDown && this.emptyAnchor.y < 675){
-                this.emptyAnchor.y +=1.5
-            }
+        // if (this.emptyAnchor.x > 3000) {
+        //     this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
+        // }
+        if (this.emptyAnchor.x < 600) {
+            this.scene.start('sceneA', { from: "sceneD", gunAimY: this.emptyAnchor.y });
+        }
 
-            if(this.emptyAnchor.x < 600){
-                this.scene.start('sceneA',{from:"sceneD", gunAimY: this.gunAimY});
-            }
+        myScoreChecker.setX(this.cameras.main.scrollX + 600);
 
-            myScoreChecker.setX(this.cameras.main.scrollX + 600);
+        this.centerZone.setX(this.emptyAnchor.x);
+        this.leftZone.setX(this.emptyAnchor.x - 350);
+        this.rightZone.setX(this.emptyAnchor.x + 600);
             
-         this.debugText.setText(
-             `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}` )
+        //  this.debugText.setText(
+        //      `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}` )
     }
 
     /** игрок стреляет в перса */
@@ -397,8 +489,7 @@ export class SceneD extends Phaser.Scene
                         duration: 300,
                         onComplete: () => {
                             fireSphereArr[2].destroy();
-                            //if(this.elephShootTL.paused)
-                                //this.elephShootTL.resume();
+                            myScoreChecker.changeAmmo(-5);
                         }
                     })
                 },
@@ -476,6 +567,19 @@ export class SceneD extends Phaser.Scene
                             locPerson.state = STATE.EMPTY;
                             locPerson.flashSpriteArr.forEach((spr) => {
                                 spr.setTexture("empty");
+                            })
+                            this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
+                            this.goldEl.setTexture("goldEl").setDepth(2);
+                            this.tweens.add({
+                                targets:this.goldEl,
+                                scale: 0.3,
+                                x: myScoreChecker.barsContainer.x + 280,
+                                y: myScoreChecker.barsContainer.y,
+                                duration: 1000,
+                                onComplete: () => {
+                                    this.goldEl.setTexture("empty");
+                                    myScoreChecker.changeMoney(10);
+                                }
                             })
                         }
                     }

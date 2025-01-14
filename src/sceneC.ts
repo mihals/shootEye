@@ -11,7 +11,7 @@ export class SceneC extends Phaser.Scene
     infoText:Phaser.GameObjects.Text;
     //object2Map:ObjectMap;
     startKey:boolean;
-    emptyAnchor:Phaser.GameObjects.Image;
+    emptyAnchor:Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     cursors:Phaser.Types.Input.Keyboard.CursorKeys;
     direction:string;
     fireKey:Phaser.Input.Keyboard.Key;
@@ -27,8 +27,18 @@ export class SceneC extends Phaser.Scene
     barsContainer:Phaser.GameObjects.Container;
 
     debugText:Phaser.GameObjects.Text;
+    anchorX:number;
+    anchorY:number;
     graphics: Phaser.GameObjects.Graphics;
+
+    centerZone:Phaser.GameObjects.Zone;
+    leftZone:Phaser.GameObjects.Zone;
+    rightZone:Phaser.GameObjects.Zone;
+    dirSgn:number;
+    leftDir:number;
+    rightDir:number;
     goldEl:Phaser.GameObjects.Image;
+    firstUpdate:string;
 
     constructor ()
     {
@@ -43,12 +53,19 @@ export class SceneC extends Phaser.Scene
     init(data) {
         if ("from" in data) {
             if (data.from == "sceneB") {
+                this.firstUpdate = "right";
+                this.anchorX = 600;
+                this.anchorY = data.gunAimY;
                 this.gunAimY = data.gunAimY;
                 this.gunAimX = 600;
+                this.direction = "right";
             }
             if (data.from == "sceneA") {
                 this.gunAimY = data.gunAimY;
                 this.gunAimX = 2999;
+                this.anchorX = 2999;
+                this.anchorY = data.gunAimY;
+                this.direction = "left";
             }
         }
     }
@@ -57,6 +74,9 @@ export class SceneC extends Phaser.Scene
     {
         globalThis.currentScene = this;
         this.startKey = false;
+        this.leftDir = 0;
+        this.rightDir = 0;
+        this.dirSgn = 0;
 
         // объект находится и в соседней сцене
         objectsArr[0].objectX = 2947;
@@ -77,9 +97,52 @@ export class SceneC extends Phaser.Scene
         //this.add.image(2400,273,'landscapeL');
         this.add.image(3000,273,'landscapeL')//.setFlipX(true);
 
-        this.emptyAnchor = this.add.image(this.gunAimX, this.gunAimY, 'emptyAnchor');
+        this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.cursors.right.on('down', (evt) => {
+            globalThis.directions.toRight = true; 
+        });
+        this.cursors.right.on('up', (evt) => {
+            globalThis.directions.toRight = false; 
+        });
+
+        this.cursors.left.on('down', (evt) => {
+            globalThis.directions.toLeft = true; 
+        });
+        this.cursors.left.on('up', (evt) => {
+            globalThis.directions.toLeft = false; 
+        });
+
+        this.cursors.up.on('down', (evt) => {
+            globalThis.directions.toUp = true; 
+        });
+        this.cursors.up.on('up', (evt) => {
+            globalThis.directions.toUp = false; 
+        });
+
+        this.cursors.down.on('down', (evt) => {
+            globalThis.directions.toDown = true; 
+        });
+        this.cursors.down.on('up', (evt) => {
+            globalThis.directions.toDown = false; 
+        });
+
+        // let k = this.input.keyboard.addKeys('RIGHT, LEFT');
+        // k.LEFT.once('down', (key,event) => {
+        //     console.log(k);
+        // })
+        
+        // this.cursors.right.isUp = false;
+        // this.cursors.right.isDown = true;
+
+        // if(this.direction == "right") this.cursors.right.isDown = true;
+        // else if(this.direction == "left") this.cursors.left.isDown = true;
+
+        // this.cursors.right.once('up', (evt,key) => {
+        //     this.firstUpdate = 'none';
+        // })
 
         // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
         this.cameras.main.startFollow(this.emptyAnchor, true);
@@ -172,40 +235,40 @@ export class SceneC extends Phaser.Scene
         this.add.image(-100,320,'building3');
         
         // золотая монетка - бонус, премия за подбитого слона
-        this.goldEl = this.add.image(0,0, "image");
+        this.goldEl = this.add.image(0,0, "empty");
 
 
-        this.input.on('pointerdown', (pointer) => {
+        // this.input.on('pointerdown', (pointer) => {
             
-            if (pointer.x < this.cameras.main.scrollX)
-            {
-                this.direction = "left";
-            }
-            else if (pointer.x > this.cameras.main.scrollX) {
-                this.direction = "right";
-            }
-        })
+        //     if (pointer.x < this.cameras.main.scrollX)
+        //     {
+        //         this.direction = "left";
+        //     }
+        //     else if (pointer.x > this.cameras.main.scrollX) {
+        //         this.direction = "right";
+        //     }
+        // })
 
-        this.debugText = this.add.text(10,30,"");
-        this.debugText.setFontSize(64)
+        // this.debugText = this.add.text(10,30,"");
+        // this.debugText.setFontSize(64)
 
         // отладочная инфа для выделения областей где перс прячется
         // и откуда стреляет
-        this.graphics =  this.add.graphics();
-        this.graphics.lineStyle(5, 0xFF00FF, 1.0);
+        // this.graphics =  this.add.graphics();
+        // this.graphics.lineStyle(5, 0xFF00FF, 1.0);
 
-        this.sceneObjArr[1].personArr.forEach((person) => {
-            this.graphics.strokeRect(
-                this.sceneObjArr[1].objectX + person.hiddenArea.dX,
-                this.sceneObjArr[1].objectY + person.hiddenArea.dY,
-                person.hiddenArea.w, person.hiddenArea.h
-            );
-            this.graphics.strokeRect(
-                this.sceneObjArr[1].objectX + person.activeArea.dX,
-                this.sceneObjArr[1].objectY + person.activeArea.dY,
-                person.activeArea.w, person.activeArea.h
-            );
-        })
+        // this.sceneObjArr[1].personArr.forEach((person) => {
+        //     this.graphics.strokeRect(
+        //         this.sceneObjArr[1].objectX + person.hiddenArea.dX,
+        //         this.sceneObjArr[1].objectY + person.hiddenArea.dY,
+        //         person.hiddenArea.w, person.hiddenArea.h
+        //     );
+        //     this.graphics.strokeRect(
+        //         this.sceneObjArr[1].objectX + person.activeArea.dX,
+        //         this.sceneObjArr[1].objectY + person.activeArea.dY,
+        //         person.activeArea.w, person.activeArea.h
+        //     );
+        // })
 
         this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.fireKey.on("down", (key, event) => {
@@ -213,53 +276,125 @@ export class SceneC extends Phaser.Scene
         })
 
         this.emptyAnchor.setDepth(1);
-        this.emptyAnchor.y = this.gunAimY;
 
-        // this.barsContainer = this.add.container(600, 45);
-        // this.barsContainer.addAt(this.add.image(0, -1, 'unionBar'), 0);
+        let res =this.input.addPointer(1);
 
-        // for (let i = 0; i < 10; i++) {
-        //     this.barsContainer.addAt(this.add.image(-488 + i * 24, 0, 'healthPiece'). 
-        //         setAlpha(score.health[i]/10), i + 1);
-        // }
-        // for (let i = 0; i < 10; i++) {
-        //     this.barsContainer.addAt(this.add.image(-70 + i * 24, 0, 'ammoPiece').
-        //         setAlpha(score.ammo[i]/10), i + 11);
-        // }
-        // for (let i = 0; i < 10; i++) {
-        //     this.barsContainer.addAt(this.add.image(340 + i * 24, 0, 'moneyPiece').
-        //         setAlpha(score.money[i]/10), i + 21);
-        // }
+        this.centerZone = this.add.zone(600,335,200,670).setInteractive();
+        this.centerZone.on('pointerdown', (pntr) => {
+            //if(pntr.event.type != "touchstart") return;
+
+            this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
+            //this.leftDir = -1;
+        });
+        this.input.dragDistanceThreshold = 32;
+
+        this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({draggable:true});
+        this.leftZone.on('pointerdown', (pntr) => {
+            if(pntr.event.type != "touchstart") return;
+
+            if((pntr.event as TouchEvent).touches.length == 1) this.rightDir =0;
+            this.leftDir = -1;
+        });
+
+        this.leftZone.on('pointerup', (pntr) => {
+            if(pntr.event.type != "touchend") return;
+
+            this.leftDir = 0;
+            if((pntr.event as TouchEvent).touches.length == 0) this.rightDir =0;
+        });
+
+        this.leftZone.on('drag', (pntr:Phaser.Input.Pointer,x,y,z) => {
+            this.emptyAnchor.y += pntr.velocity.y/5
+            if(this.emptyAnchor.y + pntr.velocity.y/5 < 0){
+                this.emptyAnchor.y = 0;
+            }else if(this.emptyAnchor.y + pntr.velocity.y/5 > 675){
+                this.emptyAnchor.y = 675;
+            }
+        });
+
+        this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({draggable:true});
+        this.rightZone.on('pointerdown', (pntr) => {
+            if(pntr.event.type != "touchstart") return;
+
+            this.rightDir = 1;
+            if((pntr.event as TouchEvent).touches.length == 1) this.leftDir =0;
+        });
+
+        this.rightZone.on('pointerup', (pntr) => {
+            if(pntr.event.type != "touchend") return;
+
+            this.rightDir = 0;
+            if((pntr.event as TouchEvent).touches.length == 0) this.leftDir =0;
+        });
+
+        this.rightZone.on('drag', (pntr:Phaser.Input.Pointer,x,y,z) => {
+            this.emptyAnchor.y += pntr.velocity.y/5
+            if(this.emptyAnchor.y + pntr.velocity.y/5 < 0){
+                this.emptyAnchor.y = 0;
+            }else if(this.emptyAnchor.y + pntr.velocity.y/5 > 675){
+                this.emptyAnchor.y = 675;
+            }
+        });
 
         myScoreChecker.drawBars(this);
     }
 
     update(time: number, delta: number): void {
+        this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir)*180);
+
+        //if(this.emptyAnchor.x <= 51) this.leftDir =0;
+
         if(!this.startKey){
             this.startKey = true;
         }
 
-        if(this.direction == "left" && this.emptyAnchor.x > 0){
-            this.emptyAnchor.x -= 1.5;
-            this.debugText.x -= 1.5;
-        }else if(this.direction == "right" && this.emptyAnchor.x < 3600){
-            this.emptyAnchor.x += 1.5;
-            this.debugText.x+=1.5;
-        }
+        // if(this.direction == "left" && this.emptyAnchor.x > 0){
+        //     this.emptyAnchor.x -= 1.5;
+        //     this.debugText.x -= 1.5;
+        // }else if(this.direction == "right" && this.emptyAnchor.x < 3600){
+        //     this.emptyAnchor.x += 1.5;
+        //     this.debugText.x+=1.5;
+        // }
         
-        if (this.cursors.left.isDown && this.emptyAnchor.x > 0) {
+        // if ((this.cursors.left.isDown && this.emptyAnchor.x > 0) ||
+        //     this.firstUpdate == 'left') {
+        //     this.firstUpdate = 'none';
+        //     this.emptyAnchor.x -= 1.5;
+        //     //this.debugText.x-=1.5;
+        // }
+        // else if ((this.cursors.right.isDown && this.emptyAnchor.x < 3600) ||
+        //     this.firstUpdate == 'right') {
+        //     //  if(this.cursors.right.isDown){
+        //     //     this.firstUpdate = 'none';
+        //     // }  
+        //     this.emptyAnchor.x += 1.5;
+        //     //this.debugText.x+=1.5;
+        // }
 
+        // if(this.cursors.up.isDown && this.emptyAnchor.y > 0){
+        //     this.emptyAnchor.y -=1.5
+        // }else if(this.cursors.down.isDown && this.emptyAnchor.y < 675){
+        //     this.emptyAnchor.y +=1.5
+        // }
+
+        // if (this.emptyAnchor.x < 600) {
+        //     this.scene.start('sceneB',{from:"sceneC", gunAimY : this.emptyAnchor.y})
+        // }
+
+        // if(this.emptyAnchor.x > 3000){
+        //     this.scene.start('sceneA',{from:"sceneC", gunAimY : this.emptyAnchor.y});
+        // }
+
+        if (globalThis.directions.toLeft && this.emptyAnchor.x > 0) {
             this.emptyAnchor.x -= 1.5;
-            this.debugText.x-=1.5;
         }
-        else if (this.cursors.right.isDown && this.emptyAnchor.x < 3600) {
+        else if (globalThis.directions.toRight && this.emptyAnchor.x < 3600) {
             this.emptyAnchor.x += 1.5;
-            this.debugText.x+=1.5;
         }
 
-        if(this.cursors.up.isDown && this.emptyAnchor.y > 0){
+        if(globalThis.directions.toUp && this.emptyAnchor.y > 0){
             this.emptyAnchor.y -=1.5
-        }else if(this.cursors.down.isDown && this.emptyAnchor.y < 675){
+        }else if(globalThis.directions.toDown && this.emptyAnchor.y < 675){
             this.emptyAnchor.y +=1.5
         }
 
@@ -272,9 +407,13 @@ export class SceneC extends Phaser.Scene
         }
 
         myScoreChecker.setX(this.cameras.main.scrollX + 600);
+        this.centerZone.setX(this.emptyAnchor.x);
+
+        this.leftZone.setX(this.emptyAnchor.x - 350);
+        this.rightZone.setX(this.emptyAnchor.x + 600);
             
-        this.debugText.setText(
-            `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) ;
+        // this.debugText.setText(
+        //     `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) ;
 // deltaAbsY :${this.deltaAbsY}
 // left color:${this.bimbo}`)
     }
