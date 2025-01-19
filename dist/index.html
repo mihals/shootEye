@@ -12,8 +12,25 @@
       <div id="msgDiv"><span>Управление на десктопе и тачскрине.</span></div>
       <div id="btnDiv"><button><span class="skipTxt">Пропустить</span></button></div>
     </div> -->
+
+
+    <!-- <div id="uiContainer">
+      <div id="modalWnd">
+        <div id ="yellowRect">
+          <p id="msgP">У вас закончились патроны. Игра Закончена!</p>
+        </div>
+        <div id="buttonsCont">
+          <div><button id="tutorBtn"><span id="tutorSpan">Обучалка</span></button></div>
+          <div><button id="retryBtn"><span id="retrySpan">Повторить</span></button></div>
+        </div>
+      </div>
+    </div> -->
     <script>
-      MyGame.startGame()
+      if (typeof (YaGames) !== "undefined") {
+        MyGame.initApp(YaGames);
+      } else {
+        MyGame.initApp(null);
+      }
     </script>
   </body>
 </html>

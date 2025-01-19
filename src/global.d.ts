@@ -1,7 +1,3 @@
-// import { lvlNames } from "./enums";
-// import { GameState } from "./enums";
-// import { LvlState } from "./enums";
-// import { UIBlocks } from "./uiblocks";
 import * as Phaser from "phaser";
 declare global{
      var gYsdk;
@@ -19,11 +15,19 @@ declare global{
      var directions:MotionDir;
 
      var currentScene:Phaser.Scene;
-     
           
      var currentSceneName:string;
      var myResizeObserver : ResizeObserver;
 
-     
+     type Achievments = {
+          numAttempts:number,
+          numKilledGangs:number,
+          numFindedGangs?:number
+     }
+
+     var plrAchievments:Achievments;
+
+     /** живучесть слона */
+     var elStrength:number;
 }
 export {}

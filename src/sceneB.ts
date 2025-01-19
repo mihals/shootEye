@@ -5,6 +5,10 @@ import { objectsArr } from './preloader';
 import { STATE } from './preloader';
 //import { score } from './preloader';
 import { myScoreChecker } from './preloader';
+import { recoverData } from './preloader';
+import { myModalWnd } from './preloader';
+import type { domElContent } from './preloader';
+import { ModalWndMode } from './preloader';
 
 
 export class SceneB extends Phaser.Scene
@@ -21,7 +25,7 @@ export class SceneB extends Phaser.Scene
     /** массив объектов конфигураций для анимаций, используемых
      * для данной сцены */
     sceneObjArr:Array<ObjectMap>
-    physicsAnchor: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+    //physicsAnchor: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     anchorX:number;
     anchorY:number;
 
@@ -91,8 +95,8 @@ export class SceneB extends Phaser.Scene
         this.emptyAnchor.setCollideWorldBounds();
 
         // физическое тело - красный шар
-        this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
-        this.physicsAnchor.body.setCollideWorldBounds();
+        //this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
+        //this.physicsAnchor.body.setCollideWorldBounds();
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -171,6 +175,28 @@ export class SceneB extends Phaser.Scene
                                 person.flashSpriteArr[1].setTexture("bigFlash");
                                 this.cameras.main.flash(350, 255, 0, 0);
                                 myScoreChecker.changeHealth(-10);
+                                if(myScoreChecker.health[0] <= 0){
+                                    let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                    let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                    dom.setHTML(content.htmlContent);
+                                    dom.addListener('click');
+                                    dom.on('click', (evt) => {
+                                        let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                        let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                    
+                                        if(retryBtnDiv.contains(evt.target))
+                                        {
+                                            dom.removeAllListeners('click');
+                                            recoverData();
+                                            this.scene.start("sceneB");
+                                        }else if(tutorBtnDiv.contains(evt.target)){
+                                            dom.removeAllListeners('click');
+                                            recoverData();
+                                            this.scene.start("tutorScene");
+                                        }
+                                    });
+                                    this.scene.pause();
+                                }
                             },
                         },
                         {
@@ -351,6 +377,11 @@ export class SceneB extends Phaser.Scene
         }
 
         if (this.emptyAnchor.x > 3000) {
+            this.sceneObjArr.forEach((obj) => {
+                obj.personArr.forEach((person) => {
+                    if(person.state != STATE.EMPTY) person.state = STATE.HIDDEN;
+                })
+            })
             this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
         }
 
@@ -385,7 +416,28 @@ export class SceneB extends Phaser.Scene
                         onComplete: () => {
                             fireSphereArr[0].destroy();
                             myScoreChecker.changeAmmo(-5);
-                            //this.changeScore("ammo", -5);
+                            if(myScoreChecker.ammo[0] <= 0){
+                                let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.AMMO);
+                                let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                dom.setHTML(content.htmlContent);
+                                dom.addListener('click');
+                                dom.on('click', (evt) => {
+                                    let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                    let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                    
+                                    if(retryBtnDiv.contains(evt.target))
+                                    {
+                                        dom.removeAllListeners('click');
+                                        recoverData();
+                                        this.scene.start("sceneB");
+                                    }else if(tutorBtnDiv.contains(evt.target)){
+                                        dom.removeAllListeners('click');
+                                        recoverData();
+                                        this.scene.start("tutorScene");
+                                    }
+                                });
+                                this.scene.pause();
+                            }
                         }
                     })
                 },
@@ -480,7 +532,7 @@ export class SceneB extends Phaser.Scene
                 run: () => {
                     locPerson?.fxClrMatrix.reset();
                     if(locPerson != undefined){
-                        locPerson.health -= 50;
+                        locPerson.health -= globalThis.elStrength;
                         if(locPerson.health > 0){
                              locPerson.shootTimeLine.resume();
                         }else{

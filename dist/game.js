@@ -241558,7 +241558,13 @@ var MyGame = (function (exports) {
       STATE[STATE["ACTIVE"] = 3] = "ACTIVE";
       STATE[STATE["APPIARENCE"] = 4] = "APPIARENCE";
   })(STATE || (STATE = {}));
-  const objectsArr = [
+  var ModalWndMode;
+  (function (ModalWndMode) {
+      ModalWndMode[ModalWndMode["AMMO"] = 0] = "AMMO";
+      ModalWndMode[ModalWndMode["HEALTH"] = 1] = "HEALTH";
+      ModalWndMode[ModalWndMode["WIN"] = 2] = "WIN";
+  })(ModalWndMode || (ModalWndMode = {}));
+  let objectsArr = [
       //object1Map = 
       {
           fileName: 'assets/building0',
@@ -241658,14 +241664,14 @@ var MyGame = (function (exports) {
                   deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN, health: 100,
                   hiddenArea: { dX: 398, dY: 24, w: 32, h: 61 },
                   activeArea: { dX: 400, dY: 35, w: 178, h: 195 },
-                  flashesArr: [{ dx: 442, dy: 150 }]
+                  flashesArr: [{ dx: 442, dy: 150 }, { dx: 247, dy: 126 }]
               },
-              {
-                  deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN, health: 100,
-                  hiddenArea: { dX: 238, dY: 19, w: 34, h: 66 },
-                  activeArea: { dX: 134, dY: -12, w: 134, h: 242 },
-                  flashesArr: [{ dx: 247, dy: 126 }]
-              }
+              // {
+              //     deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,health:100,
+              //     hiddenArea: { dX: 238, dY: 19, w: 34, h: 66 },
+              //     activeArea: { dX: 134, dY: -12, w: 134, h: 242 },
+              //     flashesArr:[{dx:247, dy:126}]
+              // }
           ]
       }
   ];
@@ -241890,13 +241896,16 @@ var MyGame = (function (exports) {
               this.anims.create(anim);
           });
           myScoreChecker = new ScoreChecker();
-          this.scene.start('tutorScene', { from: "preloader" });
+          myModalWnd = new ModalWnd();
+          addLoading('isGameAtlas', 1);
+          //this.scene.start('sceneD',{from:"preloader"});
+          //this.scene.start('sceneD');
       }
   }
   class ScoreChecker {
       constructor() {
           this.health = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
-          this.ammo = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+          this.ammo = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
           this.money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       }
       /** отрисовывает ресурсы в сцене */
@@ -241947,12 +241956,12 @@ var MyGame = (function (exports) {
               //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
               //console.log(img.x);
               this.barsContainer.getAt(20).
-                  setAlpha(this.ammo[9] / 10);
+                  setAlpha(this.ammo[9] / 20);
           }
           else {
               this.ammo[ind - 1] -= 5;
               this.barsContainer.getAt(ind + 10).
-                  setAlpha(this.ammo[ind - 1] / 10);
+                  setAlpha(this.ammo[ind - 1] / 20);
           }
       }
       changeMoney(delta) {
@@ -241965,6 +241974,221 @@ var MyGame = (function (exports) {
       }
   }
   let myScoreChecker;
+  class ModalWnd {
+      constructor() {
+      }
+      getModalWnd(mode) {
+          let ammoHtmlRu = `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">У вас закончились патроны. Игра Закончена!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">Обучалка</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Повторить</span></button></div>
+                </div>
+            </div>
+        </div>`;
+          let ammoHtmlEn = `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">You're out of ammo. The Game Is Over!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">&nbspTutor&nbsp</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Try again</span></button></div>
+                </div>
+            </div>
+        </div>`;
+          let healthHtmlRu = `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">У вас закончилась жизнь. Игра Закончена!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">Обучалка</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Повторить</span></button></div>
+                </div>
+            </div>
+        </div>`;
+          let healthHtmlEn = `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">Your health is over. The Game Is Over!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">&nbspTutor&nbsp</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Try again</span></button></div>
+                </div>
+            </div>
+        </div>`;
+          let content;
+          switch (mode) {
+              case ModalWndMode.AMMO:
+                  content = globalThis.lang == "ru" ? ammoHtmlRu : ammoHtmlEn;
+                  return { htmlContent: content, styleContent: "" };
+              case ModalWndMode.HEALTH:
+                  content = globalThis.lang == "ru" ? healthHtmlRu : healthHtmlEn;
+                  return { htmlContent: content, styleContent: "" };
+          }
+          // return{htmlContent:
+          // `<div id="uiContainer">
+          //     <div id="modalWnd">
+          //         <div id ="yellowRect">
+          //             <p id="msgP">У вас закончились патроны. Игра Закончена!</p>
+          //         </div>
+          //         <div id="buttonsCont">
+          //             <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">Обучалка</span></button></div>
+          //             <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Повторить</span></button></div>
+          //         </div>
+          //     </div>
+          // </div>`,
+          // styleContent:""
+          // `#uiContainer { width: 1200px; height: 625px; }
+          // #modalWnd { position: absolute; display: flex; flex-direction: column; align-items: center;
+          //     justify-content: space-between;
+          //     align-content: space-between; width: 536px; height: 418px; left: 362px; top: 148px; 
+          //     border-radius: 10px;  background-color: rgba(0, 0, 0, 0.8);}
+          // #yellowRect { width: 500px; height: 172px; margin-top: 44px; border-radius: 10px;
+          //     border: 3px solid white; border-width: 3px; background-color: #fbedd2;}
+          // #buttonsCont { width: 536px; margin-bottom: 30px; display: flex; flex-direction: row;
+          //     justify-content: space-around;}
+          // #tutorBtn {border-radius: 15px; background-color: #f8b927; padding: 10px;}
+          // #retryBtn {border-radius: 15px; background-color: #861229; padding: 10px;}
+          // #tutorSpan {
+          //     color: #fafafa;
+          //     font-family: Arial, Roboto, Helvetica, sans-serif;
+          //     font-weight: bold;
+          //     font-size: 30px;
+          // }
+          // #retrySpan {
+          //     color: #fafafa;
+          //     font-family: Arial, Roboto, Helvetica, sans-serif;
+          //     font-weight: bold;
+          //     font-size: 30px;
+          // }
+          // #msgP {
+          //     text-align: center;
+          //     color: #861229;
+          //     font-family: Arial, Roboto, Helvetica, sans-serif;
+          //     font-weight: bold;
+          //     font-size: 30px;
+          // }`
+      }
+  }
+  let myModalWnd;
+  function recoverData() {
+      objectsArr = [
+          //object1Map = 
+          {
+              fileName: 'assets/building0',
+              objKey: 'building0',
+              objectX: 547,
+              objectY: 410,
+              personArr: [{
+                      deltaX: -359, deltaY: 77, animKey: "elAnim0", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: -336, dY: 28, w: 42, h: 55 },
+                      activeArea: { dX: -420, dY: 30, w: 117, h: 113 },
+                      flashesArr: [{ dx: -379, dy: 90 }, { dx: -340, dy: 90 }]
+                  },
+                  {
+                      deltaX: -23, deltaY: -151, animKey: "elAnim1", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: -86, dY: -84, w: 38, h: 36 },
+                      activeArea: { dX: -67, dY: -255, w: 86, h: 116 },
+                      flashesArr: [{ dx: -39, dy: -194 }, { dx: -9, dy: -196 }]
+                  },
+                  {
+                      deltaX: 493, deltaY: 78, animKey: "elAnim2", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: 379, dY: 22, w: 48, h: 74 },
+                      activeArea: { dX: 396, dY: 12, w: 227, h: 141 },
+                      flashesArr: [{ dx: 503, dy: 105 }]
+                  } //1075,445
+              ]
+          },
+          //object2Map = 
+          {
+              fileName: 'assets/building1',
+              objKey: 'building1',
+              objectX: 1869,
+              objectY: 410,
+              personArr: [{
+                      deltaX: -50, deltaY: 86, animKey: "elAnim3", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: 0, dY: 60, w: 22, h: 40 },
+                      activeArea: { dX: -126, dY: 54, w: 76, h: 76 },
+                      flashesArr: [{ dx: -100, dy: 90 }, { dx: -72, dy: 90 }]
+                  },
+                  {
+                      deltaX: 463, deltaY: 35, animKey: "elAnim4", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: 313, dY: -34, w: 40, h: 60 },
+                      activeArea: { dX: 433, dY: 10, w: 130, h: 122 },
+                      flashesArr: [{ dx: 484, dy: 74 }, { dx: 520, dy: 74 }]
+                      //1075,445
+                  }
+              ]
+          },
+          //object3Map = 
+          {
+              fileName: 'assets/building2',
+              objKey: 'building2',
+              objectX: 794,
+              objectY: 368,
+              personArr: [{
+                      deltaX: 46, deltaY: 92, animKey: "elAnim5", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: 133, dY: 66, w: 46, h: 50 },
+                      activeArea: { dX: -89, dY: 43, w: 160, h: 116 },
+                      flashesArr: [{ dx: -48, dy: 105 }, { dx: 33, dy: 98 }]
+                  }
+              ],
+          },
+          //object4Map = 
+          {
+              fileName: 'assets/building3',
+              objKey: 'building3',
+              objectX: 2300,
+              objectY: 320,
+              personArr: [{
+                      deltaX: 9, deltaY: -62, animKey: "elAnim6", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: -6, dY: -187, w: 34, h: 58 },
+                      activeArea: { dX: -71, dY: -95, w: 143, h: 167 },
+                      flashesArr: [{ dx: -22, dy: -5 }, { dx: 27, dy: -5 }]
+                  },
+              ]
+          },
+          //object5Map = 
+          {
+              fileName: 'assets/building4',
+              objKey: 'building4',
+              objectX: 1350,
+              objectY: 320,
+              personArr: [{
+                      deltaX: -4, deltaY: 86, animKey: "elAnim7", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: 55, dY: 55, w: 58, h: 40 },
+                      activeArea: { dX: -75, dY: 23, w: 132, h: 230 },
+                      flashesArr: [{ dx: -22, dy: 168 }]
+                  }
+              ]
+          },
+          //object6Map = 
+          {
+              fileName: 'assets/building7',
+              objKey: 'building7',
+              objectX: 1090,
+              objectY: 358,
+              personArr: [{
+                      deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN, health: 100,
+                      hiddenArea: { dX: 398, dY: 24, w: 32, h: 61 },
+                      activeArea: { dX: 400, dY: 35, w: 178, h: 195 },
+                      flashesArr: [{ dx: 442, dy: 150 }, { dx: 247, dy: 126 }]
+                  },
+              ]
+          }
+      ];
+      myScoreChecker.health = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+      myScoreChecker.ammo = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
+      myScoreChecker.money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      globalThis.directions = { toRight: false, toLeft: false,
+          toUp: false, toDown: false };
+  }
 
   class SceneA extends __webpack_exports__Scene {
       constructor() {
@@ -242079,6 +242303,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
+                                  if (myScoreChecker.health[0] <= 0) {
+                                      let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                      let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                      dom.setHTML(content.htmlContent);
+                                      dom.addListener('click');
+                                      dom.on('click', (evt) => {
+                                          let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                          let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          if (retryBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("sceneB");
+                                          }
+                                          else if (tutorBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("tutorScene");
+                                          }
+                                      });
+                                      this.scene.pause();
+                                  }
                               },
                           },
                           {
@@ -242089,6 +242334,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("bigFlash");
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
+                                      if (myScoreChecker.health[0] <= 0) {
+                                          let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                          let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                          dom.setHTML(content.htmlContent);
+                                          dom.addListener('click');
+                                          dom.on('click', (evt) => {
+                                              let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                              let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                              if (retryBtnDiv.contains(evt.target)) {
+                                                  dom.removeAllListeners('click');
+                                                  recoverData();
+                                                  this.scene.start("sceneB");
+                                              }
+                                              else if (tutorBtnDiv.contains(evt.target)) {
+                                                  dom.removeAllListeners('click');
+                                                  recoverData();
+                                                  this.scene.start("tutorScene");
+                                              }
+                                          });
+                                          this.scene.pause();
+                                      }
                                   }
                               }
                           },
@@ -242101,6 +242367,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
+                                  if (myScoreChecker.health[0] <= 0) {
+                                      let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                      let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                      dom.setHTML(content.htmlContent);
+                                      dom.addListener('click');
+                                      dom.on('click', (evt) => {
+                                          let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                          let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          if (retryBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("sceneB");
+                                          }
+                                          else if (tutorBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("tutorScene");
+                                          }
+                                      });
+                                      this.scene.pause();
+                                  }
                               }
                           },
                           {
@@ -242258,9 +242545,21 @@ var MyGame = (function (exports) {
               this.emptyAnchor.y += 1.5;
           }
           if (this.emptyAnchor.x > 3000) {
+              this.sceneObjArr.forEach((obj) => {
+                  obj.personArr.forEach((person) => {
+                      if (person.state != STATE.EMPTY)
+                          person.state = STATE.HIDDEN;
+                  });
+              });
               this.scene.start('sceneD', { from: "sceneA", gunAimY: this.emptyAnchor.y });
           }
           if (this.emptyAnchor.x < 600) {
+              this.sceneObjArr.forEach((obj) => {
+                  obj.personArr.forEach((person) => {
+                      if (person.state != STATE.EMPTY)
+                          person.state = STATE.HIDDEN;
+                  });
+              });
               this.scene.start('sceneC', { from: "sceneA", gunAimY: this.emptyAnchor.y });
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
@@ -242320,8 +242619,28 @@ var MyGame = (function (exports) {
                           duration: 300,
                           onComplete: () => {
                               fireSphereArr[2].destroy();
-                              //if(this.elephShootTL.paused)
-                              //this.elephShootTL.resume();
+                              myScoreChecker.changeAmmo(-5);
+                              if (myScoreChecker.ammo[0] <= 0) {
+                                  let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
+                                  let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                  dom.setHTML(content.htmlContent);
+                                  dom.addListener('click');
+                                  dom.on('click', (evt) => {
+                                      let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                      let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      if (retryBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("sceneB");
+                                      }
+                                      else if (tutorBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("tutorScene");
+                                      }
+                                  });
+                                  this.scene.pause();
+                              }
                           }
                       });
                   },
@@ -242376,7 +242695,7 @@ var MyGame = (function (exports) {
                   run: () => {
                       locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
                       if (locPerson != undefined) {
-                          locPerson.health -= 50;
+                          locPerson.health -= globalThis.elStrength;
                           if (locPerson.health > 0) {
                               locPerson.shootTimeLine.resume();
                           }
@@ -242450,8 +242769,8 @@ var MyGame = (function (exports) {
           this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
           this.emptyAnchor.setCollideWorldBounds();
           // физическое тело - красный шар
-          this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
-          this.physicsAnchor.body.setCollideWorldBounds();
+          //this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
+          //this.physicsAnchor.body.setCollideWorldBounds();
           this.cursors = this.input.keyboard.createCursorKeys();
           this.cursors.right.on('down', (evt) => {
               globalThis.directions.toRight = true;
@@ -242521,6 +242840,27 @@ var MyGame = (function (exports) {
                                   person.flashSpriteArr[1].setTexture("bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   myScoreChecker.changeHealth(-10);
+                                  if (myScoreChecker.health[0] <= 0) {
+                                      let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                      let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                      dom.setHTML(content.htmlContent);
+                                      dom.addListener('click');
+                                      dom.on('click', (evt) => {
+                                          let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                          let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          if (retryBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("sceneB");
+                                          }
+                                          else if (tutorBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("tutorScene");
+                                          }
+                                      });
+                                      this.scene.pause();
+                                  }
                               },
                           },
                           {
@@ -242681,6 +243021,12 @@ var MyGame = (function (exports) {
               this.emptyAnchor.y += 1.5;
           }
           if (this.emptyAnchor.x > 3000) {
+              this.sceneObjArr.forEach((obj) => {
+                  obj.personArr.forEach((person) => {
+                      if (person.state != STATE.EMPTY)
+                          person.state = STATE.HIDDEN;
+                  });
+              });
               this.scene.start('sceneC', { from: "sceneB", gunAimY: this.emptyAnchor.y });
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
@@ -242709,7 +243055,27 @@ var MyGame = (function (exports) {
                           onComplete: () => {
                               fireSphereArr[0].destroy();
                               myScoreChecker.changeAmmo(-5);
-                              //this.changeScore("ammo", -5);
+                              if (myScoreChecker.ammo[0] <= 0) {
+                                  let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
+                                  let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                  dom.setHTML(content.htmlContent);
+                                  dom.addListener('click');
+                                  dom.on('click', (evt) => {
+                                      let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                      let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      if (retryBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("sceneB");
+                                      }
+                                      else if (tutorBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("tutorScene");
+                                      }
+                                  });
+                                  this.scene.pause();
+                              }
                           }
                       });
                   },
@@ -242784,7 +243150,7 @@ var MyGame = (function (exports) {
                   run: () => {
                       locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
                       if (locPerson != undefined) {
-                          locPerson.health -= 50;
+                          locPerson.health -= globalThis.elStrength;
                           if (locPerson.health > 0) {
                               locPerson.shootTimeLine.resume();
                           }
@@ -242940,6 +243306,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
+                                  if (myScoreChecker.health[0] <= 0) {
+                                      let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                      let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                      dom.setHTML(content.htmlContent);
+                                      dom.addListener('click');
+                                      dom.on('click', (evt) => {
+                                          let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                          let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          if (retryBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("sceneB");
+                                          }
+                                          else if (tutorBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("tutorScene");
+                                          }
+                                      });
+                                      this.scene.pause();
+                                  }
                               },
                           },
                           {
@@ -242950,6 +243337,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("bigFlash");
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
+                                      if (myScoreChecker.health[0] <= 0) {
+                                          let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                          let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                          dom.setHTML(content.htmlContent);
+                                          dom.addListener('click');
+                                          dom.on('click', (evt) => {
+                                              let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                              let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                              if (retryBtnDiv.contains(evt.target)) {
+                                                  dom.removeAllListeners('click');
+                                                  recoverData();
+                                                  this.scene.start("sceneB");
+                                              }
+                                              else if (tutorBtnDiv.contains(evt.target)) {
+                                                  dom.removeAllListeners('click');
+                                                  recoverData();
+                                                  this.scene.start("tutorScene");
+                                              }
+                                          });
+                                          this.scene.pause();
+                                      }
                                   }
                               }
                           },
@@ -242962,6 +243370,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
+                                  if (myScoreChecker.health[0] <= 0) {
+                                      let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                      let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                      dom.setHTML(content.htmlContent);
+                                      dom.addListener('click');
+                                      dom.on('click', (evt) => {
+                                          let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                          let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          if (retryBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("sceneB");
+                                          }
+                                          else if (tutorBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("tutorScene");
+                                          }
+                                      });
+                                      this.scene.pause();
+                                  }
                               }
                           },
                           {
@@ -243123,9 +243552,21 @@ var MyGame = (function (exports) {
               this.emptyAnchor.y += 1.5;
           }
           if (this.emptyAnchor.x < 600) {
+              this.sceneObjArr.forEach((obj) => {
+                  obj.personArr.forEach((person) => {
+                      if (person.state != STATE.EMPTY)
+                          person.state = STATE.HIDDEN;
+                  });
+              });
               this.scene.start('sceneB', { from: "sceneC", gunAimY: this.emptyAnchor.y });
           }
           if (this.emptyAnchor.x > 3000) {
+              this.sceneObjArr.forEach((obj) => {
+                  obj.personArr.forEach((person) => {
+                      if (person.state != STATE.EMPTY)
+                          person.state = STATE.HIDDEN;
+                  });
+              });
               this.scene.start('sceneA', { from: "sceneC", gunAimY: this.emptyAnchor.y });
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
@@ -243186,8 +243627,27 @@ var MyGame = (function (exports) {
                           onComplete: () => {
                               fireSphereArr[2].destroy();
                               myScoreChecker.changeAmmo(-5);
-                              //if(this.elephShootTL.paused)
-                              //this.elephShootTL.resume();
+                              if (myScoreChecker.ammo[0] <= 0) {
+                                  let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
+                                  let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                  dom.setHTML(content.htmlContent);
+                                  dom.addListener('click');
+                                  dom.on('click', (evt) => {
+                                      let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                      let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      if (retryBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("sceneB");
+                                      }
+                                      else if (tutorBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("tutorScene");
+                                      }
+                                  });
+                                  this.scene.pause();
+                              }
                           }
                       });
                   },
@@ -243234,7 +243694,7 @@ var MyGame = (function (exports) {
                   run: () => {
                       locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
                       if (locPerson != undefined) {
-                          locPerson.health -= 50;
+                          locPerson.health -= globalThis.elStrength;
                           if (locPerson.health > 0) {
                               locPerson.shootTimeLine.resume();
                           }
@@ -243270,6 +243730,10 @@ var MyGame = (function (exports) {
       }
   }
 
+  // type domElContent = {
+  //     htmlContent:string,
+  //     styleContent:string
+  // }
   class SceneD extends __webpack_exports__Scene {
       constructor() {
           super('sceneD');
@@ -243307,9 +243771,9 @@ var MyGame = (function (exports) {
           this.flashCounter = 1;
           this.cameras.main.setBounds(0, 0, 3600, 675);
           this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL').setFlipX(true);
-          this.add.image(1800, 608, 'groundL');
-          this.add.image(3000, 608, 'groundL').setFlipX(true);
+          this.add.image(600, 608, 'groundL');
+          this.add.image(1800, 608, 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'groundL');
           this.add.image(600, 273, 'landscapeL');
           this.add.image(1800, 273, 'landscapeL').setFlipX(true);
           this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
@@ -243319,8 +243783,8 @@ var MyGame = (function (exports) {
           // прицел
           this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
           this.emptyAnchor.setCollideWorldBounds();
-          this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
-          this.physicsAnchor.body.setCollideWorldBounds();
+          //this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
+          //this.physicsAnchor.body.setCollideWorldBounds();
           this.cursors = this.input.keyboard.createCursorKeys();
           this.cursors.right.on('down', (evt) => {
               globalThis.directions.toRight = true;
@@ -243388,6 +243852,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
+                                  if (myScoreChecker.health[0] <= 0) {
+                                      let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                      let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                      dom.setHTML(content.htmlContent);
+                                      dom.addListener('click');
+                                      dom.on('click', (evt) => {
+                                          let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                          let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          if (retryBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("sceneB");
+                                          }
+                                          else if (tutorBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("tutorScene");
+                                          }
+                                      });
+                                      this.scene.pause();
+                                  }
                               },
                           },
                           {
@@ -243398,6 +243883,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("bigFlash");
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
+                                      if (myScoreChecker.health[0] <= 0) {
+                                          let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                          let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                          dom.setHTML(content.htmlContent);
+                                          dom.addListener('click');
+                                          dom.on('click', (evt) => {
+                                              let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                              let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                              if (retryBtnDiv.contains(evt.target)) {
+                                                  dom.removeAllListeners('click');
+                                                  recoverData();
+                                                  this.scene.start("sceneB");
+                                              }
+                                              else if (tutorBtnDiv.contains(evt.target)) {
+                                                  dom.removeAllListeners('click');
+                                                  recoverData();
+                                                  this.scene.start("tutorScene");
+                                              }
+                                          });
+                                          this.scene.pause();
+                                      }
                                   }
                               }
                           },
@@ -243410,6 +243916,27 @@ var MyGame = (function (exports) {
                                       person.flashSpriteArr[1].setTexture("empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
+                                  if (myScoreChecker.health[0] <= 0) {
+                                      let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                      let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                      dom.setHTML(content.htmlContent);
+                                      dom.addListener('click');
+                                      dom.on('click', (evt) => {
+                                          let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                          let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          if (retryBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("sceneB");
+                                          }
+                                          else if (tutorBtnDiv.contains(evt.target)) {
+                                              dom.removeAllListeners('click');
+                                              recoverData();
+                                              this.scene.start("tutorScene");
+                                          }
+                                      });
+                                      this.scene.pause();
+                                  }
                               }
                           },
                           {
@@ -243588,6 +244115,12 @@ var MyGame = (function (exports) {
           //     this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
           // }
           if (this.emptyAnchor.x < 600) {
+              this.sceneObjArr.forEach((obj) => {
+                  obj.personArr.forEach((person) => {
+                      if (person.state != STATE.EMPTY)
+                          person.state = STATE.HIDDEN;
+                  });
+              });
               this.scene.start('sceneA', { from: "sceneD", gunAimY: this.emptyAnchor.y });
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
@@ -243647,6 +244180,27 @@ var MyGame = (function (exports) {
                           onComplete: () => {
                               fireSphereArr[2].destroy();
                               myScoreChecker.changeAmmo(-5);
+                              if (myScoreChecker.ammo[0] <= 0) {
+                                  let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
+                                  let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                  dom.setHTML(content.htmlContent);
+                                  dom.addListener('click');
+                                  dom.on('click', (evt) => {
+                                      let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                      let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      if (retryBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("sceneB");
+                                      }
+                                      else if (tutorBtnDiv.contains(evt.target)) {
+                                          dom.removeAllListeners('click');
+                                          recoverData();
+                                          this.scene.start("tutorScene");
+                                      }
+                                  });
+                                  this.scene.pause();
+                              }
                           }
                       });
                   },
@@ -243659,7 +244213,9 @@ var MyGame = (function (exports) {
                                   // если перс прячется
                                   if (person.state == STATE.HIDDEN) {
                                       if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y) ||
-                                          new __webpack_exports__Geom.Rectangle(obj.objectX + person.hiddenArea.dX, obj.objectY + person.hiddenArea.dY, person.hiddenArea.w, person.hiddenArea.h).contains(x, y)) {
+                                          new __webpack_exports__Geom.Rectangle(
+                                          //hiddenArea: { dX: 238, dY: 19, w: 34, h: 66 },
+                                          obj.objectX + 238, obj.objectY + 19, 34, 66).contains(x, y)) {
                                           person.state = STATE.SHAKE;
                                           this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
                                               if (progress === 1) {
@@ -243674,15 +244230,9 @@ var MyGame = (function (exports) {
                                       }
                                   }
                                   else if (person.state == STATE.ACTIVE) {
-                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.activeArea.dX, obj.objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h).contains(x, y)) 
-                                      // ||
-                                      // new Phaser.Geom.Rectangle(
-                                      //     obj.objectX + obj.personArr[1].activeArea.dX,
-                                      //     obj.objectY + obj.personArr[1].activeArea.dY,
-                                      //     obj.personArr[1].activeArea.w,
-                                      //     obj.personArr[1].activeArea.h
-                                      // ).contains(x, y)) 
-                                      {
+                                      if (new __webpack_exports__Geom.Rectangle(obj.objectX + person.activeArea.dX, obj.objectY + person.activeArea.dY, person.activeArea.w, person.activeArea.h).contains(x, y) ||
+                                          //activeArea: { dX: 134, dY: -12, w: 134, h: 242 }, 
+                                          new __webpack_exports__Geom.Rectangle(obj.objectX + 134, obj.objectY + -12, 134, 242).contains(x, y)) {
                                           // this.elephShootTL.pause();
                                           // this.brightPerson(obj.personArr[0])
                                           locPerson = person;
@@ -243701,13 +244251,22 @@ var MyGame = (function (exports) {
                   run: () => {
                       locPerson === null || locPerson === void 0 ? void 0 : locPerson.fxClrMatrix.reset();
                       if (locPerson != undefined) {
-                          locPerson.health -= 50;
+                          locPerson.health -= globalThis.elStrength;
                           if (locPerson.health > 0) {
                               locPerson.shootTimeLine.resume();
                           }
                           else {
-                              locPerson.sprite.setTexture("empty");
+                              // this.sceneObjArr.forEach((obj) => {
+                              //     obj.personArr.forEach((pers) => {
+                              //         locPerson.sprite.setTexture("empty");
+                              //     })});
                               locPerson.state = STATE.EMPTY;
+                              locPerson.sprite.setTexture("empty");
+                              this.sceneObjArr.forEach((obj) => {
+                                  obj.personArr.forEach((prs) => {
+                                      prs.sprite.setTexture("empty");
+                                  });
+                              });
                               locPerson.flashSpriteArr.forEach((spr) => {
                                   spr.setTexture("empty");
                               });
@@ -244460,6 +245019,7 @@ var MyGame = (function (exports) {
       }
   }
 
+  let myGame;
   function startGame() {
       const config = {
           type: __webpack_exports__WEBGL,
@@ -244483,9 +245043,127 @@ var MyGame = (function (exports) {
           scene: [Preloader, TutorScene, SceneC, SceneB, SceneA, SceneD],
           //render :render,
       };
-      new __webpack_exports__Game(config);
+      myGame = new __webpack_exports__Game(config);
+  }
+  // isSDKInfo == -1, если sdk ещё не загрузилось, 0 если загрузилось с
+  // ошибкой, 1 если загрузилось корректно. Для  isGameAtlas -аналогично 
+  // при загрузке ассетов для игры
+  const loadings = {
+      'isSDKLoaded': -1, 'isGameAtlas': -1,
+      'isAdvFinish': -1, 'isPlayerData': -1
+  };
+  // устанавливает для загрузки name объекта loadings значение value
+  // value = -1, если загрузка ещё не закончилась, 0 если загрузка
+  // прошла с ошибкой или такой объект не существует, 1 если всё
+  // прошло штатно
+  function addLoading(name, value) {
+      loadings[name] = value;
+      // если ключа с таким именем нет, выходим 
+      if (!Object.keys(loadings).includes(name))
+          return;
+      // если загрузка всех необходимых компонентов удачно или нет завершилась,
+      // начинаем игру 
+      if (!Object.values(loadings).includes(-1)) {
+          try {
+              // Показываем SDK, что игра загрузилась и можно начинать играть.
+              if (globalThis.gYsdk.features.LoadingAPI) {
+                  globalThis.gYsdk.features.LoadingAPI.ready();
+              }
+          }
+          catch (err) { }
+          if (loadings.isPlayerData == 1) {
+              try {
+                  let data = globalThis.gData;
+                  globalThis.achievments = data.achievments;
+              }
+              catch (err) {
+              }
+          }
+          myGame.scene.start('tutorScene');
+          // если нулевой уровень (учебка) ещё не проходился, запускаем его
+          // if (globalThis.achievments[0] == LvlState.NonAttempted) {
+          //     globalThis.currentLevel = lvlNames.Demo;
+          //     myGame.scene.start("demo")
+          // }else{
+          //     globalThis.myUIBlocks.showBaseWnd(achievments,lang)
+          // }
+      }
+  }
+  function initApp(YaGames) {
+      /** данные о достижениях игрока из объекта player из yasdk  */
+      //let remotecAchievments:Array<number>;
+      // значение по умолчанию
+      globalThis.lang = "ru";
+      /** содержит данные о том, сколько раз игрок уже играл в игру, какой его рекорд
+       *  по количеству уничтоженных гангстеров и сколько гангстеров он обнаружил,
+       *  от этого зависит живучесть слонов, она постепенно уменьшается
+       */
+      globalThis.plrAchievments = { numAttempts: 0, numKilledGangs: 0, numFindedGangs: 0 };
+      globalThis.elStrength = 25;
+      //currentTexts = ruTexts;
+      // запускаем игру и загружаем ассеты в сцене Preload
+      startGame();
+      if (YaGames === null) {
+          globalThis.lang = "ru";
+          //currentTexts = ruTexts;
+          addLoading('isSDKLoaded', 0);
+          addLoading('isPlayerData', 0);
+          addLoading('isAdvFinish', 0);
+          return;
+      }
+      YaGames
+          .init()
+          .then(ysdk => {
+          globalThis.gYsdk = ysdk;
+          try {
+              globalThis.lang = ysdk.environment.i18n.lang;
+              if (globalThis.lang == "en") {
+                  //currentTexts = enTexts;
+              }
+              else {
+                  globalThis.lang == "ru";
+                  //currentTexts =ruTexts;
+              }
+          }
+          catch (err) {
+              globalThis.lang = "ru";
+              //currentTexts =ruTexts;
+          }
+          addLoading('isSDKLoaded', 1);
+          addLoading('isAdvFinish', 0);
+          ysdk.getPlayer().then(player => {
+              globalThis.gPlayer = player;
+              player.getData().then(data => {
+                  try {
+                      globalThis.gData = data;
+                      globalThis.achievments = JSON.parse(data.lvlsData);
+                      addLoading('isPlayerData', 1);
+                  }
+                  catch (err) {
+                      globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+                      addLoading('isPlayerData', 0);
+                  }
+              }).catch(err => {
+                  globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+                  addLoading('isPlayerData', 0);
+              });
+          }).catch(err => {
+              globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+              addLoading('isPlayerData', 0);
+          });
+      })
+          .catch(err => {
+          addLoading('isSDKLoaded', 0);
+          addLoading('isPlayerData', 0);
+          addLoading('isAdvFinish', 0);
+          globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+          globalThis.lang = "ru";
+          //currentTexts =ruTexts;
+      });
   }
 
+  exports.addLoading = addLoading;
+  exports.initApp = initApp;
   exports.startGame = startGame;
 
   return exports;

@@ -1,11 +1,11 @@
 import * as Phaser from 'phaser';
+import { addLoading } from './game';
 
 //жёлтая кнопка w=251, h=64, r=30, clr=#e7a425, контур clr=#f6dfa3
 // смещение по x = +4, по y = +4
 //красная clr=#85132a, контур clr=#e9d1d6
 
 export enum STATE {EMPTY, HIDDEN, SHAKE, ACTIVE, APPIARENCE};
-
 
 /** объект для описания персонажа - необязательное имя файла из
  *  которого загружается изображение, ключ этого изображения,
@@ -41,7 +41,9 @@ export type ObjectMap = {
     personArr:Array<PersonMap>
 }
 
-export const objectsArr:Array<ObjectMap> = [
+export enum ModalWndMode {AMMO, HEALTH, WIN};
+
+export let objectsArr:Array<ObjectMap> = [
     //object1Map = 
     {
         fileName: 'assets/building0',
@@ -147,14 +149,14 @@ export const objectsArr:Array<ObjectMap> = [
             deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,health:100,
             hiddenArea: { dX: 398, dY: 24, w: 32, h: 61 },
             activeArea: { dX: 400, dY: 35, w: 178, h: 195 },
-            flashesArr:[{dx:442, dy:150}]
+            flashesArr:[{dx:442, dy:150}, {dx:247, dy:126}]
         },
-        {
-            deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,health:100,
-            hiddenArea: { dX: 238, dY: 19, w: 34, h: 66 },
-            activeArea: { dX: 134, dY: -12, w: 134, h: 242 },
-            flashesArr:[{dx:247, dy:126}]
-        }
+        // {
+        //     deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,health:100,
+        //     hiddenArea: { dX: 238, dY: 19, w: 34, h: 66 },
+        //     activeArea: { dX: 134, dY: -12, w: 134, h: 242 },
+        //     flashesArr:[{dx:247, dy:126}]
+        // }
         ]
     }
 ];
@@ -412,7 +414,10 @@ export class Preloader extends Phaser.Scene
             this.anims.create(anim);
         })
         myScoreChecker = new ScoreChecker();
-        this.scene.start('tutorScene',{from:"preloader"});
+        myModalWnd = new ModalWnd();
+        addLoading('isGameAtlas',1);
+        //this.scene.start('sceneD',{from:"preloader"});
+        //this.scene.start('sceneD');
     }
 }
 
@@ -425,7 +430,7 @@ class ScoreChecker{
 
     constructor(){
         this.health = [10,10,10,10,10,10,10,10,10,10];
-        this.ammo = [10,10,10,10,10,10,10,10,10,10];
+        this.ammo = [20,20,20,20,20,20,20,20,20,20];
         this.money = [0,0,0,0,0,0,0,0,0,0];
     }
 
@@ -482,11 +487,11 @@ class ScoreChecker{
             //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
             //console.log(img.x);
             (this.barsContainer.getAt(20) as Phaser.GameObjects.Image).
-                setAlpha(this.ammo[9]/10);
+                setAlpha(this.ammo[9]/20);
         }else {
             this.ammo[ind-1]-=5;
             (this.barsContainer.getAt(ind+10) as Phaser.GameObjects.Image).
-                setAlpha(this.ammo[ind-1]/10);
+                setAlpha(this.ammo[ind-1]/20);
         }
     }
 
@@ -502,3 +507,250 @@ class ScoreChecker{
 
 let myScoreChecker:ScoreChecker ;
 export  {myScoreChecker};
+
+export type domElContent = {
+    htmlContent:string,
+    styleContent:string
+}
+class ModalWnd{
+    constructor(){
+
+    }
+
+    getModalWnd(mode:ModalWndMode):domElContent{
+        let ammoHtmlRu:string =
+        `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">У вас закончились патроны. Игра Закончена!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">Обучалка</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Повторить</span></button></div>
+                </div>
+            </div>
+        </div>`;
+        
+
+        let ammoHtmlEn:string =
+        `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">You're out of ammo. The Game Is Over!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">&nbspTutor&nbsp</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Try again</span></button></div>
+                </div>
+            </div>
+        </div>`; 
+
+        let healthHtmlRu:string =
+        `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">У вас закончилась жизнь. Игра Закончена!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">Обучалка</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Повторить</span></button></div>
+                </div>
+            </div>
+        </div>`;
+        
+
+        let healthHtmlEn:string =
+        `<div id="uiContainer">
+            <div id="modalWnd">
+                <div id ="yellowRect">
+                    <p id="msgP">Your health is over. The Game Is Over!</p>
+                </div>
+                <div id="buttonsCont">
+                    <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">&nbspTutor&nbsp</span></button></div>
+                    <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Try again</span></button></div>
+                </div>
+            </div>
+        </div>`; 
+
+        let content:string;
+        switch(mode){
+            case ModalWndMode.AMMO:
+                content = globalThis.lang == "ru"?ammoHtmlRu:ammoHtmlEn;
+                return {htmlContent:content, styleContent:""};
+                break;
+            case ModalWndMode.HEALTH:
+                content = globalThis.lang == "ru"?healthHtmlRu:healthHtmlEn;
+                return {htmlContent:content, styleContent:""};
+                break;
+        }
+
+        // return{htmlContent:
+        // `<div id="uiContainer">
+        //     <div id="modalWnd">
+        //         <div id ="yellowRect">
+        //             <p id="msgP">У вас закончились патроны. Игра Закончена!</p>
+        //         </div>
+        //         <div id="buttonsCont">
+        //             <div id="tutorBtnDiv"><button id="tutorBtn"><span id="tutorSpan">Обучалка</span></button></div>
+        //             <div id="retryBtnDiv"><button id="retryBtn"><span id="retrySpan">Повторить</span></button></div>
+        //         </div>
+        //     </div>
+        // </div>`,
+        // styleContent:""
+        // `#uiContainer { width: 1200px; height: 625px; }
+        // #modalWnd { position: absolute; display: flex; flex-direction: column; align-items: center;
+        //     justify-content: space-between;
+        //     align-content: space-between; width: 536px; height: 418px; left: 362px; top: 148px; 
+        //     border-radius: 10px;  background-color: rgba(0, 0, 0, 0.8);}
+        // #yellowRect { width: 500px; height: 172px; margin-top: 44px; border-radius: 10px;
+        //     border: 3px solid white; border-width: 3px; background-color: #fbedd2;}
+        // #buttonsCont { width: 536px; margin-bottom: 30px; display: flex; flex-direction: row;
+        //     justify-content: space-around;}
+        // #tutorBtn {border-radius: 15px; background-color: #f8b927; padding: 10px;}
+        // #retryBtn {border-radius: 15px; background-color: #861229; padding: 10px;}
+        // #tutorSpan {
+        //     color: #fafafa;
+        //     font-family: Arial, Roboto, Helvetica, sans-serif;
+        //     font-weight: bold;
+        //     font-size: 30px;
+        // }
+        // #retrySpan {
+        //     color: #fafafa;
+        //     font-family: Arial, Roboto, Helvetica, sans-serif;
+        //     font-weight: bold;
+        //     font-size: 30px;
+        // }
+        // #msgP {
+        //     text-align: center;
+        //     color: #861229;
+        //     font-family: Arial, Roboto, Helvetica, sans-serif;
+        //     font-weight: bold;
+        //     font-size: 30px;
+        // }`
+    }
+}
+
+let myModalWnd:ModalWnd;
+export {myModalWnd};
+
+export function recoverData(){
+    objectsArr = [
+        //object1Map = 
+        {
+            fileName: 'assets/building0',
+            objKey: 'building0',
+            objectX: 547,
+            objectY: 410,
+            personArr: [{
+                deltaX: -359, deltaY: 77, animKey: "elAnim0", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: -336, dY: 28, w: 42, h: 55 },
+                activeArea: { dX: -420, dY: 30, w: 117, h: 113 },
+                flashesArr:[{dx:-379,dy:90},{dx:-340,dy:90}]
+            },
+                {
+                deltaX: -23, deltaY: -151, animKey: "elAnim1", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: -86, dY: -84, w: 38, h: 36 },
+                activeArea: { dX: -67, dY: -255, w: 86, h: 116 },
+                flashesArr:[{dx:-39,dy:-194},{dx:-9,dy:-196}]
+            },
+                {
+                    deltaX: 493, deltaY: 78, animKey: "elAnim2", state: STATE.HIDDEN,health:100,
+                    hiddenArea: { dX: 379, dY: 22, w: 48, h: 74 },
+                    activeArea: { dX: 396, dY: 12, w: 227, h: 141 },
+                    flashesArr:[{dx:503,dy:105}]
+                } //1075,445
+            ]
+        },
+        
+        //object2Map = 
+        {
+            fileName: 'assets/building1',
+            objKey: 'building1',
+            objectX: 1869,
+            objectY: 410,
+            personArr: [{
+                deltaX: -50, deltaY: 86, animKey: "elAnim3", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: 0, dY: 60, w: 22, h: 40 },
+                activeArea: { dX: -126, dY: 54, w: 76, h: 76 },
+                flashesArr:[{dx:-100,dy:90},{dx:-72,dy:90}]
+            },
+            {
+                deltaX: 463, deltaY: 35, animKey: "elAnim4", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: 313, dY: -34, w: 40, h: 60 },
+                activeArea: { dX: 433, dY: 10, w: 130, h: 122 },
+                flashesArr:[{dx:484,dy:74},{dx:520,dy:74}]
+                //1075,445
+            }
+            ]
+        },
+    
+        //object3Map = 
+        {
+            fileName: 'assets/building2',
+            objKey: 'building2',
+            objectX: 794,
+            objectY: 368,
+            personArr: [{
+                deltaX: 46, deltaY: 92, animKey: "elAnim5", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: 133, dY: 66, w: 46, h: 50 },
+                activeArea: { dX: -89, dY: 43, w: 160, h: 116 },
+                flashesArr:[{dx:-48,dy:105},{dx:33,dy:98}]
+            }
+            ],
+        },
+    
+        //object4Map = 
+        {
+            fileName: 'assets/building3',
+            objKey: 'building3',
+            objectX: 2300,
+            objectY: 320,
+            personArr: [{
+                deltaX: 9, deltaY: -62, animKey: "elAnim6", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: -6, dY: -187, w: 34, h: 58 },
+                activeArea: { dX: -71, dY: -95, w: 143, h: 167 },
+                flashesArr:[{dx:-22,dy:-5},{dx:27,dy:-5}]
+            },
+            ]
+        },
+    
+        //object5Map = 
+        {
+            fileName: 'assets/building4',
+            objKey: 'building4',
+            objectX: 1350,
+            objectY: 320,
+            personArr: [{
+                deltaX: -4, deltaY: 86, animKey: "elAnim7", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: 55, dY: 55, w: 58, h: 40 },
+                activeArea: { dX: -75, dY: 23, w: 132, h: 230 },
+                flashesArr:[{dx:-22,dy:168}]
+            }
+            ]
+        },
+    
+    
+        //object6Map = 
+        {
+            fileName: 'assets/building7',
+            objKey: 'building7',
+            objectX: 1090,
+            objectY: 358,
+            personArr: [{
+                deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,health:100,
+                hiddenArea: { dX: 398, dY: 24, w: 32, h: 61 },
+                activeArea: { dX: 400, dY: 35, w: 178, h: 195 },
+                flashesArr:[{dx:442, dy:150}, {dx:247, dy:126}]
+            },
+            ]
+        }
+    ]
+
+    myScoreChecker.health = [10,10,10,10,10,10,10,10,10,10];
+    myScoreChecker.ammo = [20,20,20,20,20,20,20,20,20,20];
+    myScoreChecker.money = [0,0,0,0,0,0,0,0,0,0];
+
+    globalThis.directions = {toRight: false, toLeft: false,
+        toUp:false, toDown: false};
+}
+

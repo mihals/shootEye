@@ -1,10 +1,13 @@
 import * as Phaser from 'phaser';
-import { PersonMap } from './preloader';
+import { ModalWndMode, PersonMap } from './preloader';
 import { ObjectMap } from './preloader';
 import { objectsArr } from './preloader';
 import {STATE } from './preloader';
 //import { score } from './preloader';
 import { myScoreChecker } from './preloader';
+import { recoverData } from './preloader';
+import { myModalWnd } from './preloader';
+import type { domElContent } from './preloader';
 
 export class SceneC extends Phaser.Scene
 {
@@ -191,6 +194,28 @@ export class SceneC extends Phaser.Scene
                                     person.flashSpriteArr[1].setTexture("empty");
                                 }
                                 myScoreChecker.changeHealth(-10);
+                                if(myScoreChecker.health[0] <= 0){
+                                    let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                    let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                    dom.setHTML(content.htmlContent);
+                                    dom.addListener('click');
+                                    dom.on('click', (evt) => {
+                                        let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                        let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                    
+                                        if(retryBtnDiv.contains(evt.target))
+                                        {
+                                            dom.removeAllListeners('click');
+                                            recoverData();
+                                            this.scene.start("sceneB");
+                                        }else if(tutorBtnDiv.contains(evt.target)){
+                                            dom.removeAllListeners('click');
+                                            recoverData();
+                                            this.scene.start("tutorScene");
+                                        }
+                                    });
+                                    this.scene.pause();
+                                }
                             },
                         },
                         {
@@ -201,6 +226,28 @@ export class SceneC extends Phaser.Scene
                                     person.flashSpriteArr[1].setTexture("bigFlash");
                                     this.cameras.main.flash(350, 255, 0, 0);
                                     myScoreChecker.changeHealth(-10);
+                                    if(myScoreChecker.health[0] <= 0){
+                                        let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                        let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                        dom.setHTML(content.htmlContent);
+                                        dom.addListener('click');
+                                        dom.on('click', (evt) => {
+                                            let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                            let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                        
+                                            if(retryBtnDiv.contains(evt.target))
+                                            {
+                                                dom.removeAllListeners('click');
+                                                recoverData();
+                                                this.scene.start("sceneB");
+                                            }else if(tutorBtnDiv.contains(evt.target)){
+                                                dom.removeAllListeners('click');
+                                                recoverData();
+                                                this.scene.start("tutorScene");
+                                            }
+                                        });
+                                        this.scene.pause();
+                                    }
                                 }
                             }
                         },
@@ -213,6 +260,28 @@ export class SceneC extends Phaser.Scene
                                     person.flashSpriteArr[1].setTexture("empty");
                                 }
                                 myScoreChecker.changeHealth(-10);
+                                if(myScoreChecker.health[0] <= 0){
+                                    let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                    let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                    dom.setHTML(content.htmlContent);
+                                    dom.addListener('click');
+                                    dom.on('click', (evt) => {
+                                        let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                        let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                    
+                                        if(retryBtnDiv.contains(evt.target))
+                                        {
+                                            dom.removeAllListeners('click');
+                                            recoverData();
+                                            this.scene.start("sceneB");
+                                        }else if(tutorBtnDiv.contains(evt.target)){
+                                            dom.removeAllListeners('click');
+                                            recoverData();
+                                            this.scene.start("tutorScene");
+                                        }
+                                    });
+                                    this.scene.pause();
+                                }
                             }
                         },
                         {
@@ -399,10 +468,20 @@ export class SceneC extends Phaser.Scene
         }
 
         if (this.emptyAnchor.x < 600) {
+            this.sceneObjArr.forEach((obj) => {
+                obj.personArr.forEach((person) => {
+                    if(person.state != STATE.EMPTY) person.state = STATE.HIDDEN;
+                })
+            })
             this.scene.start('sceneB',{from:"sceneC", gunAimY : this.emptyAnchor.y})
         }
 
         if(this.emptyAnchor.x > 3000){
+            this.sceneObjArr.forEach((obj) => {
+                obj.personArr.forEach((person) => {
+                    if(person.state != STATE.EMPTY) person.state = STATE.HIDDEN;
+                })
+            })
             this.scene.start('sceneA',{from:"sceneC", gunAimY : this.emptyAnchor.y});
         }
 
@@ -473,8 +552,28 @@ export class SceneC extends Phaser.Scene
                         onComplete: () => {
                             fireSphereArr[2].destroy();
                             myScoreChecker.changeAmmo(-5);
-                            //if(this.elephShootTL.paused)
-                                //this.elephShootTL.resume();
+                            if(myScoreChecker.ammo[0] <= 0){
+                                let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.AMMO);
+                                let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                dom.setHTML(content.htmlContent);
+                                dom.addListener('click');
+                                dom.on('click', (evt) => {
+                                    let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                    let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                    
+                                    if(retryBtnDiv.contains(evt.target))
+                                    {
+                                        dom.removeAllListeners('click');
+                                        recoverData();
+                                        this.scene.start("sceneB");
+                                    }else if(tutorBtnDiv.contains(evt.target)){
+                                        dom.removeAllListeners('click');
+                                        recoverData();
+                                        this.scene.start("tutorScene");
+                                    }
+                                });
+                                this.scene.pause();
+                            }
                         }
                     })
                 },
@@ -537,7 +636,7 @@ export class SceneC extends Phaser.Scene
                 run: () => {
                     locPerson?.fxClrMatrix.reset();
                     if(locPerson != undefined){
-                        locPerson.health -= 50;
+                        locPerson.health -= globalThis.elStrength;
                         if(locPerson.health > 0){
                              locPerson.shootTimeLine.resume();
                         }else{

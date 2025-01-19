@@ -1,11 +1,18 @@
 import * as Phaser from 'phaser';
-import { PersonMap } from './preloader';
+import { ModalWndMode, PersonMap } from './preloader';
 import { ObjectMap } from './preloader';
 import { objectsArr } from './preloader';
 import { STATE } from './preloader';
 //import { ScoreType } from './preloader';
 //import { score } from './preloader';
 import { myScoreChecker } from './preloader';
+import { myModalWnd } from './preloader';
+import type { domElContent } from './preloader';
+import {recoverData} from './preloader';
+// type domElContent = {
+//     htmlContent:string,
+//     styleContent:string
+// }
 
 export class SceneD extends Phaser.Scene
 {
@@ -41,7 +48,7 @@ export class SceneD extends Phaser.Scene
 
     flashesArr:Array<Phaser.GameObjects.Sprite>;
     flashCounter:number;
-    physicsAnchor: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
+    //physicsAnchor: Phaser.Types.Physics.Arcade.ImageWithDynamicBody;
     anchorX:number;
     anchorY:number;
     //fxClrMatrix:Phaser.FX.ColorMatrix;
@@ -93,9 +100,9 @@ export class SceneD extends Phaser.Scene
         this.cameras.main.setBounds(0,0,3600,675);
         this.physics.world.setBounds(0,0,3600,675);
 
-        this.add.image(600,608,'groundL').setFlipX(true);
-        this.add.image(1800,608,'groundL')
-        this.add.image(3000,608,'groundL').setFlipX(true);
+        this.add.image(600,608,'groundL');
+        this.add.image(1800,608,'groundL').setFlipX(true);
+        this.add.image(3000,608,'groundL');
 
         this.add.image(600,273,'landscapeL');
         this.add.image(1800,273,'landscapeL').setFlipX(true);
@@ -110,8 +117,8 @@ export class SceneD extends Phaser.Scene
         this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
         this.emptyAnchor.setCollideWorldBounds();
 
-        this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
-        this.physicsAnchor.body.setCollideWorldBounds();
+        //this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
+        //this.physicsAnchor.body.setCollideWorldBounds();
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.cursors.right.on('down', (evt) => {
@@ -187,6 +194,28 @@ export class SceneD extends Phaser.Scene
                                         person.flashSpriteArr[1].setTexture("empty");
                                     }
                                     myScoreChecker.changeHealth(-10);
+                                    if(myScoreChecker.health[0] <= 0){
+                                        let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                        let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                        dom.setHTML(content.htmlContent);
+                                        dom.addListener('click');
+                                        dom.on('click', (evt) => {
+                                            let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                            let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                        
+                                            if(retryBtnDiv.contains(evt.target))
+                                            {
+                                                dom.removeAllListeners('click');
+                                                recoverData();
+                                                this.scene.start("sceneB");
+                                            }else if(tutorBtnDiv.contains(evt.target)){
+                                                dom.removeAllListeners('click');
+                                                recoverData();
+                                                this.scene.start("tutorScene");
+                                            }
+                                        });
+                                        this.scene.pause();
+                                    }
                                 },
                             },
                             {
@@ -197,6 +226,28 @@ export class SceneD extends Phaser.Scene
                                         person.flashSpriteArr[1].setTexture("bigFlash");
                                         this.cameras.main.flash(350, 255, 0, 0);
                                         myScoreChecker.changeHealth(-10);
+                                        if(myScoreChecker.health[0] <= 0){
+                                            let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                            let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                            dom.setHTML(content.htmlContent);
+                                            dom.addListener('click');
+                                            dom.on('click', (evt) => {
+                                                let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                                let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                            
+                                                if(retryBtnDiv.contains(evt.target))
+                                                {
+                                                    dom.removeAllListeners('click');
+                                                    recoverData();
+                                                    this.scene.start("sceneB");
+                                                }else if(tutorBtnDiv.contains(evt.target)){
+                                                    dom.removeAllListeners('click');
+                                                    recoverData();
+                                                    this.scene.start("tutorScene");
+                                                }
+                                            });
+                                            this.scene.pause();
+                                        }
                                     }
                                 }
                             },
@@ -209,6 +260,28 @@ export class SceneD extends Phaser.Scene
                                         person.flashSpriteArr[1].setTexture("empty");
                                     }
                                     myScoreChecker.changeHealth(-10);
+                                    if(myScoreChecker.health[0] <= 0){
+                                        let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
+                                        let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                        dom.setHTML(content.htmlContent);
+                                        dom.addListener('click');
+                                        dom.on('click', (evt) => {
+                                            let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                            let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                        
+                                            if(retryBtnDiv.contains(evt.target))
+                                            {
+                                                dom.removeAllListeners('click');
+                                                recoverData();
+                                                this.scene.start("sceneB");
+                                            }else if(tutorBtnDiv.contains(evt.target)){
+                                                dom.removeAllListeners('click');
+                                                recoverData();
+                                                this.scene.start("tutorScene");
+                                            }
+                                        });
+                                        this.scene.pause();
+                                    }
                                 }
                             },
                             {
@@ -421,6 +494,11 @@ export class SceneD extends Phaser.Scene
         //     this.scene.start('sceneC',{from:"sceneB", gunAimY: this.emptyAnchor.y});
         // }
         if (this.emptyAnchor.x < 600) {
+            this.sceneObjArr.forEach((obj) => {
+                obj.personArr.forEach((person) => {
+                    if(person.state != STATE.EMPTY) person.state = STATE.HIDDEN;
+                })
+            })
             this.scene.start('sceneA', { from: "sceneD", gunAimY: this.emptyAnchor.y });
         }
 
@@ -490,6 +568,28 @@ export class SceneD extends Phaser.Scene
                         onComplete: () => {
                             fireSphereArr[2].destroy();
                             myScoreChecker.changeAmmo(-5);
+                            if(myScoreChecker.ammo[0] <= 0){
+                                let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.AMMO);
+                                let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                dom.setHTML(content.htmlContent);
+                                dom.addListener('click');
+                                dom.on('click', (evt) => {
+                                    let retryBtnDiv = document.getElementById("retryBtnDiv");
+                                    let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                    
+                                    if(retryBtnDiv.contains(evt.target))
+                                    {
+                                        dom.removeAllListeners('click');
+                                        recoverData();
+                                        this.scene.start("sceneB");
+                                    }else if(tutorBtnDiv.contains(evt.target)){
+                                        dom.removeAllListeners('click');
+                                        recoverData();
+                                        this.scene.start("tutorScene");
+                                    }
+                                });
+                                this.scene.pause();
+                            }
                         }
                     })
                 },
@@ -508,10 +608,11 @@ export class SceneD extends Phaser.Scene
                                 person.hiddenArea.h
                             ).contains(x, y) ||
                                 new Phaser.Geom.Rectangle(
-                                    obj.objectX + person.hiddenArea.dX,
-                                    obj.objectY + person.hiddenArea.dY,
-                                    person.hiddenArea.w,
-                                    person.hiddenArea.h
+                                    //hiddenArea: { dX: 238, dY: 19, w: 34, h: 66 },
+                                    obj.objectX + 238,
+                                    obj.objectY + 19,
+                                    34,
+                                    66
                                 ).contains(x, y)) {
                                     person.state = STATE.SHAKE;
                                     this.cameras.main.shake(1500, 0.01, undefined, (cam = null, progress = 0) => {
@@ -532,20 +633,20 @@ export class SceneD extends Phaser.Scene
                                 obj.objectY + person.activeArea.dY,
                                 person.activeArea.w,
                                 person.activeArea.h
-                            ).contains(x, y)) 
-                                // ||
-                                // new Phaser.Geom.Rectangle(
-                                //     obj.objectX + obj.personArr[1].activeArea.dX,
-                                //     obj.objectY + obj.personArr[1].activeArea.dY,
-                                //     obj.personArr[1].activeArea.w,
-                                //     obj.personArr[1].activeArea.h
-                                // ).contains(x, y)) 
+                            ).contains(x, y) ||
+                                //activeArea: { dX: 134, dY: -12, w: 134, h: 242 }, 
+                                new Phaser.Geom.Rectangle(
+                                    obj.objectX + 134,
+                                    obj.objectY + -12,
+                                    134,
+                                    242
+                                ).contains(x, y)) 
                                 {
                                     // this.elephShootTL.pause();
                                     // this.brightPerson(obj.personArr[0])
                                     locPerson = person;
                                     person.shootTimeLine.pause();
-                                    person.fxClrMatrix.brightness(7)
+                                    person.fxClrMatrix.brightness(7);
                                     //person.shootTimeLine.play();    
                             }
                         }
@@ -559,12 +660,23 @@ export class SceneD extends Phaser.Scene
                 run: () => {
                     locPerson?.fxClrMatrix.reset();
                     if(locPerson != undefined){
-                        locPerson.health -= 50;
+                        locPerson.health -= globalThis.elStrength;
                         if(locPerson.health > 0){
                              locPerson.shootTimeLine.resume();
                         }else{
-                            locPerson.sprite.setTexture("empty");
+                            // this.sceneObjArr.forEach((obj) => {
+                            //     obj.personArr.forEach((pers) => {
+                            //         locPerson.sprite.setTexture("empty");
+                            //     })});
+                            
                             locPerson.state = STATE.EMPTY;
+                            locPerson.sprite.setTexture("empty");
+                            this.sceneObjArr.forEach((obj) => {
+                                obj.personArr.forEach((prs) => {
+                                    prs.sprite.setTexture("empty");
+                                })
+                            })
+
                             locPerson.flashSpriteArr.forEach((spr) => {
                                 spr.setTexture("empty");
                             })
