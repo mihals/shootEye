@@ -1,3 +1,19 @@
+* {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
 body {background-color: bisque; margin: 0;}
 #flexContainer { display: flex; background-color: #e9a423; align-items: center;
     padding-top: 10px; padding-bottom: 10px; width: 1200px;}
@@ -44,4 +60,22 @@ body {background-color: bisque; margin: 0;}
     font-family: Arial, Roboto, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 30px;
+}
+.uiContainer { width: 1200px; height: 625px; pointer-events: none;  }
+.modalWnd { position: absolute; display: flex; flex-direction: column; align-items: center;
+    justify-content: space-between; pointer-events: none; 
+    align-content: space-between; width: 536px; height: 418px; left: 362px; top: 148px; 
+    border-radius: 10px; background-color: rgba(241, 234, 234, 0.8);}
+.yellowRect { width: 500px; height: 172px; margin-top: 44px; border-radius: 10px;
+    border: 3px solid white; border-width: 3px; background-color: #fbedd2;}
+.msgP {
+    text-align: center;
+    color: #861229;
+    font-family: Arial, Roboto, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+*{
+    touch-action: none;
 }

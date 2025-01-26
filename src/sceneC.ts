@@ -90,17 +90,17 @@ export class SceneC extends Phaser.Scene
         this.cameras.main.setBounds(0,0,3600,675);
         this.physics.world.setBounds(0,0,3600,675);
 
-        this.add.image(600,608,'groundL')
-        this.add.image(1800,608,'groundL').setFlipX(true);
-        this.add.image(3000,608,'groundL')
+        this.add.image(600,608,'atlas0','groundL')
+        this.add.image(1800,608,'atlas0','groundL').setFlipX(true);
+        this.add.image(3000,608,'atlas0','groundL')
         
         
-        this.add.image(600,273,'landscapeL');
-        this.add.image(1800,273,'landscapeL').setFlipX(true);
+        this.add.image(600,273,'atlas0','landscapeL');
+        this.add.image(1800,273,'atlas0','landscapeL').setFlipX(true);
         //this.add.image(2400,273,'landscapeL');
-        this.add.image(3000,273,'landscapeL')//.setFlipX(true);
+        this.add.image(3000,273,'atlas0','landscapeL')//.setFlipX(true);
 
-        this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+        this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY,'atlas0', 'emptyAnchor');
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -152,26 +152,33 @@ export class SceneC extends Phaser.Scene
 
 
         this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
-            this.sceneObjArr[0].objKey);
+            'atlas0', this.sceneObjArr[0].objKey);
 
         this.sceneObjArr.forEach((obj) => {
-            this.add.image(obj.objectX, obj.objectY, obj.objKey);
+            if(obj.objKey == "building4"){
+                this.add.image(obj.objectX, obj.objectY,'atlas1', obj.objKey);
+            }
+            else{
+                this.add.image(obj.objectX, obj.objectY,'atlas0', obj.objKey);
+            }
             obj.personArr.forEach((person) => {
                 person.flashSpriteArr = [];
                 person.flashesArr.forEach((item) => {
                     person.flashSpriteArr.push(this.add.sprite(obj.objectX +
-                        item.dx, obj.objectY + item.dy, "empty").setDepth(1)
+                        item.dx, obj.objectY + item.dy, 'atlas0',"empty").setDepth(1)
                     )
                 })
                 // если перс ещё жив, добавляем картинку в зависимости от его состояния,
                 // определяем для него таймлайн и функцию стрельбы
                 if (person.state != STATE.EMPTY) {
                     let sprKey: string = this.anims.get(person.animKey).
-                        frames[0].textureKey;
+                            frames[0].textureKey;
+                    let sprFrame: string = this.anims.get(person.animKey).
+                            frames[0].textureFrame as string;
                     if (person.state == STATE.HIDDEN) {
                         person.sprite = this.add.sprite(obj.objectX +
                             person.deltaX, obj.objectY +
-                        person.deltaY, (sprKey as string));
+                        person.deltaY, sprKey, sprFrame);
                     } else if (person.state == STATE.ACTIVE) {
                         let lastFrame: number = this.anims.get(person.animKey).
                             frames.length - 1;
@@ -179,7 +186,7 @@ export class SceneC extends Phaser.Scene
                             frames[lastFrame].textureKey;
                         person.sprite = this.add.sprite(obj.objectX +
                             person.deltaX, obj.objectY +
-                        person.deltaY, (sprKey as string));
+                        person.deltaY, sprKey, sprFrame);
                     }
                     //}
                     //person.shoot = () => { };
@@ -187,11 +194,11 @@ export class SceneC extends Phaser.Scene
                         {
                             at: 100,
                             run: () => {
-                                person.flashSpriteArr[0].setTexture("bigFlash");
+                                person.flashSpriteArr[0].setTexture('atlas0',"bigFlash");
                                 this.cameras.main.flash(350, 255, 0, 0);
 
                                 if(person.flashSpriteArr.length > 1){
-                                    person.flashSpriteArr[1].setTexture("empty");
+                                    person.flashSpriteArr[1].setTexture('atlas0',"empty");
                                 }
                                 myScoreChecker.changeHealth(-10);
                                 if(myScoreChecker.health[0] <= 0){
@@ -202,16 +209,20 @@ export class SceneC extends Phaser.Scene
                                     dom.on('click', (evt) => {
                                         let retryBtnDiv = document.getElementById("retryBtnDiv");
                                         let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                        let currAchievments:Achievments ={ 
+                                            numAttempts:globalThis.plrAchievments.numAttempts++,
+                                            numKilledGangs: globalThis.numKilledGangs
+                                        }
                                     
                                         if(retryBtnDiv.contains(evt.target))
                                         {
                                             dom.removeAllListeners('click');
-                                            recoverData();
-                                            this.scene.start("sceneB");
+                                            recoverData(currAchievments,"sceneB");
+                                            //this.scene.start("sceneB");
                                         }else if(tutorBtnDiv.contains(evt.target)){
                                             dom.removeAllListeners('click');
-                                            recoverData();
-                                            this.scene.start("tutorScene");
+                                            recoverData(currAchievments,"tutorScene");
+                                            //this.scene.start("tutorScene");
                                         }
                                     });
                                     this.scene.pause();
@@ -221,9 +232,9 @@ export class SceneC extends Phaser.Scene
                         {
                             from: 300,
                             run: () => {
-                                person.flashSpriteArr[0].setTexture("empty");
+                                person.flashSpriteArr[0].setTexture('atlas0',"empty");
                                 if(person.flashSpriteArr.length > 1){
-                                    person.flashSpriteArr[1].setTexture("bigFlash");
+                                    person.flashSpriteArr[1].setTexture('atlas0',"bigFlash");
                                     this.cameras.main.flash(350, 255, 0, 0);
                                     myScoreChecker.changeHealth(-10);
                                     if(myScoreChecker.health[0] <= 0){
@@ -234,16 +245,20 @@ export class SceneC extends Phaser.Scene
                                         dom.on('click', (evt) => {
                                             let retryBtnDiv = document.getElementById("retryBtnDiv");
                                             let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                            let currAchievments:Achievments ={ 
+                                                numAttempts:globalThis.plrAchievments.numAttempts++,
+                                                numKilledGangs: globalThis.numKilledGangs
+                                            }
                                         
                                             if(retryBtnDiv.contains(evt.target))
                                             {
                                                 dom.removeAllListeners('click');
-                                                recoverData();
-                                                this.scene.start("sceneB");
+                                                recoverData(currAchievments,"sceneB");
+                                                //this.scene.start("sceneB");
                                             }else if(tutorBtnDiv.contains(evt.target)){
                                                 dom.removeAllListeners('click');
-                                                recoverData();
-                                                this.scene.start("tutorScene");
+                                                recoverData(currAchievments,"tutorScene");
+                                                //this.scene.start("tutorScene");
                                             }
                                         });
                                         this.scene.pause();
@@ -254,10 +269,10 @@ export class SceneC extends Phaser.Scene
                         {
                             from: 300,
                             run: () => {
-                                person.flashSpriteArr[0].setTexture("bigFlash");
+                                person.flashSpriteArr[0].setTexture('atlas0',"bigFlash");
                                 this.cameras.main.flash(350, 255, 0, 0);
                                 if(person.flashSpriteArr.length > 1){
-                                    person.flashSpriteArr[1].setTexture("empty");
+                                    person.flashSpriteArr[1].setTexture('atlas0',"empty");
                                 }
                                 myScoreChecker.changeHealth(-10);
                                 if(myScoreChecker.health[0] <= 0){
@@ -268,16 +283,20 @@ export class SceneC extends Phaser.Scene
                                     dom.on('click', (evt) => {
                                         let retryBtnDiv = document.getElementById("retryBtnDiv");
                                         let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                        let currAchievments:Achievments ={ 
+                                            numAttempts:globalThis.plrAchievments.numAttempts++,
+                                            numKilledGangs: globalThis.numKilledGangs
+                                        }
                                     
                                         if(retryBtnDiv.contains(evt.target))
                                         {
                                             dom.removeAllListeners('click');
-                                            recoverData();
-                                            this.scene.start("sceneB");
+                                            recoverData(currAchievments,"sceneB");
+                                            //this.scene.start("sceneB");
                                         }else if(tutorBtnDiv.contains(evt.target)){
                                             dom.removeAllListeners('click');
-                                            recoverData();
-                                            this.scene.start("tutorScene");
+                                            recoverData(currAchievments,"tutorScene");
+                                            //this.scene.start("tutorScene");
                                         }
                                     });
                                     this.scene.pause();
@@ -287,7 +306,7 @@ export class SceneC extends Phaser.Scene
                         {
                             from: 300,
                             run: () => {
-                                person.flashSpriteArr[0].setTexture("empty");
+                                person.flashSpriteArr[0].setTexture('atlas0',"empty");
                                 // if(person.flashSpriteArr.length > 1){
                                 //     person.flashSpriteArr[1].setTexture("bigFlash");
                                 // }
@@ -301,10 +320,10 @@ export class SceneC extends Phaser.Scene
             )
         })
 
-        this.add.image(-100,320,'building3');
+        this.add.image(-100,320,'atlas0','building3');
         
         // золотая монетка - бонус, премия за подбитого слона
-        this.goldEl = this.add.image(0,0, "empty");
+        this.goldEl = this.add.image(0,0,'atlas0', "empty");
 
 
         // this.input.on('pointerdown', (pointer) => {
@@ -504,7 +523,7 @@ export class SceneC extends Phaser.Scene
             {
                 at: 0,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width,
                         this.emptyAnchor.height / fireSphereArr[0].height);
 
@@ -522,7 +541,7 @@ export class SceneC extends Phaser.Scene
             {
                 from: 200,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width,
                         this.emptyAnchor.height / fireSphereArr[1].height);
 
@@ -540,7 +559,7 @@ export class SceneC extends Phaser.Scene
             {
                 from: 200,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width,
                         this.emptyAnchor.height / fireSphereArr[2].height);
 
@@ -560,16 +579,20 @@ export class SceneC extends Phaser.Scene
                                 dom.on('click', (evt) => {
                                     let retryBtnDiv = document.getElementById("retryBtnDiv");
                                     let tutorBtnDiv = document.getElementById("tutorBtnDiv");
-                                    
+                                    let currAchievments:Achievments ={ 
+                                        numAttempts:globalThis.plrAchievments.numAttempts++,
+                                        numKilledGangs: globalThis.numKilledGangs
+                                    }
+                                
                                     if(retryBtnDiv.contains(evt.target))
                                     {
                                         dom.removeAllListeners('click');
-                                        recoverData();
-                                        this.scene.start("sceneB");
+                                        recoverData(currAchievments,"sceneB");
+                                        //this.scene.start("sceneB");
                                     }else if(tutorBtnDiv.contains(evt.target)){
                                         dom.removeAllListeners('click');
-                                        recoverData();
-                                        this.scene.start("tutorScene");
+                                        recoverData(currAchievments,"tutorScene");
+                                        //this.scene.start("tutorScene");
                                     }
                                 });
                                 this.scene.pause();
@@ -641,16 +664,16 @@ export class SceneC extends Phaser.Scene
                              locPerson.shootTimeLine.resume();
                         }else{
                             if(locPerson.sprite.texture.key == "an7fr2"){
-                                locPerson.sprite.setTexture("doorBld4");
+                                locPerson.sprite.setTexture('atlas0',"doorBld4");
                             }else{
-                                locPerson.sprite.setTexture("empty");
+                                locPerson.sprite.setTexture('atlas0',"empty");
                             }
                             locPerson.state = STATE.EMPTY;
                             locPerson.flashSpriteArr.forEach((spr) => {
-                                spr.setTexture("empty");
+                                spr.setTexture('atlas0',"empty");
                             })
                             this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
-                            this.goldEl.setTexture("goldEl").setDepth(2);
+                            this.goldEl.setTexture('atlas0',"goldEl").setDepth(2);
                             this.tweens.add({
                                 targets:this.goldEl,
                                 scale: 0.3,
@@ -658,8 +681,9 @@ export class SceneC extends Phaser.Scene
                                 y: myScoreChecker.barsContainer.y,
                                 duration: 1000,
                                 onComplete: () => {
-                                    this.goldEl.setTexture("empty");
+                                    this.goldEl.setTexture('atlas0',"empty");
                                     myScoreChecker.changeMoney(10);
+                                    globalThis.numKilledGangs++;
                                 }
                             })
                         }

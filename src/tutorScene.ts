@@ -58,7 +58,7 @@ export class TutorScene extends Phaser.Scene
 
     barsContainer:Phaser.GameObjects.Container;
 
-    debugText:Phaser.GameObjects.Text;
+    //debugText:Phaser.GameObjects.Text;
     anchorX:number;
     anchorY:number;
     
@@ -98,7 +98,10 @@ export class TutorScene extends Phaser.Scene
             skipTutor: "&nbspSKIP.&nbsp"
         }
 
-        this.msgTxtObj = this.msgTxtObjRu;
+        //globalThis.lang = "en";
+        this.msgTxtObj = globalThis.lang == "ru"?this.msgTxtObjRu:this.msgTxtObjEn;
+
+        //this.msgTxtObj = this.msgTxtObjEn;
 
         globalThis.directions = {toRight: false, toLeft: false,
             toUp:false, toDown: false};
@@ -111,6 +114,7 @@ export class TutorScene extends Phaser.Scene
     create ()
     {
         globalThis.currentScene = this;
+        globalThis.numKilledGangs = 0;
 
         // объект находится и в соседней сцене
         objectsArr[0].objectX = 2947;
@@ -121,46 +125,46 @@ export class TutorScene extends Phaser.Scene
         this.cameras.main.setBounds(0,0,3600,675);
         this.physics.world.setBounds(0,0,3600,675);
 
-        this.add.image(600,608,'groundL')
-        this.add.image(1800,608,'groundL').setFlipX(true);
-        this.add.image(3000,608,'groundL')
+        this.add.image(600,608,'atlas0','groundL')
+        this.add.image(1800,608,'atlas0','groundL').setFlipX(true);
+        this.add.image(3000,608,'atlas0','groundL')
         
         
-        this.add.image(600,273,'landscapeL');
-        this.add.image(1800,273,'landscapeL').setFlipX(true);
+        this.add.image(600,273,'atlas0','landscapeL');
+        this.add.image(1800,273,'atlas0','landscapeL').setFlipX(true);
         //this.add.image(2400,273,'landscapeL');
-        this.add.image(3000,273,'landscapeL')//.setFlipX(true);
+        this.add.image(3000,273,'atlas0','landscapeL')//.setFlipX(true);
         
-        this.add.image(657,352,'tutorBld');
+        this.add.image(657,352,'atlas0','tutorBld');
         this.anims.create({
             key: 'tutorAnim',
             frames: [
-                { key: 'tutFr1' },
-                { key: 'tutFr2' },
-                { key: 'tutFr3' },
-                { key: 'tutFr4' }
+                {frame:'tutFr1', key: 'atlas0'},
+                { frame: 'tutFr2', key: 'atlas0'},
+                { frame: 'tutFr3', key: 'atlas0'},
+                { frame: 'tutFr4', key: 'atlas0'}
             ],
             frameRate: 5,
             repeat: 0
         });
 
-        this.tutEl = this.add.sprite(692,449,'tutFr1');
+        this.tutEl = this.add.sprite(692,449,'atlas0','tutFr1');
         //this.tutEl.play('tutorAnim');
-        this.add.image(572,456,'tutorBox');
+        this.add.image(572,456,'atlas0','tutorBox');
 
-        this.emptyAnchor = this.physics.add.image(600, 150, 'emptyAnchor').setDepth(5);
+        this.emptyAnchor = this.physics.add.image(600, 150,'atlas0', 'emptyAnchor').setDepth(5);
         this.cameras.main.startFollow(this.emptyAnchor, true);
-        this.hand = this.add.image(1000,300,'hand').setAlpha(0);
-        this.leftHand = this.add.image(700,300,"hand").setFlipX(true).setAlpha(0);
+        this.hand = this.add.image(1000,300,'atlas0','hand').setAlpha(0);
+        this.leftHand = this.add.image(700,300,'atlas0',"hand").setFlipX(true).setAlpha(0);
 
-        this.flashSpr = this.add.sprite(710, 460, "empty");
+        this.flashSpr = this.add.sprite(710, 460, 'atlas0',"empty");
         
         // золотая монетка - бонус, премия за подбитого слона
-        this.goldEl = this.add.image(0,0, "empty");
+        this.goldEl = this.add.image(0,0,'atlas0', "empty");
 
 
-        this.debugText = this.add.text(10,30,"");
-        this.debugText.setFontSize(64)
+        //this.debugText = this.add.text(10,30,"");
+        //this.debugText.setFontSize(64)
 
         myScoreChecker.drawBars(this);
         this.prepareBubbles();
@@ -455,40 +459,40 @@ export class TutorScene extends Phaser.Scene
                         props:{
                             alpha:{value:0, duration: 500}}
                     })
-                    this.flashSpr.setPosition(710, 460).setTexture("bigFlash");
+                    this.flashSpr.setPosition(710, 460).setTexture('atlas0',"bigFlash");
                     this.cameras.main.flash(350, 255, 0, 0);
                 }
             },
             {
                 from: 300,
                 run: () => {
-                    this.flashSpr.setPosition(710, 460).setTexture("empty");
+                    this.flashSpr.setPosition(710, 460).setTexture('atlas0',"empty");
                 }
             },
             {
                 from: 500,
                 run: () => {
-                    this.flashSpr.setPosition(660, 460).setTexture("bigFlash");
+                    this.flashSpr.setPosition(660, 460).setTexture('atlas0',"bigFlash");
                     this.cameras.main.flash(350, 255, 0, 0);
                 }
             },
             {
                 from: 300,
                 run: () => {
-                    this.flashSpr.setTexture("empty");
+                    this.flashSpr.setTexture('atlas0',"empty");
                 }
             },
             {
                 from: 500,
                 run: () => {
-                    this.flashSpr.setPosition(710, 460).setTexture("bigFlash");
+                    this.flashSpr.setPosition(710, 460).setTexture('atlas0',"bigFlash");
                     this.cameras.main.flash(350, 255, 0, 0);
                 }
             },
             {
                 from: 300,
                 run: () => {
-                    this.flashSpr.setTexture("empty");
+                    this.flashSpr.setTexture('atlas0',"empty");
                 }
             },
             {
@@ -502,7 +506,7 @@ export class TutorScene extends Phaser.Scene
                         targets:[this.txtForBubble, this.bubbleForText],
                         props:{alpha:{value:1, duration:500}}
                     });
-                    this.flashSpr.setTexture("empty");
+                    this.flashSpr.setTexture('atlas0',"empty");
                 }
             },
             {
@@ -558,7 +562,7 @@ export class TutorScene extends Phaser.Scene
                 from: 500,
                 run: () => {
                     this.goldEl.setPosition(680,460);
-                    this.goldEl.setTexture("goldEl").setDepth(5);
+                    this.goldEl.setTexture('atlas0',"goldEl").setDepth(5);
                     this.tweens.add({
                         targets:this.goldEl,
                         scale: 0.3,
@@ -566,7 +570,7 @@ export class TutorScene extends Phaser.Scene
                         y: myScoreChecker.barsContainer.y,
                         duration: 1000,
                         onComplete: () => {
-                            this.goldEl.setTexture("empty");
+                            this.goldEl.setTexture('atlas0',"empty");
                             myScoreChecker.changeMoney(10);
                         }
                     })
@@ -605,8 +609,8 @@ export class TutorScene extends Phaser.Scene
     }
 
     update(time: number, delta: number): void {
-        this.debugText.setText(
-            `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) ;
+        // this.debugText.setText(
+        //     `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) ;
     }
 
     shootToPerson(x:number, y: number) {
@@ -616,7 +620,7 @@ export class TutorScene extends Phaser.Scene
             {
                 at: 0,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width,
                         this.emptyAnchor.height / fireSphereArr[0].height);
 
@@ -634,7 +638,7 @@ export class TutorScene extends Phaser.Scene
             {
                 from: 200,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width,
                         this.emptyAnchor.height / fireSphereArr[1].height);
 
@@ -652,7 +656,7 @@ export class TutorScene extends Phaser.Scene
             {
                 from: 200,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width,
                         this.emptyAnchor.height / fireSphereArr[2].height);
 

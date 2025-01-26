@@ -241563,6 +241563,7 @@ var MyGame = (function (exports) {
       ModalWndMode[ModalWndMode["AMMO"] = 0] = "AMMO";
       ModalWndMode[ModalWndMode["HEALTH"] = 1] = "HEALTH";
       ModalWndMode[ModalWndMode["WIN"] = 2] = "WIN";
+      ModalWndMode[ModalWndMode["GOBACK"] = 3] = "GOBACK";
   })(ModalWndMode || (ModalWndMode = {}));
   let objectsArr = [
       //object1Map = 
@@ -241692,11 +241693,11 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim0',
                   frames: [
-                      { key: 'an0fr0' },
-                      { key: 'an0fr1' },
-                      { key: 'an0fr2' },
-                      { key: 'an0fr3' },
-                      { key: 'an0fr4' }
+                      { key: 'atlas0', frame: 'an0fr0' },
+                      { key: 'atlas0', frame: 'an0fr1' },
+                      { key: 'atlas0', frame: 'an0fr2' },
+                      { key: 'atlas0', frame: 'an0fr3' },
+                      { key: 'atlas0', frame: 'an0fr4' }
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241704,11 +241705,11 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim1',
                   frames: [
-                      { key: 'an1fr0' },
-                      { key: 'an1fr1' },
-                      { key: 'an1fr2' },
-                      { key: 'an1fr3' },
-                      { key: 'an1fr4' }
+                      { key: 'atlas0', frame: 'an1fr0' },
+                      { key: 'atlas0', frame: 'an1fr1' },
+                      { key: 'atlas0', frame: 'an1fr2' },
+                      { key: 'atlas0', frame: 'an1fr3' },
+                      { key: 'atlas0', frame: 'an1fr4' }
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241716,11 +241717,11 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim2',
                   frames: [
-                      { key: 'an2fr0' },
-                      { key: 'an2fr1' },
-                      { key: 'an2fr2' },
-                      { key: 'an2fr3' },
-                      { key: 'an2fr4' }
+                      { key: 'atlas1', frame: 'an2fr0' },
+                      { key: 'atlas1', frame: 'an2fr1' },
+                      { key: 'atlas1', frame: 'an2fr2' },
+                      { key: 'atlas1', frame: 'an2fr3' },
+                      { key: 'atlas1', frame: 'an2fr4' }
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241728,11 +241729,11 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim3',
                   frames: [
-                      { key: 'an3fr0' },
-                      { key: 'an3fr1' },
-                      { key: 'an3fr2' },
-                      { key: 'an3fr3' },
-                      { key: 'an3fr4' }
+                      { key: 'atlas1', frame: 'an3fr0' },
+                      { key: 'atlas1', frame: 'an3fr1' },
+                      { key: 'atlas1', frame: 'an3fr2' },
+                      { key: 'atlas1', frame: 'an3fr3' },
+                      { key: 'atlas1', frame: 'an3fr4' }
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241740,11 +241741,11 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim4',
                   frames: [
-                      { key: 'an4fr0' },
-                      { key: 'an4fr1' },
-                      { key: 'an4fr2' },
-                      { key: 'an4fr3' },
-                      { key: 'an4fr4' }
+                      { key: 'atlas1', frame: 'an4fr0' },
+                      { key: 'atlas1', frame: 'an4fr1' },
+                      { key: 'atlas1', frame: 'an4fr2' },
+                      { key: 'atlas1', frame: 'an4fr3' },
+                      { key: 'atlas1', frame: 'an4fr4' }
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241752,11 +241753,11 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim5',
                   frames: [
-                      { key: 'an5fr0' },
-                      { key: 'an5fr1' },
-                      { key: 'an5fr2' },
-                      { key: 'an5fr3' },
-                      { key: 'an5fr4' }
+                      { key: 'atlas1', frame: 'an5fr0' },
+                      { key: 'atlas1', frame: 'an5fr1' },
+                      { key: 'atlas1', frame: 'an5fr2' },
+                      { key: 'atlas1', frame: 'an5fr3' },
+                      { key: 'atlas1', frame: 'an5fr4' }
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241764,11 +241765,11 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim6',
                   frames: [
-                      { key: 'an6fr0' },
-                      { key: 'an6fr1' },
-                      { key: 'an6fr2' },
-                      { key: 'an6fr3' },
-                      { key: 'an6fr4' }
+                      { key: 'atlas1', frame: 'an6fr0' },
+                      { key: 'atlas1', frame: 'an6fr1' },
+                      { key: 'atlas1', frame: 'an6fr2' },
+                      { key: 'atlas1', frame: 'an6fr3' },
+                      { key: 'atlas1', frame: 'an6fr4' }
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241776,9 +241777,9 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim7',
                   frames: [
-                      { key: 'an7fr0' },
-                      { key: 'an7fr1' },
-                      { key: 'an7fr2' },
+                      { key: 'atlas1', frame: 'an7fr0' },
+                      { key: 'atlas1', frame: 'an7fr1' },
+                      { key: 'atlas1', frame: 'an7fr2' },
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241786,9 +241787,9 @@ var MyGame = (function (exports) {
               {
                   key: 'elAnim8',
                   frames: [
-                      { key: 'an8fr0' },
-                      { key: 'an8fr1' },
-                      { key: 'an8fr2' },
+                      { key: 'atlas1', frame: 'an8fr0' },
+                      { key: 'atlas1', frame: 'an8fr1' },
+                      { key: 'atlas1', frame: 'an8fr2' },
                   ],
                   frameRate: 5,
                   repeat: 0
@@ -241845,50 +241846,53 @@ var MyGame = (function (exports) {
           // }
       }
       preload() {
-          this.load.image('groundL', 'assets/groundL.png');
-          this.load.image('bigFlash', 'assets/bigFlash.png');
-          this.load.image('smallFlash', 'assets/smallFlash.png');
-          this.load.image('landscapeL', 'assets/landscapeL.png');
+          this.load.atlas([{ key: 'atlas0', textureURL: 'assets/atlas0.png',
+                  atlasURL: 'assets/atlas0.json' }, { key: 'atlas1', textureURL: 'assets/atlas1.png',
+                  atlasURL: 'assets/atlas1.json' }]);
+          //this.load.image('groundL', 'assets/groundL.png');
+          //this.load.image('bigFlash','assets/bigFlash.png');
+          //this.load.image('smallFlash','assets/smallFlash.png');
+          //this.load.image('landscapeL','assets/landscapeL.png');
           this.load.image('landscapeEnd', 'assets/landscapeEnd.png');
-          this.load.image('empty', 'assets/empty.png');
-          this.load.image('emptyAnchor', 'assets/gunAim.png');
-          this.load.image('redBall', 'assets/redBall41x41.png');
-          this.load.image('wantedStand', 'assets/wantedStand.png');
-          this.load.image('flowerStones', 'assets/flowerStones.png');
-          this.load.image('doorBld4', 'assets/doorBld4.png');
-          this.load.image('yellowBtn', 'assets/yellowBtn.png');
-          this.load.image('redBtn', 'assets/redBtn.png');
-          this.load.image('dlgWnd', 'assets/dlgWnd.png');
-          this.load.image('yellowRect', 'assets/yellowRect.png');
-          this.load.image('unionBar', 'assets/unionBar.png');
-          this.load.image('healthPiece', 'assets/healthPiece.png');
-          this.load.image('moneyPiece', 'assets/moneyPiece.png');
-          this.load.image('ammoPiece', 'assets/ammoPiece.png');
-          this.load.image('goldEl', 'assets/goldEl.png');
+          //this.load.image('empty','assets/empty.png');
+          //this.load.image('emptyAnchor','assets/gunAim.png');
+          //this.load.image('redBall','assets/redBall41x41.png');
+          //this.load.image('wantedStand','assets/wantedStand.png');
+          //this.load.image('flowerStones','assets/flowerStones.png');
+          //this.load.image('doorBld4','assets/doorBld4.png');
+          //this.load.image('yellowBtn','assets/yellowBtn.png');
+          //this.load.image('redBtn','assets/redBtn.png');
+          //this.load.image('dlgWnd','assets/dlgWnd.png');
+          //this.load.image('yellowRect','assets/yellowRect.png');
+          //this.load.image('unionBar','assets/unionBar.png');
+          //this.load.image('healthPiece','assets/healthPiece.png');
+          //this.load.image('moneyPiece','assets/moneyPiece.png');
+          //this.load.image('ammoPiece','assets/ammoPiece.png');
+          //this.load.image('goldEl','assets/goldEl.png');
           // this.load.image(this.object1Map.objKey, this.object1Map.fileName + ".png");
           // this.load.image(this.object2Map.objKey, this.object2Map.fileName + ".png");
           // this.load.image(this.object3Map.objKey, this.object3Map.fileName + ".png");
           // this.load.image(this.object4Map.objKey, this.object4Map.fileName + ".png");
           // this.load.image(this.object5Map.objKey, this.object5Map.fileName + ".png");
-          objectsArr.forEach((item) => {
-              this.load.image(item.objKey, item.fileName + ".png");
-          });
-          this.animsArr.forEach((anim) => {
-              anim.frames.forEach(frame => {
-                  this.load.image(frame.key, "assets/" + frame.key + ".png");
-              });
-          });
+          // objectsArr.forEach((item) => {
+          //     this.load.image(item.objKey, item.fileName + ".png");
+          // })
+          // this.animsArr.forEach((anim) => {
+          //     (anim.frames as Phaser.Types.Animations.AnimationFrame[]).forEach(frame => {
+          //         this.load.image(frame.key,"assets/" + frame.key + ".png")
+          //     });
+          // })
           //this.load.image('building4','assets/building4.png');
           // this.load.image('an7fr0','assets/an7fr0.png');
           // this.load.image('an7fr1','assets/an7fr1.png');
           // this.load.image('an7fr2','assets/an7fr2.png');
-          this.load.image('hand', 'assets/hand.png');
-          this.load.image('tutorBld', 'assets/tutorBld.png');
-          this.load.image('tutorBox', 'assets/tutorBox.png');
-          this.load.image('tutFr1', 'assets/tutFr1.png');
-          this.load.image('tutFr2', 'assets/tutFr2.png');
-          this.load.image('tutFr3', 'assets/tutFr3.png');
-          this.load.image('tutFr4', 'assets/tutFr4.png');
+          //this.load.image('hand','assets/hand.png');
+          //this.load.image('tutorBld','assets/tutorBld.png');
+          //this.load.image('tutorBox','assets/tutorBox.png');
+          //this.load.image('tutFr1','assets/tutFr1.png');
+          //this.load.image('tutFr2','assets/tutFr2.png');
+          //this.load.image('tutFr3','assets/tutFr3.png');
+          //this.load.image('tutFr4','assets/tutFr4.png');
       }
       create() {
           // создаём анимации по конфигам из массива animsArr
@@ -241911,17 +241915,17 @@ var MyGame = (function (exports) {
       /** отрисовывает ресурсы в сцене */
       drawBars(scene) {
           this.barsContainer = scene.add.container(600, 45);
-          this.barsContainer.addAt(scene.add.image(0, -1, 'unionBar'), 0);
+          this.barsContainer.addAt(scene.add.image(0, -1, 'atlas0', 'unionBar'), 0);
           for (let i = 0; i < 10; i++) {
-              this.barsContainer.addAt(scene.add.image(-488 + i * 24, 0, 'healthPiece').
+              this.barsContainer.addAt(scene.add.image(-488 + i * 24, 0, 'atlas0', 'healthPiece').
                   setAlpha(this.health[i] / 10), i + 1);
           }
           for (let i = 0; i < 10; i++) {
-              this.barsContainer.addAt(scene.add.image(-70 + i * 24, 0, 'ammoPiece').
+              this.barsContainer.addAt(scene.add.image(-70 + i * 24, 0, 'atlas0', 'ammoPiece').
                   setAlpha(this.ammo[i] / 10), i + 11);
           }
           for (let i = 0; i < 10; i++) {
-              this.barsContainer.addAt(scene.add.image(340 + i * 24, 0, 'moneyPiece').
+              this.barsContainer.addAt(scene.add.image(340 + i * 24, 0, 'atlas0', 'moneyPiece').
                   setAlpha(this.money[i] / 10), i + 21);
           }
       }
@@ -241930,13 +241934,8 @@ var MyGame = (function (exports) {
       }
       changeHealth(delta) {
           let ind = this.health.findIndex((el) => { return el == 0; });
-          if (ind == 0) {
-              console.log("ind = " + ind);
-          }
           if (ind == -1) {
               this.health[9] -= 5;
-              //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
-              //console.log(img.x);
               this.barsContainer.getAt(10).
                   setAlpha(this.health[9] / 10);
           }
@@ -241948,13 +241947,8 @@ var MyGame = (function (exports) {
       }
       changeAmmo(delta) {
           let ind = this.ammo.findIndex((el) => { return el == 0; });
-          if (ind == 0) {
-              console.log("ind = " + ind);
-          }
           if (ind == -1) {
               this.ammo[9] -= 5;
-              //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
-              //console.log(img.x);
               this.barsContainer.getAt(20).
                   setAlpha(this.ammo[9] / 20);
           }
@@ -242022,6 +242016,38 @@ var MyGame = (function (exports) {
                 </div>
             </div>
         </div>`;
+          let goBackHtmlRu = `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">Вам необходимо вернуться назад, чтобы 
+                    уничтожить оставшихся бандитов !</p>
+                </div>
+            </div>
+        </div>`;
+          let goBackHtmlEn = `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">You need to go back to 
+                    Destroy the remaining bandits !</p>
+                </div>
+            </div>
+        </div>`;
+          let winHtmlRu = `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">Поздравляем! Игра закончена!
+                     Вы полностью уничтожили всю банду! </p>
+                </div>
+            </div>
+        </div>`;
+          let winHtmlEn = `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">Congratulations! The game is over!
+                    You have completely destroyed the entire gang!</p>
+                </div>
+            </div>
+        </div>`;
           let content;
           switch (mode) {
               case ModalWndMode.AMMO:
@@ -242029,6 +242055,12 @@ var MyGame = (function (exports) {
                   return { htmlContent: content, styleContent: "" };
               case ModalWndMode.HEALTH:
                   content = globalThis.lang == "ru" ? healthHtmlRu : healthHtmlEn;
+                  return { htmlContent: content, styleContent: "" };
+              case ModalWndMode.GOBACK:
+                  content = globalThis.lang == "ru" ? goBackHtmlRu : goBackHtmlEn;
+                  return { htmlContent: content, styleContent: "" };
+              case ModalWndMode.WIN:
+                  content = globalThis.lang == "ru" ? winHtmlRu : winHtmlEn;
                   return { htmlContent: content, styleContent: "" };
           }
           // return{htmlContent:
@@ -242077,7 +242109,16 @@ var MyGame = (function (exports) {
       }
   }
   let myModalWnd;
-  function recoverData() {
+  /** перезапускает игру после неудачной попытки, возвращает слонов-гангстеров на
+   *  исходные, перезаписывает достижения пользователя, если его достижения (numKilledGangs)
+   *  улучшились, показывает рекламу
+   */
+  function recoverData(currAchievments, sceneName) {
+      saveResult(currAchievments.numKilledGangs);
+      try {
+          globalThis.gYsdk.features.GameplayAPI.stop();
+      }
+      catch (err) { }
       objectsArr = [
           //object1Map = 
           {
@@ -242188,6 +242229,54 @@ var MyGame = (function (exports) {
       myScoreChecker.money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       globalThis.directions = { toRight: false, toLeft: false,
           toUp: false, toDown: false };
+      showAdv(sceneName);
+  }
+  function showAdv(sceneName) {
+      try {
+          globalThis.gYsdk.adv.showFullscreenAdv({
+              callbacks: {
+                  onClose: () => {
+                      try {
+                          globalThis.gYsdk.features.GameplayAPI.start();
+                      }
+                      catch (err) { }
+                      globalThis.currentScene.scene.start(sceneName, null);
+                  },
+                  onError: (e) => {
+                      try {
+                          globalThis.gYsdk.features.GameplayAPI.start();
+                      }
+                      catch (err) { }
+                      globalThis.currentScene.scene.start(sceneName, null);
+                  }
+              }
+          });
+      }
+      catch (err) {
+          try {
+              globalThis.gYsdk.features.GameplayAPI.start();
+          }
+          catch (err) { }
+          globalThis.currentScene.scene.start(sceneName, null);
+      }
+  }
+  function saveResult(numKilledGangs) {
+      //globalThis.plrAchievments.numAttempts++;
+      if (numKilledGangs > globalThis.plrAchievments.numKilledGangs) {
+          globalThis.plrAchievments.numKilledGangs = numKilledGangs;
+      }
+      globalThis.plrAchievments.numAttempts++;
+      try {
+          localStorage.setItem("data", JSON.stringify(globalThis.plrAchievments));
+      }
+      catch (err) { }
+      try {
+          globalThis.gPlayer.setData({ achv: JSON.stringify(globalThis.plrAchievments) });
+      }
+      catch (err) { }
+  }
+  function winScene(scene) {
+      scene.scene.launch("winScene");
   }
 
   class SceneA extends __webpack_exports__Scene {
@@ -242223,17 +242312,17 @@ var MyGame = (function (exports) {
           this.sceneObjArr[0].objectY = 410;
           this.cameras.main.setBounds(0, 0, 3600, 675);
           this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL');
-          this.add.image(1800, 608, 'groundL').setFlipX(true);
-          this.add.image(3000, 608, 'groundL');
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          this.add.image(600, 608, 'atlas0', 'groundL');
+          this.add.image(1800, 608, 'atlas0', 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'atlas0', 'groundL');
+          this.add.image(600, 273, 'atlas0', 'landscapeL');
+          this.add.image(1800, 273, 'atlas0', 'landscapeL').setFlipX(true);
+          this.add.image(3000, 273, 'atlas0', 'landscapeL'); //.setFlipX(true);
           // краешек здания из следующей сцены
-          this.add.image(3490, 358, 'building7'); //.setFlipX(true);
+          this.add.image(3490, 358, 'atlas0', 'building7'); //.setFlipX(true);
           // золотая монетка - бонус, премия за подбитого слона
-          this.goldEl = this.add.image(0, 0, "empty");
-          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+          this.goldEl = this.add.image(0, 0, 'atlas0', "empty");
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'atlas0', 'emptyAnchor');
           this.cursors = this.input.keyboard.createCursorKeys();
           this.cursors.right.on('down', (evt) => {
               globalThis.directions.toRight = true;
@@ -242265,22 +242354,24 @@ var MyGame = (function (exports) {
           // this.add.image(this.sceneObjArr[1].objectX, this.sceneObjArr[1].objectY,
           //     this.sceneObjArr[1].objKey);
           this.sceneObjArr.forEach((obj) => {
-              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              this.add.image(obj.objectX, obj.objectY, 'atlas0', obj.objKey);
               obj.personArr.forEach((person) => {
                   person.flashSpriteArr = [];
                   person.flashesArr.forEach((item) => {
                       person.flashSpriteArr.push(this.add.sprite(obj.objectX +
-                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                          item.dx, obj.objectY + item.dy, 'atlas0', "empty").setDepth(1));
                   });
                   // если перс ещё жив, добавляем картинку в зависимости от его состояния,
                   // определяем для него таймлайн и функцию стрельбы
                   if (person.state != STATE.EMPTY) {
                       let sprKey = this.anims.get(person.animKey).
                           frames[0].textureKey;
+                      let sprFrame = this.anims.get(person.animKey).
+                          frames[0].textureFrame;
                       if (person.state == STATE.HIDDEN) {
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       else if (person.state == STATE.ACTIVE) {
                           let lastFrame = this.anims.get(person.animKey).
@@ -242289,7 +242380,7 @@ var MyGame = (function (exports) {
                               frames[lastFrame].textureKey;
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       //}
                       //person.shoot = () => { };
@@ -242297,10 +242388,10 @@ var MyGame = (function (exports) {
                           {
                               at: 100,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("empty");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
@@ -242311,15 +242402,19 @@ var MyGame = (function (exports) {
                                       dom.on('click', (evt) => {
                                           let retryBtnDiv = document.getElementById("retryBtnDiv");
                                           let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          let currAchievments = {
+                                              numAttempts: globalThis.plrAchievments.numAttempts++,
+                                              numKilledGangs: globalThis.numKilledGangs
+                                          };
                                           if (retryBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("sceneB");
+                                              recoverData(currAchievments, "sceneB");
+                                              //this.scene.start("sceneB");
                                           }
                                           else if (tutorBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("tutorScene");
+                                              recoverData(currAchievments, "tutorScene");
+                                              //this.scene.start("tutorScene");
                                           }
                                       });
                                       this.scene.pause();
@@ -242329,9 +242424,9 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("bigFlash");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "bigFlash");
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
                                       if (myScoreChecker.health[0] <= 0) {
@@ -242342,15 +242437,19 @@ var MyGame = (function (exports) {
                                           dom.on('click', (evt) => {
                                               let retryBtnDiv = document.getElementById("retryBtnDiv");
                                               let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                              let currAchievments = {
+                                                  numAttempts: globalThis.plrAchievments.numAttempts++,
+                                                  numKilledGangs: globalThis.numKilledGangs
+                                              };
                                               if (retryBtnDiv.contains(evt.target)) {
                                                   dom.removeAllListeners('click');
-                                                  recoverData();
-                                                  this.scene.start("sceneB");
+                                                  recoverData(currAchievments, "sceneB");
+                                                  //this.scene.start("sceneB");
                                               }
                                               else if (tutorBtnDiv.contains(evt.target)) {
                                                   dom.removeAllListeners('click');
-                                                  recoverData();
-                                                  this.scene.start("tutorScene");
+                                                  recoverData(currAchievments, "tutorScene");
+                                                  //this.scene.start("tutorScene");
                                               }
                                           });
                                           this.scene.pause();
@@ -242361,10 +242460,10 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("empty");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
@@ -242375,15 +242474,19 @@ var MyGame = (function (exports) {
                                       dom.on('click', (evt) => {
                                           let retryBtnDiv = document.getElementById("retryBtnDiv");
                                           let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          let currAchievments = {
+                                              numAttempts: globalThis.plrAchievments.numAttempts++,
+                                              numKilledGangs: globalThis.numKilledGangs
+                                          };
                                           if (retryBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("sceneB");
+                                              recoverData(currAchievments, "sceneB");
+                                              //this.scene.start("sceneB");
                                           }
                                           else if (tutorBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("tutorScene");
+                                              recoverData(currAchievments, "tutorScene");
+                                              //this.scene.start("tutorScene");
                                           }
                                       });
                                       this.scene.pause();
@@ -242393,7 +242496,7 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
                                   // if(person.flashSpriteArr.length > 1){
                                   //     person.flashSpriteArr[1].setTexture("bigFlash");
                                   // }
@@ -242489,7 +242592,6 @@ var MyGame = (function (exports) {
               this.rightDir = 1;
               if (pntr.event.touches.length == 1)
                   this.leftDir = 0;
-              //console.log("rightDir = " +this.rightDir)
           });
           this.rightZone.on('pointerup', (pntr) => {
               if (pntr.event.type != "touchend")
@@ -242497,7 +242599,6 @@ var MyGame = (function (exports) {
               this.rightDir = 0;
               if (pntr.event.touches.length == 0)
                   this.leftDir = 0;
-              //console.log("rightDir = " +this.rightDir)
           });
           this.rightZone.on('drag', (pntr, x, y, z) => {
               this.emptyAnchor.y += pntr.velocity.y / 5;
@@ -242578,7 +242679,7 @@ var MyGame = (function (exports) {
               {
                   at: 0,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
                       this.add.tween({
                           targets: fireSphereArr[0],
@@ -242594,7 +242695,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
                       this.add.tween({
                           targets: fireSphereArr[1],
@@ -242610,7 +242711,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
                       this.add.tween({
                           targets: fireSphereArr[2],
@@ -242628,15 +242729,19 @@ var MyGame = (function (exports) {
                                   dom.on('click', (evt) => {
                                       let retryBtnDiv = document.getElementById("retryBtnDiv");
                                       let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      let currAchievments = {
+                                          numAttempts: globalThis.plrAchievments.numAttempts++,
+                                          numKilledGangs: globalThis.numKilledGangs
+                                      };
                                       if (retryBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("sceneB");
+                                          recoverData(currAchievments, "sceneB");
+                                          //this.scene.start("sceneB");
                                       }
                                       else if (tutorBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("tutorScene");
+                                          recoverData(currAchievments, "tutorScene");
+                                          //this.scene.start("tutorScene");
                                       }
                                   });
                                   this.scene.pause();
@@ -242700,13 +242805,13 @@ var MyGame = (function (exports) {
                               locPerson.shootTimeLine.resume();
                           }
                           else {
-                              locPerson.sprite.setTexture("empty");
+                              locPerson.sprite.setTexture('atlas0', "empty");
                               locPerson.state = STATE.EMPTY;
                               locPerson.flashSpriteArr.forEach((spr) => {
-                                  spr.setTexture("empty");
+                                  spr.setTexture('atlas0', "empty");
                               });
                               this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
-                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.goldEl.setTexture('atlas0', "goldEl").setDepth(2);
                               this.tweens.add({
                                   targets: this.goldEl,
                                   scale: 0.3,
@@ -242714,8 +242819,9 @@ var MyGame = (function (exports) {
                                   y: myScoreChecker.barsContainer.y,
                                   duration: 1000,
                                   onComplete: () => {
-                                      this.goldEl.setTexture("empty");
+                                      this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
+                                      globalThis.numKilledGangs++;
                                   }
                               });
                           }
@@ -242755,18 +242861,18 @@ var MyGame = (function (exports) {
           this.sceneObjArr = [objectsArr[2], objectsArr[3]];
           this.cameras.main.setBounds(0, 0, 3600, 675);
           this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL');
-          this.add.image(1800, 608, 'groundL').setFlipX(true);
-          this.add.image(3000, 608, 'groundL');
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          this.add.image(600, 608, 'atlas0', 'groundL');
+          this.add.image(1800, 608, 'atlas0', 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'atlas0', 'groundL');
+          this.add.image(600, 273, 'atlas0', 'landscapeL');
+          this.add.image(1800, 273, 'atlas0', 'landscapeL').setFlipX(true);
+          this.add.image(3000, 273, 'atlas0', 'landscapeL'); //.setFlipX(true);
           // краешек здания из obj5Map
-          this.add.image(3750, 320, objectsArr[4].objKey);
+          this.add.image(3750, 320, 'atlas1', objectsArr[4].objKey);
           // золотая монетка - бонус, премия за подбитого слона
-          this.goldEl = this.add.image(0, 0, "empty");
+          this.goldEl = this.add.image(0, 0, 'atlas0', "empty");
           // прицел
-          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'atlas0', 'emptyAnchor');
           this.emptyAnchor.setCollideWorldBounds();
           // физическое тело - красный шар
           //this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
@@ -242796,7 +242902,6 @@ var MyGame = (function (exports) {
           this.cursors.down.on('up', (evt) => {
               globalThis.directions.toDown = false;
           });
-          console.log(globalThis.directions.toDown);
           // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
           this.cameras.main.startFollow(this.emptyAnchor, true);
           // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
@@ -242806,22 +242911,29 @@ var MyGame = (function (exports) {
           // состояния (он прячется(hidden), выскочил из укрытия(active),
           //  уничтожен(empty)) соответствующий спрайт из анимации
           this.sceneObjArr.forEach((obj) => {
-              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              if (obj.objKey == "building4") {
+                  this.add.image(obj.objectX, obj.objectY, 'atlas1', obj.objKey);
+              }
+              else {
+                  this.add.image(obj.objectX, obj.objectY, 'atlas0', obj.objKey);
+              }
               obj.personArr.forEach((person) => {
                   person.flashSpriteArr = [];
                   person.flashesArr.forEach((item) => {
                       person.flashSpriteArr.push(this.add.sprite(obj.objectX +
-                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                          item.dx, obj.objectY + item.dy, 'atlas0', "empty").setDepth(1));
                   });
                   // если перс ещё жив, добавляем картинку в зависимости от его состояния,
                   // определяем для него таймлайн и функцию стрельбы
                   if (person.state != STATE.EMPTY) {
                       let sprKey = this.anims.get(person.animKey).
                           frames[0].textureKey;
+                      let sprFrame = this.anims.get(person.animKey).
+                          frames[0].textureFrame;
                       if (person.state == STATE.HIDDEN) {
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       else if (person.state == STATE.ACTIVE) {
                           let lastFrame = this.anims.get(person.animKey).
@@ -242830,14 +242942,14 @@ var MyGame = (function (exports) {
                               frames[lastFrame].textureKey;
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       person.shootTimeLine = this.add.timeline([
                           {
                               at: 100,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
-                                  person.flashSpriteArr[1].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
+                                  person.flashSpriteArr[1].setTexture('atlas0', "bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
@@ -242848,15 +242960,19 @@ var MyGame = (function (exports) {
                                       dom.on('click', (evt) => {
                                           let retryBtnDiv = document.getElementById("retryBtnDiv");
                                           let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          let currAchievments = {
+                                              numAttempts: globalThis.plrAchievments.numAttempts++,
+                                              numKilledGangs: globalThis.numKilledGangs
+                                          };
                                           if (retryBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("sceneB");
+                                              recoverData(currAchievments, "sceneB");
+                                              //this.scene.start("sceneB");
                                           }
                                           else if (tutorBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("tutorScene");
+                                              recoverData(currAchievments, "tutorScene");
+                                              //this.scene.start("tutorScene");
                                           }
                                       });
                                       this.scene.pause();
@@ -242866,13 +242982,13 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[1].setTexture("empty");
+                                  person.flashSpriteArr[1].setTexture('atlas0', "empty");
                               }
                           },
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "bigFlash");
                                   //this.flashesArr[1].setTexture("empty");
                                   this.cameras.main.flash(350, 255, 0, 0);
                               }
@@ -242880,7 +242996,7 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
                                   person.shootTimeLine.play(true);
                               }
                           }
@@ -242889,8 +243005,8 @@ var MyGame = (function (exports) {
                   }
               });
           });
-          this.add.image(1400, 440, 'wantedStand');
-          this.add.image(192, 500, 'flowerStones');
+          this.add.image(1400, 440, 'atlas0', 'wantedStand');
+          this.add.image(192, 500, 'atlas0', 'flowerStones');
           // this.debugText = this.add.text(10,30,"");
           // this.debugText.setFontSize(64)
           // отладочная инфа для выделения областей где перс прячется
@@ -242965,7 +243081,6 @@ var MyGame = (function (exports) {
               this.rightDir = 1;
               if (pntr.event.touches.length == 1)
                   this.leftDir = 0;
-              //console.log("rightDir = " +this.rightDir)
           });
           this.rightZone.on('pointerup', (pntr) => {
               if (pntr.event.type != "touchend")
@@ -242973,7 +243088,6 @@ var MyGame = (function (exports) {
               this.rightDir = 0;
               if (pntr.event.touches.length == 0)
                   this.leftDir = 0;
-              //console.log("rightDir = " +this.rightDir)
           });
           this.rightZone.on('drag', (pntr, x, y, z) => {
               this.emptyAnchor.y += pntr.velocity.y / 5;
@@ -243045,7 +243159,7 @@ var MyGame = (function (exports) {
               {
                   at: 0,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
                       this.add.tween({
                           targets: fireSphereArr[0],
@@ -243063,15 +243177,19 @@ var MyGame = (function (exports) {
                                   dom.on('click', (evt) => {
                                       let retryBtnDiv = document.getElementById("retryBtnDiv");
                                       let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      let currAchievments = {
+                                          numAttempts: globalThis.plrAchievments.numAttempts++,
+                                          numKilledGangs: globalThis.numKilledGangs
+                                      };
                                       if (retryBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("sceneB");
+                                          recoverData(currAchievments, "sceneB");
+                                          //this.scene.start("sceneB");
                                       }
                                       else if (tutorBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("tutorScene");
+                                          recoverData(currAchievments, "tutorScene");
+                                          //this.scene.start("tutorScene");
                                       }
                                   });
                                   this.scene.pause();
@@ -243083,7 +243201,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
                       this.add.tween({
                           targets: fireSphereArr[1],
@@ -243099,7 +243217,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
                       this.add.tween({
                           targets: fireSphereArr[2],
@@ -243155,13 +243273,13 @@ var MyGame = (function (exports) {
                               locPerson.shootTimeLine.resume();
                           }
                           else {
-                              locPerson.sprite.setTexture("empty");
+                              locPerson.sprite.setTexture('atlas0', "empty");
                               locPerson.state = STATE.EMPTY;
                               locPerson.flashSpriteArr.forEach((spr) => {
-                                  spr.setTexture("empty");
+                                  spr.setTexture('atlas0', "empty");
                               });
                               this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
-                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.goldEl.setTexture('atlas0', "goldEl").setDepth(2);
                               this.tweens.add({
                                   targets: this.goldEl,
                                   scale: 0.3,
@@ -243169,8 +243287,9 @@ var MyGame = (function (exports) {
                                   y: myScoreChecker.barsContainer.y,
                                   duration: 1000,
                                   onComplete: () => {
-                                      this.goldEl.setTexture("empty");
+                                      this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
+                                      globalThis.numKilledGangs++;
                                   }
                               });
                           }
@@ -243220,14 +243339,14 @@ var MyGame = (function (exports) {
           this.sceneObjArr = [objectsArr[0], objectsArr[4]];
           this.cameras.main.setBounds(0, 0, 3600, 675);
           this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL');
-          this.add.image(1800, 608, 'groundL').setFlipX(true);
-          this.add.image(3000, 608, 'groundL');
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
+          this.add.image(600, 608, 'atlas0', 'groundL');
+          this.add.image(1800, 608, 'atlas0', 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'atlas0', 'groundL');
+          this.add.image(600, 273, 'atlas0', 'landscapeL');
+          this.add.image(1800, 273, 'atlas0', 'landscapeL').setFlipX(true);
           //this.add.image(2400,273,'landscapeL');
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
-          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+          this.add.image(3000, 273, 'atlas0', 'landscapeL'); //.setFlipX(true);
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'atlas0', 'emptyAnchor');
           this.cursors = this.input.keyboard.createCursorKeys();
           this.cursors.right.on('down', (evt) => {
               globalThis.directions.toRight = true;
@@ -243266,24 +243385,31 @@ var MyGame = (function (exports) {
           // })
           // this.cameras.main.startFollow(this.ship, true, 0.08, 0.08);
           this.cameras.main.startFollow(this.emptyAnchor, true);
-          this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, this.sceneObjArr[0].objKey);
+          this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY, 'atlas0', this.sceneObjArr[0].objKey);
           this.sceneObjArr.forEach((obj) => {
-              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              if (obj.objKey == "building4") {
+                  this.add.image(obj.objectX, obj.objectY, 'atlas1', obj.objKey);
+              }
+              else {
+                  this.add.image(obj.objectX, obj.objectY, 'atlas0', obj.objKey);
+              }
               obj.personArr.forEach((person) => {
                   person.flashSpriteArr = [];
                   person.flashesArr.forEach((item) => {
                       person.flashSpriteArr.push(this.add.sprite(obj.objectX +
-                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                          item.dx, obj.objectY + item.dy, 'atlas0', "empty").setDepth(1));
                   });
                   // если перс ещё жив, добавляем картинку в зависимости от его состояния,
                   // определяем для него таймлайн и функцию стрельбы
                   if (person.state != STATE.EMPTY) {
                       let sprKey = this.anims.get(person.animKey).
                           frames[0].textureKey;
+                      let sprFrame = this.anims.get(person.animKey).
+                          frames[0].textureFrame;
                       if (person.state == STATE.HIDDEN) {
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       else if (person.state == STATE.ACTIVE) {
                           let lastFrame = this.anims.get(person.animKey).
@@ -243292,7 +243418,7 @@ var MyGame = (function (exports) {
                               frames[lastFrame].textureKey;
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       //}
                       //person.shoot = () => { };
@@ -243300,10 +243426,10 @@ var MyGame = (function (exports) {
                           {
                               at: 100,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("empty");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
@@ -243314,15 +243440,19 @@ var MyGame = (function (exports) {
                                       dom.on('click', (evt) => {
                                           let retryBtnDiv = document.getElementById("retryBtnDiv");
                                           let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          let currAchievments = {
+                                              numAttempts: globalThis.plrAchievments.numAttempts++,
+                                              numKilledGangs: globalThis.numKilledGangs
+                                          };
                                           if (retryBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("sceneB");
+                                              recoverData(currAchievments, "sceneB");
+                                              //this.scene.start("sceneB");
                                           }
                                           else if (tutorBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("tutorScene");
+                                              recoverData(currAchievments, "tutorScene");
+                                              //this.scene.start("tutorScene");
                                           }
                                       });
                                       this.scene.pause();
@@ -243332,9 +243462,9 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("bigFlash");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "bigFlash");
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
                                       if (myScoreChecker.health[0] <= 0) {
@@ -243345,15 +243475,19 @@ var MyGame = (function (exports) {
                                           dom.on('click', (evt) => {
                                               let retryBtnDiv = document.getElementById("retryBtnDiv");
                                               let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                              let currAchievments = {
+                                                  numAttempts: globalThis.plrAchievments.numAttempts++,
+                                                  numKilledGangs: globalThis.numKilledGangs
+                                              };
                                               if (retryBtnDiv.contains(evt.target)) {
                                                   dom.removeAllListeners('click');
-                                                  recoverData();
-                                                  this.scene.start("sceneB");
+                                                  recoverData(currAchievments, "sceneB");
+                                                  //this.scene.start("sceneB");
                                               }
                                               else if (tutorBtnDiv.contains(evt.target)) {
                                                   dom.removeAllListeners('click');
-                                                  recoverData();
-                                                  this.scene.start("tutorScene");
+                                                  recoverData(currAchievments, "tutorScene");
+                                                  //this.scene.start("tutorScene");
                                               }
                                           });
                                           this.scene.pause();
@@ -243364,10 +243498,10 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("empty");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
@@ -243378,15 +243512,19 @@ var MyGame = (function (exports) {
                                       dom.on('click', (evt) => {
                                           let retryBtnDiv = document.getElementById("retryBtnDiv");
                                           let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          let currAchievments = {
+                                              numAttempts: globalThis.plrAchievments.numAttempts++,
+                                              numKilledGangs: globalThis.numKilledGangs
+                                          };
                                           if (retryBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("sceneB");
+                                              recoverData(currAchievments, "sceneB");
+                                              //this.scene.start("sceneB");
                                           }
                                           else if (tutorBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("tutorScene");
+                                              recoverData(currAchievments, "tutorScene");
+                                              //this.scene.start("tutorScene");
                                           }
                                       });
                                       this.scene.pause();
@@ -243396,7 +243534,7 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
                                   // if(person.flashSpriteArr.length > 1){
                                   //     person.flashSpriteArr[1].setTexture("bigFlash");
                                   // }
@@ -243408,9 +243546,9 @@ var MyGame = (function (exports) {
                   }
               });
           });
-          this.add.image(-100, 320, 'building3');
+          this.add.image(-100, 320, 'atlas0', 'building3');
           // золотая монетка - бонус, премия за подбитого слона
-          this.goldEl = this.add.image(0, 0, "empty");
+          this.goldEl = this.add.image(0, 0, 'atlas0', "empty");
           // this.input.on('pointerdown', (pointer) => {
           //     if (pointer.x < this.cameras.main.scrollX)
           //     {
@@ -243585,7 +243723,7 @@ var MyGame = (function (exports) {
               {
                   at: 0,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
                       this.add.tween({
                           targets: fireSphereArr[0],
@@ -243601,7 +243739,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
                       this.add.tween({
                           targets: fireSphereArr[1],
@@ -243617,7 +243755,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
                       this.add.tween({
                           targets: fireSphereArr[2],
@@ -243635,15 +243773,19 @@ var MyGame = (function (exports) {
                                   dom.on('click', (evt) => {
                                       let retryBtnDiv = document.getElementById("retryBtnDiv");
                                       let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      let currAchievments = {
+                                          numAttempts: globalThis.plrAchievments.numAttempts++,
+                                          numKilledGangs: globalThis.numKilledGangs
+                                      };
                                       if (retryBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("sceneB");
+                                          recoverData(currAchievments, "sceneB");
+                                          //this.scene.start("sceneB");
                                       }
                                       else if (tutorBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("tutorScene");
+                                          recoverData(currAchievments, "tutorScene");
+                                          //this.scene.start("tutorScene");
                                       }
                                   });
                                   this.scene.pause();
@@ -243700,17 +243842,17 @@ var MyGame = (function (exports) {
                           }
                           else {
                               if (locPerson.sprite.texture.key == "an7fr2") {
-                                  locPerson.sprite.setTexture("doorBld4");
+                                  locPerson.sprite.setTexture('atlas0', "doorBld4");
                               }
                               else {
-                                  locPerson.sprite.setTexture("empty");
+                                  locPerson.sprite.setTexture('atlas0', "empty");
                               }
                               locPerson.state = STATE.EMPTY;
                               locPerson.flashSpriteArr.forEach((spr) => {
-                                  spr.setTexture("empty");
+                                  spr.setTexture('atlas0', "empty");
                               });
                               this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
-                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.goldEl.setTexture('atlas0', "goldEl").setDepth(2);
                               this.tweens.add({
                                   targets: this.goldEl,
                                   scale: 0.3,
@@ -243718,8 +243860,9 @@ var MyGame = (function (exports) {
                                   y: myScoreChecker.barsContainer.y,
                                   duration: 1000,
                                   onComplete: () => {
-                                      this.goldEl.setTexture("empty");
+                                      this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
+                                      globalThis.numKilledGangs++;
                                   }
                               });
                           }
@@ -243771,17 +243914,17 @@ var MyGame = (function (exports) {
           this.flashCounter = 1;
           this.cameras.main.setBounds(0, 0, 3600, 675);
           this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL');
-          this.add.image(1800, 608, 'groundL').setFlipX(true);
-          this.add.image(3000, 608, 'groundL');
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
+          this.add.image(600, 608, 'atlas0', 'groundL');
+          this.add.image(1800, 608, 'atlas0', 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'atlas0', 'groundL');
+          this.add.image(600, 273, 'atlas0', 'landscapeL');
+          this.add.image(1800, 273, 'atlas0', 'landscapeL').setFlipX(true);
+          this.add.image(3000, 273, 'atlas0', 'landscapeL'); //.setFlipX(true);
           this.add.image(3360, 415, 'landscapeEnd');
           // золотая монетка - бонус, премия за подбитого слона
-          this.goldEl = this.add.image(0, 0, "empty");
+          this.goldEl = this.add.image(0, 0, 'atlas0', "empty");
           // прицел
-          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+          this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'atlas0', 'emptyAnchor');
           this.emptyAnchor.setCollideWorldBounds();
           //this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
           //this.physicsAnchor.body.setCollideWorldBounds();
@@ -243814,31 +243957,35 @@ var MyGame = (function (exports) {
           // this.add.image(this.sceneObjArr[0].objectX, this.sceneObjArr[0].objectY,
           //     this.sceneObjArr[0].objKey);
           this.sceneObjArr.forEach((obj) => {
-              this.add.image(obj.objectX, obj.objectY, obj.objKey);
+              this.add.image(obj.objectX, obj.objectY, 'atlas0', obj.objKey);
               obj.personArr.forEach((person) => {
                   person.flashSpriteArr = [];
                   person.flashesArr.forEach((item) => {
                       person.flashSpriteArr.push(this.add.sprite(obj.objectX +
-                          item.dx, obj.objectY + item.dy, "empty").setDepth(1));
+                          item.dx, obj.objectY + item.dy, 'atlas0', "empty").setDepth(1));
                   });
                   // если перс ещё жив, добавляем картинку в зависимости от его состояния,
                   // определяем для него таймлайн и функцию стрельбы
                   if (person.state != STATE.EMPTY) {
                       let sprKey = this.anims.get(person.animKey).
                           frames[0].textureKey;
+                      let sprFrame = this.anims.get(person.animKey).
+                          frames[0].textureFrame;
                       if (person.state == STATE.HIDDEN) {
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       else if (person.state == STATE.ACTIVE) {
                           let lastFrame = this.anims.get(person.animKey).
                               frames.length - 1;
                           sprKey = this.anims.get(person.animKey).
                               frames[lastFrame].textureKey;
+                          sprFrame = this.anims.get(person.animKey).
+                              frames[0].textureFrame;
                           person.sprite = this.add.sprite(obj.objectX +
                               person.deltaX, obj.objectY +
-                              person.deltaY, sprKey);
+                              person.deltaY, sprKey, sprFrame);
                       }
                       //}
                       //person.shoot = () => { };
@@ -243846,10 +243993,10 @@ var MyGame = (function (exports) {
                           {
                               at: 100,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("empty");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
@@ -243860,15 +244007,19 @@ var MyGame = (function (exports) {
                                       dom.on('click', (evt) => {
                                           let retryBtnDiv = document.getElementById("retryBtnDiv");
                                           let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          let currAchievments = {
+                                              numAttempts: globalThis.plrAchievments.numAttempts++,
+                                              numKilledGangs: globalThis.numKilledGangs
+                                          };
                                           if (retryBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("sceneB");
+                                              recoverData(currAchievments, "sceneB");
+                                              //this.scene.start("sceneB");
                                           }
                                           else if (tutorBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("tutorScene");
+                                              recoverData(currAchievments, "tutorScene");
+                                              //this.scene.start("tutorScene");
                                           }
                                       });
                                       this.scene.pause();
@@ -243878,9 +244029,9 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("bigFlash");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "bigFlash");
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
                                       if (myScoreChecker.health[0] <= 0) {
@@ -243891,15 +244042,19 @@ var MyGame = (function (exports) {
                                           dom.on('click', (evt) => {
                                               let retryBtnDiv = document.getElementById("retryBtnDiv");
                                               let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                              let currAchievments = {
+                                                  numAttempts: globalThis.plrAchievments.numAttempts++,
+                                                  numKilledGangs: globalThis.numKilledGangs
+                                              };
                                               if (retryBtnDiv.contains(evt.target)) {
                                                   dom.removeAllListeners('click');
-                                                  recoverData();
-                                                  this.scene.start("sceneB");
+                                                  recoverData(currAchievments, "sceneB");
+                                                  //this.scene.start("sceneB");
                                               }
                                               else if (tutorBtnDiv.contains(evt.target)) {
                                                   dom.removeAllListeners('click');
-                                                  recoverData();
-                                                  this.scene.start("tutorScene");
+                                                  recoverData(currAchievments, "tutorScene");
+                                                  //this.scene.start("tutorScene");
                                               }
                                           });
                                           this.scene.pause();
@@ -243910,10 +244065,10 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("bigFlash");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "bigFlash");
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   if (person.flashSpriteArr.length > 1) {
-                                      person.flashSpriteArr[1].setTexture("empty");
+                                      person.flashSpriteArr[1].setTexture('atlas0', "empty");
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
@@ -243924,15 +244079,19 @@ var MyGame = (function (exports) {
                                       dom.on('click', (evt) => {
                                           let retryBtnDiv = document.getElementById("retryBtnDiv");
                                           let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                          let currAchievments = {
+                                              numAttempts: globalThis.plrAchievments.numAttempts++,
+                                              numKilledGangs: globalThis.numKilledGangs
+                                          };
                                           if (retryBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("sceneB");
+                                              recoverData(currAchievments, "sceneB");
+                                              //this.scene.start("sceneB");
                                           }
                                           else if (tutorBtnDiv.contains(evt.target)) {
                                               dom.removeAllListeners('click');
-                                              recoverData();
-                                              this.scene.start("tutorScene");
+                                              recoverData(currAchievments, "tutorScene");
+                                              //this.scene.start("tutorScene");
                                           }
                                       });
                                       this.scene.pause();
@@ -243942,7 +244101,7 @@ var MyGame = (function (exports) {
                           {
                               from: 300,
                               run: () => {
-                                  person.flashSpriteArr[0].setTexture("empty");
+                                  person.flashSpriteArr[0].setTexture('atlas0', "empty");
                                   // if(person.flashSpriteArr.length > 1){
                                   //     person.flashSpriteArr[1].setTexture("bigFlash");
                                   // }
@@ -243983,7 +244142,7 @@ var MyGame = (function (exports) {
           //     }
           // });
           let sprKey = this.sceneObjArr[0].personArr[0].animKey;
-          sprKey = this.anims.get(sprKey).frames[0].textureKey;
+          sprKey = this.anims.get(sprKey).frames[0].textureFrame;
           // отладочная инфа для выделения областей где перс прячется
           // и откуда стреляет
           // this.graphics =  this.add.graphics();
@@ -244006,7 +244165,7 @@ var MyGame = (function (exports) {
               if ("flashesArr" in person) {
                   person.flashesArr.forEach((value) => {
                       this.flashesArr.push(this.add.sprite(this.sceneObjArr[0].objectX +
-                          value.dx, this.sceneObjArr[0].objectY + value.dy, "empty"));
+                          value.dx, this.sceneObjArr[0].objectY + value.dy, 'atlas0', "empty"));
                   });
               }
           });
@@ -244023,7 +244182,7 @@ var MyGame = (function (exports) {
               this.shootToPerson(this.emptyAnchor.x, this.emptyAnchor.y);
               //this.leftDir = -1;
           });
-          this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({ draggable: true });
+          this.leftZone = this.add.zone(0, 335, 1000, 670).setInteractive({ draggable: true });
           this.leftZone.on('pointerdown', (pntr) => {
               if (pntr.event.type != "touchstart")
                   return;
@@ -244047,14 +244206,13 @@ var MyGame = (function (exports) {
                   this.emptyAnchor.y = 675;
               }
           });
-          this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({ draggable: true });
+          this.rightZone = this.add.zone(950, 335, 500, 670).setInteractive({ draggable: true });
           this.rightZone.on('pointerdown', (pntr) => {
               if (pntr.event.type != "touchstart")
                   return;
               this.rightDir = 1;
               if (pntr.event.touches.length == 1)
                   this.leftDir = 0;
-              //console.log("rightDir = " +this.rightDir)
           });
           this.rightZone.on('pointerup', (pntr) => {
               if (pntr.event.type != "touchend")
@@ -244062,7 +244220,6 @@ var MyGame = (function (exports) {
               this.rightDir = 0;
               if (pntr.event.touches.length == 0)
                   this.leftDir = 0;
-              //console.log("rightDir = " +this.rightDir)
           });
           this.rightZone.on('drag', (pntr, x, y, z) => {
               this.emptyAnchor.y += pntr.velocity.y / 5;
@@ -244092,6 +244249,16 @@ var MyGame = (function (exports) {
           //     if(i%2 == 0) this.barsContainer.getAt(i).setAlpha(0.5);
           // }
           myScoreChecker.drawBars(this);
+          // let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.GOBACK);
+          //                                 let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+          //                                 dom.setHTML(content.htmlContent);
+          this.goBackWnd = null;
+          this.winWnd = null;
+          // this.sceneObjArr.forEach((obj) => {
+          //     obj.personArr.forEach((prs) => {
+          //         prs.sprite.play(prs.animKey);
+          //     })
+          // })
       }
       update(time, delta) {
           this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir) * 180);
@@ -244125,8 +244292,31 @@ var MyGame = (function (exports) {
           }
           myScoreChecker.setX(this.cameras.main.scrollX + 600);
           this.centerZone.setX(this.emptyAnchor.x);
-          this.leftZone.setX(this.emptyAnchor.x - 350);
-          this.rightZone.setX(this.emptyAnchor.x + 600);
+          this.leftZone.setX(this.emptyAnchor.x - 600);
+          this.rightZone.setX(this.emptyAnchor.x + 350);
+          if (this.emptyAnchor.x > 2800 && this.goBackWnd === null) {
+              let content = myModalWnd.getModalWnd(ModalWndMode.GOBACK);
+              this.goBackWnd = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+              this.goBackWnd.setHTML(content.htmlContent).setAlpha(0);
+              this.add.tween({
+                  targets: this.goBackWnd,
+                  props: { alpha: 1 },
+                  duration: 500
+              });
+          }
+          if (this.emptyAnchor.x < 2400 && this.goBackWnd !== null &&
+              this.goBackWnd.state == 0) {
+              this.goBackWnd.state = -1;
+              this.add.tween({
+                  targets: this.goBackWnd,
+                  props: { alpha: 0 },
+                  duration: 500,
+                  onComplete: () => {
+                      this.goBackWnd.removeElement();
+                      this.goBackWnd = null;
+                  }
+              });
+          }
           //  this.debugText.setText(
           //      `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}` )
       }
@@ -244138,7 +244328,7 @@ var MyGame = (function (exports) {
               {
                   at: 0,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
                       this.add.tween({
                           targets: fireSphereArr[0],
@@ -244154,7 +244344,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
                       this.add.tween({
                           targets: fireSphereArr[1],
@@ -244170,7 +244360,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
                       this.add.tween({
                           targets: fireSphereArr[2],
@@ -244188,15 +244378,19 @@ var MyGame = (function (exports) {
                                   dom.on('click', (evt) => {
                                       let retryBtnDiv = document.getElementById("retryBtnDiv");
                                       let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                      let currAchievments = {
+                                          numAttempts: globalThis.plrAchievments.numAttempts++,
+                                          numKilledGangs: globalThis.numKilledGangs
+                                      };
                                       if (retryBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("sceneB");
+                                          recoverData(currAchievments, "sceneB");
+                                          //this.scene.start("sceneB");
                                       }
                                       else if (tutorBtnDiv.contains(evt.target)) {
                                           dom.removeAllListeners('click');
-                                          recoverData();
-                                          this.scene.start("tutorScene");
+                                          recoverData(currAchievments, "tutorScene");
+                                          //this.scene.start("tutorScene");
                                       }
                                   });
                                   this.scene.pause();
@@ -244261,17 +244455,17 @@ var MyGame = (function (exports) {
                               //         locPerson.sprite.setTexture("empty");
                               //     })});
                               locPerson.state = STATE.EMPTY;
-                              locPerson.sprite.setTexture("empty");
+                              locPerson.sprite.setTexture('atlas0', "empty");
                               this.sceneObjArr.forEach((obj) => {
                                   obj.personArr.forEach((prs) => {
-                                      prs.sprite.setTexture("empty");
+                                      prs.sprite.setTexture('atlas0', "empty");
                                   });
                               });
                               locPerson.flashSpriteArr.forEach((spr) => {
-                                  spr.setTexture("empty");
+                                  spr.setTexture('atlas0', "empty");
                               });
                               this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
-                              this.goldEl.setTexture("goldEl").setDepth(2);
+                              this.goldEl.setTexture('atlas0', "goldEl").setDepth(2);
                               this.tweens.add({
                                   targets: this.goldEl,
                                   scale: 0.3,
@@ -244279,8 +244473,23 @@ var MyGame = (function (exports) {
                                   y: myScoreChecker.barsContainer.y,
                                   duration: 1000,
                                   onComplete: () => {
-                                      this.goldEl.setTexture("empty");
+                                      this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
+                                      globalThis.numKilledGangs++;
+                                      winScene(this);
+                                      //this.scene.launch("winScene");
+                                      if (globalThis.numKilledGangs == 9) {
+                                          let content = myModalWnd.getModalWnd(ModalWndMode.WIN);
+                                          this.winWnd = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                          this.winWnd.setHTML(content.htmlContent).setAlpha(0);
+                                          this.add.tween({
+                                              targets: this.winWnd,
+                                              props: { alpha: 1 },
+                                              duration: 500,
+                                              onComplete: () => {
+                                              }
+                                          });
+                                      }
                                   }
                               });
                           }
@@ -244400,7 +244609,9 @@ var MyGame = (function (exports) {
               titleMsg: "Control on the desktop and touchscreen.",
               skipTutor: "&nbspSKIP.&nbsp"
           };
-          this.msgTxtObj = this.msgTxtObjRu;
+          //globalThis.lang = "en";
+          this.msgTxtObj = globalThis.lang == "ru" ? this.msgTxtObjRu : this.msgTxtObjEn;
+          //this.msgTxtObj = this.msgTxtObjEn;
           globalThis.directions = { toRight: false, toLeft: false,
               toUp: false, toDown: false };
           //this.contrAngle = 60*Math.PI/180;
@@ -244409,43 +244620,44 @@ var MyGame = (function (exports) {
       }
       create() {
           globalThis.currentScene = this;
+          globalThis.numKilledGangs = 0;
           // объект находится и в соседней сцене
           objectsArr[0].objectX = 2947;
           objectsArr[0].objectY = 410;
           //this.sceneObjArr = [objectsArr[0], objectsArr[4]];
           this.cameras.main.setBounds(0, 0, 3600, 675);
           this.physics.world.setBounds(0, 0, 3600, 675);
-          this.add.image(600, 608, 'groundL');
-          this.add.image(1800, 608, 'groundL').setFlipX(true);
-          this.add.image(3000, 608, 'groundL');
-          this.add.image(600, 273, 'landscapeL');
-          this.add.image(1800, 273, 'landscapeL').setFlipX(true);
+          this.add.image(600, 608, 'atlas0', 'groundL');
+          this.add.image(1800, 608, 'atlas0', 'groundL').setFlipX(true);
+          this.add.image(3000, 608, 'atlas0', 'groundL');
+          this.add.image(600, 273, 'atlas0', 'landscapeL');
+          this.add.image(1800, 273, 'atlas0', 'landscapeL').setFlipX(true);
           //this.add.image(2400,273,'landscapeL');
-          this.add.image(3000, 273, 'landscapeL'); //.setFlipX(true);
-          this.add.image(657, 352, 'tutorBld');
+          this.add.image(3000, 273, 'atlas0', 'landscapeL'); //.setFlipX(true);
+          this.add.image(657, 352, 'atlas0', 'tutorBld');
           this.anims.create({
               key: 'tutorAnim',
               frames: [
-                  { key: 'tutFr1' },
-                  { key: 'tutFr2' },
-                  { key: 'tutFr3' },
-                  { key: 'tutFr4' }
+                  { frame: 'tutFr1', key: 'atlas0' },
+                  { frame: 'tutFr2', key: 'atlas0' },
+                  { frame: 'tutFr3', key: 'atlas0' },
+                  { frame: 'tutFr4', key: 'atlas0' }
               ],
               frameRate: 5,
               repeat: 0
           });
-          this.tutEl = this.add.sprite(692, 449, 'tutFr1');
+          this.tutEl = this.add.sprite(692, 449, 'atlas0', 'tutFr1');
           //this.tutEl.play('tutorAnim');
-          this.add.image(572, 456, 'tutorBox');
-          this.emptyAnchor = this.physics.add.image(600, 150, 'emptyAnchor').setDepth(5);
+          this.add.image(572, 456, 'atlas0', 'tutorBox');
+          this.emptyAnchor = this.physics.add.image(600, 150, 'atlas0', 'emptyAnchor').setDepth(5);
           this.cameras.main.startFollow(this.emptyAnchor, true);
-          this.hand = this.add.image(1000, 300, 'hand').setAlpha(0);
-          this.leftHand = this.add.image(700, 300, "hand").setFlipX(true).setAlpha(0);
-          this.flashSpr = this.add.sprite(710, 460, "empty");
+          this.hand = this.add.image(1000, 300, 'atlas0', 'hand').setAlpha(0);
+          this.leftHand = this.add.image(700, 300, 'atlas0', "hand").setFlipX(true).setAlpha(0);
+          this.flashSpr = this.add.sprite(710, 460, 'atlas0', "empty");
           // золотая монетка - бонус, премия за подбитого слона
-          this.goldEl = this.add.image(0, 0, "empty");
-          this.debugText = this.add.text(10, 30, "");
-          this.debugText.setFontSize(64);
+          this.goldEl = this.add.image(0, 0, 'atlas0', "empty");
+          //this.debugText = this.add.text(10,30,"");
+          //this.debugText.setFontSize(64)
           myScoreChecker.drawBars(this);
           this.prepareBubbles();
           let domStr = `<div id="flexContainer">
@@ -244706,40 +244918,40 @@ var MyGame = (function (exports) {
                               alpha: { value: 0, duration: 500 }
                           }
                       });
-                      this.flashSpr.setPosition(710, 460).setTexture("bigFlash");
+                      this.flashSpr.setPosition(710, 460).setTexture('atlas0', "bigFlash");
                       this.cameras.main.flash(350, 255, 0, 0);
                   }
               },
               {
                   from: 300,
                   run: () => {
-                      this.flashSpr.setPosition(710, 460).setTexture("empty");
+                      this.flashSpr.setPosition(710, 460).setTexture('atlas0', "empty");
                   }
               },
               {
                   from: 500,
                   run: () => {
-                      this.flashSpr.setPosition(660, 460).setTexture("bigFlash");
+                      this.flashSpr.setPosition(660, 460).setTexture('atlas0', "bigFlash");
                       this.cameras.main.flash(350, 255, 0, 0);
                   }
               },
               {
                   from: 300,
                   run: () => {
-                      this.flashSpr.setTexture("empty");
+                      this.flashSpr.setTexture('atlas0', "empty");
                   }
               },
               {
                   from: 500,
                   run: () => {
-                      this.flashSpr.setPosition(710, 460).setTexture("bigFlash");
+                      this.flashSpr.setPosition(710, 460).setTexture('atlas0', "bigFlash");
                       this.cameras.main.flash(350, 255, 0, 0);
                   }
               },
               {
                   from: 300,
                   run: () => {
-                      this.flashSpr.setTexture("empty");
+                      this.flashSpr.setTexture('atlas0', "empty");
                   }
               },
               {
@@ -244752,7 +244964,7 @@ var MyGame = (function (exports) {
                           targets: [this.txtForBubble, this.bubbleForText],
                           props: { alpha: { value: 1, duration: 500 } }
                       });
-                      this.flashSpr.setTexture("empty");
+                      this.flashSpr.setTexture('atlas0', "empty");
                   }
               },
               {
@@ -244804,7 +245016,7 @@ var MyGame = (function (exports) {
                   from: 500,
                   run: () => {
                       this.goldEl.setPosition(680, 460);
-                      this.goldEl.setTexture("goldEl").setDepth(5);
+                      this.goldEl.setTexture('atlas0', "goldEl").setDepth(5);
                       this.tweens.add({
                           targets: this.goldEl,
                           scale: 0.3,
@@ -244812,7 +245024,7 @@ var MyGame = (function (exports) {
                           y: myScoreChecker.barsContainer.y,
                           duration: 1000,
                           onComplete: () => {
-                              this.goldEl.setTexture("empty");
+                              this.goldEl.setTexture('atlas0', "empty");
                               myScoreChecker.changeMoney(10);
                           }
                       });
@@ -244849,7 +245061,8 @@ var MyGame = (function (exports) {
           ]).play();
       }
       update(time, delta) {
-          this.debugText.setText(`scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`);
+          // this.debugText.setText(
+          //     `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}`) ;
       }
       shootToPerson(x, y) {
           let fireSphereArr = [];
@@ -244857,7 +245070,7 @@ var MyGame = (function (exports) {
               {
                   at: 0,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width, this.emptyAnchor.height / fireSphereArr[0].height);
                       this.add.tween({
                           targets: fireSphereArr[0],
@@ -244873,7 +245086,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width, this.emptyAnchor.height / fireSphereArr[1].height);
                       this.add.tween({
                           targets: fireSphereArr[1],
@@ -244889,7 +245102,7 @@ var MyGame = (function (exports) {
               {
                   from: 200,
                   run: () => {
-                      fireSphereArr.push(this.add.image(x, y, "redBall"));
+                      fireSphereArr.push(this.add.image(x, y, 'atlas0', "redBall"));
                       fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width, this.emptyAnchor.height / fireSphereArr[2].height);
                       this.add.tween({
                           targets: fireSphereArr[2],
@@ -245019,6 +245232,26 @@ var MyGame = (function (exports) {
       }
   }
 
+  class WinScene extends __webpack_exports__Scene {
+      constructor() {
+          super('winScene');
+      }
+      init(data) {
+      }
+      create() {
+          globalThis.currentScene = this;
+          this.rbImg = this.add.image(600, 350, "redBall");
+          this.add.tween({
+              targets: this.rbImg,
+              props: { y: 0 },
+              duration: 500,
+              yoyo: true
+          });
+      }
+      update(time, delta) {
+      }
+  }
+
   let myGame;
   function startGame() {
       const config = {
@@ -245040,7 +245273,7 @@ var MyGame = (function (exports) {
               autoCenter: __webpack_exports__Scale.CENTER_HORIZONTALLY,
               mode: __webpack_exports__Scale.FIT
           },
-          scene: [Preloader, TutorScene, SceneC, SceneB, SceneA, SceneD],
+          scene: [Preloader, TutorScene, SceneC, SceneB, SceneA, SceneD, WinScene],
           //render :render,
       };
       myGame = new __webpack_exports__Game(config);
@@ -245064,6 +245297,7 @@ var MyGame = (function (exports) {
       // если загрузка всех необходимых компонентов удачно или нет завершилась,
       // начинаем игру 
       if (!Object.values(loadings).includes(-1)) {
+          let locAchievments;
           try {
               // Показываем SDK, что игра загрузилась и можно начинать играть.
               if (globalThis.gYsdk.features.LoadingAPI) {
@@ -245071,14 +245305,59 @@ var MyGame = (function (exports) {
               }
           }
           catch (err) { }
+          // пытаемся получить данные из локалсторадж и если что-то пошло не так
+          // присваиваем объекту нулевые значения
+          try {
+              locAchievments = JSON.parse(localStorage.getItem("data"));
+              if (!('numKilledGangs' in locAchievments &&
+                  'numAttempts' in locAchievments)) {
+                  locAchievments = { numAttempts: 0, numKilledGangs: 0 };
+              }
+          }
+          catch (err) {
+              locAchievments = { numAttempts: 0, numKilledGangs: 0 };
+          }
           if (loadings.isPlayerData == 1) {
               try {
                   let data = globalThis.gData;
-                  globalThis.achievments = data.achievments;
+                  globalThis.plrAchievments = data.achievments;
+                  // сравниваем значения объектов из локалсторадж и из данных игрока
+                  // на сервере, выбираем бОльшие
+                  if (('numKilledGangs' in globalThis.plrAchievments) &&
+                      ('numAttempts' in globalThis.plrAchievments) &&
+                      locAchievments.numKilledGangs > globalThis.plrAchievments.numKilledGangs) {
+                      globalThis.plrAchievments.numKilledGangs = locAchievments.numKilledGangs;
+                      globalThis.plrAchievments.numAttempts = locAchievments.numAttempts;
+                  }
+                  else {
+                      globalThis.plrAchievments = locAchievments;
+                  }
               }
               catch (err) {
               }
           }
+          try {
+              // Подписка на события 'game_api_pause'.
+              globalThis.gYsdk.on('game_api_pause', () => {
+                  try {
+                      globalThis.currentScene.game.pause();
+                  }
+                  catch (err) { }
+                  ;
+              });
+              globalThis.gYsdk.on('game_api_resume', () => {
+                  try {
+                      globalThis.currentScene.game.resume();
+                  }
+                  catch (err) { }
+                  ;
+              });
+          }
+          catch (err) { }
+          try {
+              globalThis.gYsdk.features.GameplayAPI.start();
+          }
+          catch (err) { }
           myGame.scene.start('tutorScene');
           // если нулевой уровень (учебка) ещё не проходился, запускаем его
           // if (globalThis.achievments[0] == LvlState.NonAttempted) {
@@ -245098,9 +245377,9 @@ var MyGame = (function (exports) {
        *  по количеству уничтоженных гангстеров и сколько гангстеров он обнаружил,
        *  от этого зависит живучесть слонов, она постепенно уменьшается
        */
-      globalThis.plrAchievments = { numAttempts: 0, numKilledGangs: 0, numFindedGangs: 0 };
-      globalThis.elStrength = 25;
-      //currentTexts = ruTexts;
+      globalThis.plrAchievments = { numAttempts: 0, numKilledGangs: 0 };
+      globalThis.elStrength = 20;
+      globalThis.numKilledGangs = 0;
       // запускаем игру и загружаем ассеты в сцене Preload
       startGame();
       if (YaGames === null) {
@@ -245118,7 +245397,7 @@ var MyGame = (function (exports) {
           try {
               globalThis.lang = ysdk.environment.i18n.lang;
               if (globalThis.lang == "en") {
-                  //currentTexts = enTexts;
+                  globalThis.lang = "en";
               }
               else {
                   globalThis.lang == "ru";
@@ -245136,19 +245415,21 @@ var MyGame = (function (exports) {
               player.getData().then(data => {
                   try {
                       globalThis.gData = data;
-                      globalThis.achievments = JSON.parse(data.lvlsData);
+                      let locAchievments = JSON.parse(data.achv);
+                      console.log(locAchievments);
+                      globalThis.plrAchievments = JSON.parse(data.achv);
                       addLoading('isPlayerData', 1);
                   }
                   catch (err) {
-                      globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+                      //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
                       addLoading('isPlayerData', 0);
                   }
               }).catch(err => {
-                  globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+                  //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
                   addLoading('isPlayerData', 0);
               });
           }).catch(err => {
-              globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+              //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
               addLoading('isPlayerData', 0);
           });
       })
@@ -245156,7 +245437,7 @@ var MyGame = (function (exports) {
           addLoading('isSDKLoaded', 0);
           addLoading('isPlayerData', 0);
           addLoading('isAdvFinish', 0);
-          globalThis.achievments = [-1, -1, -1, -1, -1, -1];
+          //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
           globalThis.lang = "ru";
           //currentTexts =ruTexts;
       });

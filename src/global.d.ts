@@ -22,12 +22,15 @@ declare global{
      type Achievments = {
           numAttempts:number,
           numKilledGangs:number,
-          numFindedGangs?:number
      }
 
      var plrAchievments:Achievments;
 
-     /** живучесть слона */
+     /** живучесть слона в процентах */
      var elStrength:number;
+
+     /** текущее значение уничтоженных слонов суммарное количество слонов 
+      * в игре = 9, последние два за тумбой считаются за одного*/
+     var numKilledGangs:number;
 }
 export {}

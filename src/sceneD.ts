@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { ModalWndMode, PersonMap } from './preloader';
+import { ModalWndMode, PersonMap, winScene } from './preloader';
 import { ObjectMap } from './preloader';
 import { objectsArr } from './preloader';
 import { STATE } from './preloader';
@@ -9,6 +9,7 @@ import { myScoreChecker } from './preloader';
 import { myModalWnd } from './preloader';
 import type { domElContent } from './preloader';
 import {recoverData} from './preloader';
+import { WinScene } from './winScene';
 // type domElContent = {
 //     htmlContent:string,
 //     styleContent:string
@@ -56,6 +57,10 @@ export class SceneD extends Phaser.Scene
     barsContainer:Phaser.GameObjects.Container;
     goldEl:Phaser.GameObjects.Image;
 
+    goBackWnd:Phaser.GameObjects.DOMElement;
+
+    winWnd:Phaser.GameObjects.DOMElement;
+
     constructor ()
     {
         super('sceneD');
@@ -100,21 +105,21 @@ export class SceneD extends Phaser.Scene
         this.cameras.main.setBounds(0,0,3600,675);
         this.physics.world.setBounds(0,0,3600,675);
 
-        this.add.image(600,608,'groundL');
-        this.add.image(1800,608,'groundL').setFlipX(true);
-        this.add.image(3000,608,'groundL');
+        this.add.image(600,608,'atlas0','groundL');
+        this.add.image(1800,608,'atlas0','groundL').setFlipX(true);
+        this.add.image(3000,608,'atlas0','groundL');
 
-        this.add.image(600,273,'landscapeL');
-        this.add.image(1800,273,'landscapeL').setFlipX(true);
-        this.add.image(3000,273,'landscapeL')//.setFlipX(true);
+        this.add.image(600,273,'atlas0','landscapeL');
+        this.add.image(1800,273,'atlas0','landscapeL').setFlipX(true);
+        this.add.image(3000,273,'atlas0','landscapeL')//.setFlipX(true);
 
         this.add.image(3360,415,'landscapeEnd');
 
         // золотая монетка - бонус, премия за подбитого слона
-        this.goldEl = this.add.image(0,0, "empty")
+        this.goldEl = this.add.image(0,0,'atlas0', "empty")
 
         // прицел
-        this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY, 'emptyAnchor');
+        this.emptyAnchor = this.physics.add.image(this.anchorX, this.anchorY,'atlas0', 'emptyAnchor');
         this.emptyAnchor.setCollideWorldBounds();
 
         //this.physicsAnchor = this.physics.add.image(600, 100, 'redBall');
@@ -155,12 +160,12 @@ export class SceneD extends Phaser.Scene
         //     this.sceneObjArr[0].objKey);
 
             this.sceneObjArr.forEach((obj) => {
-                this.add.image(obj.objectX, obj.objectY, obj.objKey);
+                this.add.image(obj.objectX, obj.objectY,'atlas0', obj.objKey);
                 obj.personArr.forEach((person) => {
                     person.flashSpriteArr = [];
                     person.flashesArr.forEach((item) => {
                         person.flashSpriteArr.push(this.add.sprite(obj.objectX +
-                            item.dx, obj.objectY + item.dy, "empty").setDepth(1)
+                            item.dx, obj.objectY + item.dy,'atlas0', "empty").setDepth(1)
                         )
                     })
                     // если перс ещё жив, добавляем картинку в зависимости от его состояния,
@@ -168,18 +173,22 @@ export class SceneD extends Phaser.Scene
                     if (person.state != STATE.EMPTY) {
                         let sprKey: string = this.anims.get(person.animKey).
                             frames[0].textureKey;
+                        let sprFrame: string = this.anims.get(person.animKey).
+                            frames[0].textureFrame as string;
                         if (person.state == STATE.HIDDEN) {
                             person.sprite = this.add.sprite(obj.objectX +
                                 person.deltaX, obj.objectY +
-                            person.deltaY, (sprKey as string));
+                            person.deltaY, sprKey, sprFrame);
                         } else if (person.state == STATE.ACTIVE) {
                             let lastFrame: number = this.anims.get(person.animKey).
                                 frames.length - 1;
                             sprKey = this.anims.get(person.animKey).
-                                frames[lastFrame].textureKey;
+                                frames[lastFrame].textureKey as string;
+                            sprFrame = this.anims.get(person.animKey).
+                                frames[0].textureFrame as string;
                             person.sprite = this.add.sprite(obj.objectX +
                                 person.deltaX, obj.objectY +
-                            person.deltaY, (sprKey as string));
+                            person.deltaY, sprKey, sprFrame);
                         }
                         //}
                         //person.shoot = () => { };
@@ -187,11 +196,11 @@ export class SceneD extends Phaser.Scene
                             {
                                 at: 100,
                                 run: () => {
-                                    person.flashSpriteArr[0].setTexture("bigFlash");
+                                    person.flashSpriteArr[0].setTexture('atlas0',"bigFlash");
                                     this.cameras.main.flash(350, 255, 0, 0);
     
                                     if(person.flashSpriteArr.length > 1){
-                                        person.flashSpriteArr[1].setTexture("empty");
+                                        person.flashSpriteArr[1].setTexture('atlas0',"empty");
                                     }
                                     myScoreChecker.changeHealth(-10);
                                     if(myScoreChecker.health[0] <= 0){
@@ -202,16 +211,20 @@ export class SceneD extends Phaser.Scene
                                         dom.on('click', (evt) => {
                                             let retryBtnDiv = document.getElementById("retryBtnDiv");
                                             let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                            let currAchievments:Achievments ={ 
+                                                numAttempts:globalThis.plrAchievments.numAttempts++,
+                                                numKilledGangs: globalThis.numKilledGangs
+                                            }
                                         
                                             if(retryBtnDiv.contains(evt.target))
                                             {
                                                 dom.removeAllListeners('click');
-                                                recoverData();
-                                                this.scene.start("sceneB");
+                                                recoverData(currAchievments,"sceneB");
+                                                //this.scene.start("sceneB");
                                             }else if(tutorBtnDiv.contains(evt.target)){
                                                 dom.removeAllListeners('click');
-                                                recoverData();
-                                                this.scene.start("tutorScene");
+                                                recoverData(currAchievments,"tutorScene");
+                                                //this.scene.start("tutorScene");
                                             }
                                         });
                                         this.scene.pause();
@@ -221,9 +234,9 @@ export class SceneD extends Phaser.Scene
                             {
                                 from: 300,
                                 run: () => {
-                                    person.flashSpriteArr[0].setTexture("empty");
+                                    person.flashSpriteArr[0].setTexture('atlas0',"empty");
                                     if(person.flashSpriteArr.length > 1){
-                                        person.flashSpriteArr[1].setTexture("bigFlash");
+                                        person.flashSpriteArr[1].setTexture('atlas0',"bigFlash");
                                         this.cameras.main.flash(350, 255, 0, 0);
                                         myScoreChecker.changeHealth(-10);
                                         if(myScoreChecker.health[0] <= 0){
@@ -234,16 +247,20 @@ export class SceneD extends Phaser.Scene
                                             dom.on('click', (evt) => {
                                                 let retryBtnDiv = document.getElementById("retryBtnDiv");
                                                 let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                                let currAchievments:Achievments ={ 
+                                                    numAttempts:globalThis.plrAchievments.numAttempts++,
+                                                    numKilledGangs: globalThis.numKilledGangs
+                                                }
                                             
                                                 if(retryBtnDiv.contains(evt.target))
                                                 {
                                                     dom.removeAllListeners('click');
-                                                    recoverData();
-                                                    this.scene.start("sceneB");
+                                                    recoverData(currAchievments,"sceneB");
+                                                    //this.scene.start("sceneB");
                                                 }else if(tutorBtnDiv.contains(evt.target)){
                                                     dom.removeAllListeners('click');
-                                                    recoverData();
-                                                    this.scene.start("tutorScene");
+                                                    recoverData(currAchievments,"tutorScene");
+                                                    //this.scene.start("tutorScene");
                                                 }
                                             });
                                             this.scene.pause();
@@ -254,10 +271,10 @@ export class SceneD extends Phaser.Scene
                             {
                                 from: 300,
                                 run: () => {
-                                    person.flashSpriteArr[0].setTexture("bigFlash");
+                                    person.flashSpriteArr[0].setTexture('atlas0',"bigFlash");
                                     this.cameras.main.flash(350, 255, 0, 0);
                                     if(person.flashSpriteArr.length > 1){
-                                        person.flashSpriteArr[1].setTexture("empty");
+                                        person.flashSpriteArr[1].setTexture('atlas0',"empty");
                                     }
                                     myScoreChecker.changeHealth(-10);
                                     if(myScoreChecker.health[0] <= 0){
@@ -268,16 +285,20 @@ export class SceneD extends Phaser.Scene
                                         dom.on('click', (evt) => {
                                             let retryBtnDiv = document.getElementById("retryBtnDiv");
                                             let tutorBtnDiv = document.getElementById("tutorBtnDiv");
+                                            let currAchievments:Achievments ={ 
+                                                numAttempts:globalThis.plrAchievments.numAttempts++,
+                                                numKilledGangs: globalThis.numKilledGangs
+                                            }
                                         
                                             if(retryBtnDiv.contains(evt.target))
                                             {
                                                 dom.removeAllListeners('click');
-                                                recoverData();
-                                                this.scene.start("sceneB");
+                                                recoverData(currAchievments,"sceneB");
+                                                //this.scene.start("sceneB");
                                             }else if(tutorBtnDiv.contains(evt.target)){
                                                 dom.removeAllListeners('click');
-                                                recoverData();
-                                                this.scene.start("tutorScene");
+                                                recoverData(currAchievments,"tutorScene");
+                                                //this.scene.start("tutorScene");
                                             }
                                         });
                                         this.scene.pause();
@@ -287,7 +308,7 @@ export class SceneD extends Phaser.Scene
                             {
                                 from: 300,
                                 run: () => {
-                                    person.flashSpriteArr[0].setTexture("empty");
+                                    person.flashSpriteArr[0].setTexture('atlas0',"empty");
                                     // if(person.flashSpriteArr.length > 1){
                                     //     person.flashSpriteArr[1].setTexture("bigFlash");
                                     // }
@@ -340,7 +361,7 @@ export class SceneD extends Phaser.Scene
         // });
 
         let sprKey: string = this.sceneObjArr[0].personArr[0].animKey;
-        sprKey = this.anims.get(sprKey).frames[0].textureKey;
+        sprKey = this.anims.get(sprKey).frames[0].textureFrame as string;
 
         // отладочная инфа для выделения областей где перс прячется
         // и откуда стреляет
@@ -366,7 +387,7 @@ export class SceneD extends Phaser.Scene
             if ("flashesArr" in person) {
                 person.flashesArr.forEach((value) => {
                     this.flashesArr.push(this.add.sprite(this.sceneObjArr[0].objectX + 
-                        value.dx, this.sceneObjArr[0].objectY + value.dy, "empty"));
+                        value.dx, this.sceneObjArr[0].objectY + value.dy,'atlas0', "empty"));
                 })
             }
         }
@@ -390,7 +411,7 @@ export class SceneD extends Phaser.Scene
             //this.leftDir = -1;
         });
 
-        this.leftZone = this.add.zone(250, 335, 500, 670).setInteractive({draggable:true});
+        this.leftZone = this.add.zone(0, 335, 1000, 670).setInteractive({draggable:true});
         this.leftZone.on('pointerdown', (pntr) => {
             if(pntr.event.type != "touchstart") return;
 
@@ -416,13 +437,12 @@ export class SceneD extends Phaser.Scene
 
         
 
-        this.rightZone = this.add.zone(1200, 335, 1000, 670).setInteractive({draggable:true});
+        this.rightZone = this.add.zone(950, 335, 500, 670).setInteractive({draggable:true});
         this.rightZone.on('pointerdown', (pntr) => {
             if(pntr.event.type != "touchstart") return;
 
             this.rightDir = 1;
             if((pntr.event as TouchEvent).touches.length == 1) this.leftDir =0;
-            //console.log("rightDir = " +this.rightDir)
         });
 
         this.rightZone.on('pointerup', (pntr) => {
@@ -430,7 +450,6 @@ export class SceneD extends Phaser.Scene
 
             this.rightDir = 0;
             if((pntr.event as TouchEvent).touches.length == 0) this.leftDir =0;
-            //console.log("rightDir = " +this.rightDir)
         });
         
         this.rightZone.on('drag', (pntr:Phaser.Input.Pointer,x,y,z) => {
@@ -467,6 +486,17 @@ export class SceneD extends Phaser.Scene
         // }
 
         myScoreChecker.drawBars(this);
+        // let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.GOBACK);
+        //                                 let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+        //                                 dom.setHTML(content.htmlContent);
+
+        this.goBackWnd = null;
+        this.winWnd = null;
+        // this.sceneObjArr.forEach((obj) => {
+        //     obj.personArr.forEach((prs) => {
+        //         prs.sprite.play(prs.animKey);
+        //     })
+        // })
     }
 
     update(time: number, delta: number): void {
@@ -505,8 +535,32 @@ export class SceneD extends Phaser.Scene
         myScoreChecker.setX(this.cameras.main.scrollX + 600);
 
         this.centerZone.setX(this.emptyAnchor.x);
-        this.leftZone.setX(this.emptyAnchor.x - 350);
-        this.rightZone.setX(this.emptyAnchor.x + 600);
+        this.leftZone.setX(this.emptyAnchor.x - 600);
+        this.rightZone.setX(this.emptyAnchor.x + 350);
+
+        if(this.emptyAnchor.x > 2800 && this.goBackWnd===null){
+            let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.GOBACK);
+            this.goBackWnd = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+            this.goBackWnd.setHTML(content.htmlContent).setAlpha(0);
+            this.add.tween({
+                targets:this.goBackWnd,
+                props:{alpha:1},
+                duration:500
+            })
+        }
+        if(this.emptyAnchor.x < 2400 && this.goBackWnd!==null && 
+            this.goBackWnd.state == 0){
+            this.goBackWnd.state = -1;
+            this.add.tween({
+                targets:this.goBackWnd,
+                props:{alpha:0},
+                duration:500,
+                onComplete:() => {
+                    this.goBackWnd.removeElement();
+                    this.goBackWnd = null;
+                }
+            })
+        }
             
         //  this.debugText.setText(
         //      `scrollX:${this.cameras.main.scrollX}, Y:${this.emptyAnchor.y}` )
@@ -520,7 +574,7 @@ export class SceneD extends Phaser.Scene
             {
                 at: 0,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[0].setScale(this.emptyAnchor.width / fireSphereArr[0].width,
                         this.emptyAnchor.height / fireSphereArr[0].height);
 
@@ -538,7 +592,7 @@ export class SceneD extends Phaser.Scene
             {
                 from: 200,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[1].setScale(this.emptyAnchor.width / fireSphereArr[1].width,
                         this.emptyAnchor.height / fireSphereArr[1].height);
 
@@ -556,7 +610,7 @@ export class SceneD extends Phaser.Scene
             {
                 from: 200,
                 run: () => {
-                    fireSphereArr.push(this.add.image(x, y, "redBall"))
+                    fireSphereArr.push(this.add.image(x, y,'atlas0', "redBall"))
                     fireSphereArr[2].setScale(this.emptyAnchor.width / fireSphereArr[2].width,
                         this.emptyAnchor.height / fireSphereArr[2].height);
 
@@ -576,16 +630,20 @@ export class SceneD extends Phaser.Scene
                                 dom.on('click', (evt) => {
                                     let retryBtnDiv = document.getElementById("retryBtnDiv");
                                     let tutorBtnDiv = document.getElementById("tutorBtnDiv");
-                                    
+                                    let currAchievments:Achievments ={ 
+                                        numAttempts:globalThis.plrAchievments.numAttempts++,
+                                        numKilledGangs: globalThis.numKilledGangs
+                                    }
+                                
                                     if(retryBtnDiv.contains(evt.target))
                                     {
                                         dom.removeAllListeners('click');
-                                        recoverData();
-                                        this.scene.start("sceneB");
+                                        recoverData(currAchievments,"sceneB");
+                                        //this.scene.start("sceneB");
                                     }else if(tutorBtnDiv.contains(evt.target)){
                                         dom.removeAllListeners('click');
-                                        recoverData();
-                                        this.scene.start("tutorScene");
+                                        recoverData(currAchievments,"tutorScene");
+                                        //this.scene.start("tutorScene");
                                     }
                                 });
                                 this.scene.pause();
@@ -670,18 +728,18 @@ export class SceneD extends Phaser.Scene
                             //     })});
                             
                             locPerson.state = STATE.EMPTY;
-                            locPerson.sprite.setTexture("empty");
+                            locPerson.sprite.setTexture('atlas0',"empty");
                             this.sceneObjArr.forEach((obj) => {
                                 obj.personArr.forEach((prs) => {
-                                    prs.sprite.setTexture("empty");
+                                    prs.sprite.setTexture('atlas0',"empty");
                                 })
                             })
 
                             locPerson.flashSpriteArr.forEach((spr) => {
-                                spr.setTexture("empty");
+                                spr.setTexture('atlas0',"empty");
                             })
                             this.goldEl.setPosition(locPerson.sprite.x, locPerson.sprite.y);
-                            this.goldEl.setTexture("goldEl").setDepth(2);
+                            this.goldEl.setTexture('atlas0',"goldEl").setDepth(2);
                             this.tweens.add({
                                 targets:this.goldEl,
                                 scale: 0.3,
@@ -689,8 +747,24 @@ export class SceneD extends Phaser.Scene
                                 y: myScoreChecker.barsContainer.y,
                                 duration: 1000,
                                 onComplete: () => {
-                                    this.goldEl.setTexture("empty");
+                                    this.goldEl.setTexture('atlas0',"empty");
                                     myScoreChecker.changeMoney(10);
+                                    globalThis.numKilledGangs++;
+                                    winScene(this);
+                                    //this.scene.launch("winScene");
+                                    if(globalThis.numKilledGangs == 9){
+                                        let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.WIN);
+                                        this.winWnd = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                        this.winWnd.setHTML(content.htmlContent).setAlpha(0);
+                                        this.add.tween({
+                                        targets:this.winWnd,
+                                        props:{alpha:1},
+                                        duration:500,
+                                        onComplete: () => {
+                                            
+                                        }
+                                    })
+                                    }
                                 }
                             })
                         }

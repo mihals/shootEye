@@ -41,7 +41,7 @@ export type ObjectMap = {
     personArr:Array<PersonMap>
 }
 
-export enum ModalWndMode {AMMO, HEALTH, WIN};
+export enum ModalWndMode {AMMO, HEALTH, WIN, GOBACK};
 
 export let objectsArr:Array<ObjectMap> = [
     //object1Map = 
@@ -194,11 +194,11 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim0',
                 frames: [
-                    { key: 'an0fr0' },
-                    { key: 'an0fr1' },
-                    { key: 'an0fr2' },
-                    { key: 'an0fr3' },
-                    { key: 'an0fr4' }
+                    { key:'atlas0', frame: 'an0fr0' },
+                    { key:'atlas0', frame: 'an0fr1' },
+                    { key:'atlas0', frame: 'an0fr2' },
+                    { key:'atlas0', frame: 'an0fr3' },
+                    { key:'atlas0', frame: 'an0fr4' }
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -206,11 +206,11 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim1',
                 frames: [
-                    { key: 'an1fr0' },
-                    { key: 'an1fr1' },
-                    { key: 'an1fr2' },
-                    { key: 'an1fr3' },
-                    { key: 'an1fr4' }
+                    { key:'atlas0', frame: 'an1fr0' },
+                    { key:'atlas0', frame: 'an1fr1' },
+                    { key:'atlas0', frame: 'an1fr2' },
+                    { key:'atlas0', frame: 'an1fr3' },
+                    { key:'atlas0', frame: 'an1fr4' }
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -218,11 +218,11 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim2',
                 frames: [
-                    { key: 'an2fr0' },
-                    { key: 'an2fr1' },
-                    { key: 'an2fr2' },
-                    { key: 'an2fr3' },
-                    { key: 'an2fr4' }
+                    { key:'atlas1', frame: 'an2fr0' },
+                    { key:'atlas1', frame: 'an2fr1' },
+                    { key:'atlas1', frame: 'an2fr2' },
+                    { key:'atlas1', frame: 'an2fr3' },
+                    { key:'atlas1', frame: 'an2fr4' }
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -230,11 +230,11 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim3',
                 frames: [
-                    { key: 'an3fr0' },
-                    { key: 'an3fr1' },
-                    { key: 'an3fr2' },
-                    { key: 'an3fr3' },
-                    { key: 'an3fr4' }
+                    { key:'atlas1', frame: 'an3fr0' },
+                    { key:'atlas1', frame: 'an3fr1' },
+                    { key:'atlas1', frame: 'an3fr2' },
+                    { key:'atlas1', frame: 'an3fr3' },
+                    { key:'atlas1', frame: 'an3fr4' }
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -242,11 +242,11 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim4',
                 frames: [
-                    { key: 'an4fr0' },
-                    { key: 'an4fr1' },
-                    { key: 'an4fr2' },
-                    { key: 'an4fr3' },
-                    { key: 'an4fr4' }
+                    { key:'atlas1', frame: 'an4fr0' },
+                    { key:'atlas1', frame: 'an4fr1' },
+                    { key:'atlas1', frame: 'an4fr2' },
+                    { key:'atlas1', frame: 'an4fr3' },
+                    { key:'atlas1', frame: 'an4fr4' }
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -254,11 +254,11 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim5',
                 frames: [
-                    { key: 'an5fr0' },
-                    { key: 'an5fr1' },
-                    { key: 'an5fr2' },
-                    { key: 'an5fr3' },
-                    { key: 'an5fr4' }
+                    { key:'atlas1', frame: 'an5fr0' },
+                    { key:'atlas1', frame: 'an5fr1' },
+                    { key:'atlas1', frame: 'an5fr2' },
+                    { key:'atlas1', frame: 'an5fr3' },
+                    { key:'atlas1', frame: 'an5fr4' }
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -266,11 +266,11 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim6',
                 frames: [
-                    { key: 'an6fr0' },
-                    { key: 'an6fr1' },
-                    { key: 'an6fr2' },
-                    { key: 'an6fr3' },
-                    { key: 'an6fr4' }
+                    { key:'atlas1', frame: 'an6fr0' },
+                    { key:'atlas1', frame: 'an6fr1' },
+                    { key:'atlas1', frame: 'an6fr2' },
+                    { key:'atlas1', frame: 'an6fr3' },
+                    { key:'atlas1', frame: 'an6fr4' }
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -278,9 +278,9 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim7',
                 frames: [
-                    { key: 'an7fr0' },
-                    { key: 'an7fr1' },
-                    { key: 'an7fr2' },
+                    { key:'atlas1', frame: 'an7fr0' },
+                    { key:'atlas1', frame: 'an7fr1' },
+                    { key:'atlas1', frame: 'an7fr2' },
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -288,9 +288,9 @@ export class Preloader extends Phaser.Scene
             {
                 key: 'elAnim8',
                 frames: [
-                    { key: 'an8fr0' },
-                    { key: 'an8fr1' },
-                    { key: 'an8fr2' },
+                    { key:'atlas1', frame: 'an8fr0' },
+                    { key:'atlas1', frame: 'an8fr1' },
+                    { key:'atlas1', frame: 'an8fr2' },
                 ],
                 frameRate: 5,
                 repeat: 0
@@ -352,29 +352,34 @@ export class Preloader extends Phaser.Scene
     }
 
     preload (){
-        this.load.image('groundL', 'assets/groundL.png');
-        this.load.image('bigFlash','assets/bigFlash.png');
-        this.load.image('smallFlash','assets/smallFlash.png');
-        this.load.image('landscapeL','assets/landscapeL.png');
+
+        this.load.atlas([{key: 'atlas0',textureURL: 'assets/atlas0.png',
+            atlasURL: 'assets/atlas0.json'}, {key: 'atlas1',textureURL: 'assets/atlas1.png',
+            atlasURL: 'assets/atlas1.json'}]);
+
+        //this.load.image('groundL', 'assets/groundL.png');
+        //this.load.image('bigFlash','assets/bigFlash.png');
+        //this.load.image('smallFlash','assets/smallFlash.png');
+        //this.load.image('landscapeL','assets/landscapeL.png');
         this.load.image('landscapeEnd','assets/landscapeEnd.png');
-        this.load.image('empty','assets/empty.png');
-        this.load.image('emptyAnchor','assets/gunAim.png');
-        this.load.image('redBall','assets/redBall41x41.png');
-        this.load.image('wantedStand','assets/wantedStand.png');
-        this.load.image('flowerStones','assets/flowerStones.png');
-        this.load.image('doorBld4','assets/doorBld4.png');
-        
 
-        this.load.image('yellowBtn','assets/yellowBtn.png');
-        this.load.image('redBtn','assets/redBtn.png');
-        this.load.image('dlgWnd','assets/dlgWnd.png');
-        this.load.image('yellowRect','assets/yellowRect.png');
+        //this.load.image('empty','assets/empty.png');
+        //this.load.image('emptyAnchor','assets/gunAim.png');
+        //this.load.image('redBall','assets/redBall41x41.png');
+        //this.load.image('wantedStand','assets/wantedStand.png');
+        //this.load.image('flowerStones','assets/flowerStones.png');
+        //this.load.image('doorBld4','assets/doorBld4.png');
 
-        this.load.image('unionBar','assets/unionBar.png');
-        this.load.image('healthPiece','assets/healthPiece.png');
-        this.load.image('moneyPiece','assets/moneyPiece.png');
-        this.load.image('ammoPiece','assets/ammoPiece.png');
-        this.load.image('goldEl','assets/goldEl.png');
+        //this.load.image('yellowBtn','assets/yellowBtn.png');
+        //this.load.image('redBtn','assets/redBtn.png');
+        //this.load.image('dlgWnd','assets/dlgWnd.png');
+        //this.load.image('yellowRect','assets/yellowRect.png');
+
+        //this.load.image('unionBar','assets/unionBar.png');
+        //this.load.image('healthPiece','assets/healthPiece.png');
+        //this.load.image('moneyPiece','assets/moneyPiece.png');
+        //this.load.image('ammoPiece','assets/ammoPiece.png');
+        //this.load.image('goldEl','assets/goldEl.png');
 
         // this.load.image(this.object1Map.objKey, this.object1Map.fileName + ".png");
         // this.load.image(this.object2Map.objKey, this.object2Map.fileName + ".png");
@@ -382,15 +387,15 @@ export class Preloader extends Phaser.Scene
         // this.load.image(this.object4Map.objKey, this.object4Map.fileName + ".png");
         // this.load.image(this.object5Map.objKey, this.object5Map.fileName + ".png");
 
-        objectsArr.forEach((item) => {
-            this.load.image(item.objKey, item.fileName + ".png");
-        })
+        // objectsArr.forEach((item) => {
+        //     this.load.image(item.objKey, item.fileName + ".png");
+        // })
 
-        this.animsArr.forEach((anim) => {
-            (anim.frames as Phaser.Types.Animations.AnimationFrame[]).forEach(frame => {
-                this.load.image(frame.key,"assets/" + frame.key + ".png")
-            });
-        })
+        // this.animsArr.forEach((anim) => {
+        //     (anim.frames as Phaser.Types.Animations.AnimationFrame[]).forEach(frame => {
+        //         this.load.image(frame.key,"assets/" + frame.key + ".png")
+        //     });
+        // })
 
 
 
@@ -399,13 +404,13 @@ export class Preloader extends Phaser.Scene
         // this.load.image('an7fr1','assets/an7fr1.png');
         // this.load.image('an7fr2','assets/an7fr2.png');
 
-        this.load.image('hand','assets/hand.png');
-        this.load.image('tutorBld','assets/tutorBld.png');
-        this.load.image('tutorBox','assets/tutorBox.png');
-        this.load.image('tutFr1','assets/tutFr1.png');
-        this.load.image('tutFr2','assets/tutFr2.png');
-        this.load.image('tutFr3','assets/tutFr3.png');
-        this.load.image('tutFr4','assets/tutFr4.png');
+        //this.load.image('hand','assets/hand.png');
+        //this.load.image('tutorBld','assets/tutorBld.png');
+        //this.load.image('tutorBox','assets/tutorBox.png');
+        //this.load.image('tutFr1','assets/tutFr1.png');
+        //this.load.image('tutFr2','assets/tutFr2.png');
+        //this.load.image('tutFr3','assets/tutFr3.png');
+        //this.load.image('tutFr4','assets/tutFr4.png');
     }
 
     create(){
@@ -437,18 +442,18 @@ class ScoreChecker{
     /** отрисовывает ресурсы в сцене */
     drawBars(scene:Phaser.Scene){
         this.barsContainer = scene.add.container(600, 45);
-        this.barsContainer.addAt(scene.add.image(0, -1, 'unionBar'), 0);
+        this.barsContainer.addAt(scene.add.image(0, -1,'atlas0', 'unionBar'), 0);
 
         for (let i = 0; i < 10; i++) {
-            this.barsContainer.addAt(scene.add.image(-488 + i * 24, 0, 'healthPiece'). 
+            this.barsContainer.addAt(scene.add.image(-488 + i * 24, 0,'atlas0', 'healthPiece'). 
                 setAlpha(this.health[i]/10), i + 1);
         }
         for (let i = 0; i < 10; i++) {
-            this.barsContainer.addAt(scene.add.image(-70 + i * 24, 0, 'ammoPiece').
+            this.barsContainer.addAt(scene.add.image(-70 + i * 24, 0,'atlas0', 'ammoPiece').
                 setAlpha(this.ammo[i]/10), i + 11);
         }
         for (let i = 0; i < 10; i++) {
-            this.barsContainer.addAt(scene.add.image(340 + i * 24, 0, 'moneyPiece').
+            this.barsContainer.addAt(scene.add.image(340 + i * 24, 0,'atlas0', 'moneyPiece').
                 setAlpha(this.money[i]/10), i + 21);
         }
     }
@@ -459,13 +464,9 @@ class ScoreChecker{
 
     changeHealth(delta:number){
         let ind = this.health.findIndex((el) => {return el==0});
-        if(ind == 0){
-            console.log("ind = "+ind);
-        }
+        
         if(ind == -1){
             this.health[9]-=5;
-            //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
-            //console.log(img.x);
             (this.barsContainer.getAt(10) as Phaser.GameObjects.Image).
                 setAlpha(this.health[9]/10);
         }else {
@@ -478,14 +479,8 @@ class ScoreChecker{
     changeAmmo(delta:number){
         let ind = this.ammo.findIndex((el) => {return el==0});
 
-        if(ind == 0){
-            console.log("ind = "+ind);
-        }
-        
         if(ind == -1){
             this.ammo[9]-=5;
-            //let img = this.barsContainer.getAt(11) as Phaser.GameObjects.Image;
-            //console.log(img.x);
             (this.barsContainer.getAt(20) as Phaser.GameObjects.Image).
                 setAlpha(this.ammo[9]/20);
         }else {
@@ -572,6 +567,46 @@ class ModalWnd{
             </div>
         </div>`; 
 
+        let goBackHtmlRu:string =
+        `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">Вам необходимо вернуться назад, чтобы 
+                    уничтожить оставшихся бандитов !</p>
+                </div>
+            </div>
+        </div>`;
+
+        let goBackHtmlEn:string =
+        `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">You need to go back to 
+                    Destroy the remaining bandits !</p>
+                </div>
+            </div>
+        </div>`;
+
+        let winHtmlRu:string =
+        `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">Поздравляем! Игра закончена!
+                     Вы полностью уничтожили всю банду! </p>
+                </div>
+            </div>
+        </div>`;
+
+        let winHtmlEn:string =
+        `<div class="uiContainer">
+            <div class="modalWnd">
+                <div class ="yellowRect">
+                    <p class="msgP">Congratulations! The game is over!
+                    You have completely destroyed the entire gang!</p>
+                </div>
+            </div>
+        </div>`;
+
         let content:string;
         switch(mode){
             case ModalWndMode.AMMO:
@@ -582,6 +617,13 @@ class ModalWnd{
                 content = globalThis.lang == "ru"?healthHtmlRu:healthHtmlEn;
                 return {htmlContent:content, styleContent:""};
                 break;
+            case ModalWndMode.GOBACK:
+                content = globalThis.lang == "ru"?goBackHtmlRu:goBackHtmlEn;
+                return {htmlContent:content, styleContent:""};
+                break;
+            case ModalWndMode.WIN:
+                content = globalThis.lang == "ru"?winHtmlRu:winHtmlEn;
+                return {htmlContent:content, styleContent:""};
         }
 
         // return{htmlContent:
@@ -633,7 +675,17 @@ class ModalWnd{
 let myModalWnd:ModalWnd;
 export {myModalWnd};
 
-export function recoverData(){
+/** перезапускает игру после неудачной попытки, возвращает слонов-гангстеров на
+ *  исходные, перезаписывает достижения пользователя, если его достижения (numKilledGangs)
+ *  улучшились, показывает рекламу
+ */
+export function recoverData(currAchievments:Achievments, sceneName:string){
+    saveResult(currAchievments.numKilledGangs);
+
+    try{
+        globalThis.gYsdk.features.GameplayAPI.stop()
+    }catch(err){}
+    
     objectsArr = [
         //object1Map = 
         {
@@ -752,5 +804,56 @@ export function recoverData(){
 
     globalThis.directions = {toRight: false, toLeft: false,
         toUp:false, toDown: false};
+    
+    showAdv(sceneName);
+}
+
+function showAdv(sceneName:string){
+    try {
+        globalThis.gYsdk.adv.showFullscreenAdv({
+            callbacks: {
+                onClose: () => {
+                    try{
+                        globalThis.gYsdk.features.GameplayAPI.start()
+                    }catch(err){}
+                    globalThis.currentScene.scene.start(sceneName,null);
+                },
+                onError: (e) => {
+                    try{
+                        globalThis.gYsdk.features.GameplayAPI.start()
+                    }catch(err){}
+                    globalThis.currentScene.scene.start(sceneName,null);
+                }
+            }
+        });
+
+    } catch (err) {
+        try{
+            globalThis.gYsdk.features.GameplayAPI.start()
+        }catch(err){}
+        globalThis.currentScene.scene.start(sceneName,null);
+    }
+}
+
+function saveResult(numKilledGangs:number){
+    //globalThis.plrAchievments.numAttempts++;
+    
+    if(numKilledGangs>globalThis.plrAchievments.numKilledGangs){
+        globalThis.plrAchievments.numKilledGangs = numKilledGangs;
+    }
+
+    globalThis.plrAchievments.numAttempts++;
+
+    try{
+        localStorage.setItem("data", JSON.stringify(globalThis.plrAchievments));
+    }catch(err){}
+
+    try{
+        globalThis.gPlayer.setData({achv:JSON.stringify(globalThis.plrAchievments)});
+    }catch(err){}
+}
+
+export function winScene(scene:Phaser.Scene){
+    scene.scene.launch("winScene");
 }
 

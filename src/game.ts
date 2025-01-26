@@ -5,6 +5,7 @@ import { SceneB } from './sceneB';
 import { SceneC } from './sceneC';
 import { SceneD } from './sceneD';
 import {TutorScene} from './tutorScene';
+import { WinScene } from './winScene';
 
 
 
@@ -32,7 +33,7 @@ export function startGame(){
             autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
             mode: Phaser.Scale.FIT
           },
-        scene: [ Preloader, TutorScene, SceneC, SceneB, SceneA, SceneD],
+        scene: [ Preloader, TutorScene, SceneC, SceneB, SceneA, SceneD, WinScene],
         //render :render,
     };
     myGame = new Phaser.Game(config);
@@ -58,7 +59,7 @@ export function addLoading(name, value) {
     // если загрузка всех необходимых компонентов удачно или нет завершилась,
     // начинаем игру 
     if (!Object.values(loadings).includes(-1)) {
-        let locAchievments:Array<number>
+        let locAchievments:Achievments;
         let remoteAchievments:Array<number>
 
         try {
@@ -66,27 +67,62 @@ export function addLoading(name, value) {
             if (globalThis.gYsdk.features.LoadingAPI) {
                 globalThis.gYsdk.features.LoadingAPI.ready();
             }
+
+
         }
         catch (err) { }
 
+        // пытаемся получить данные из локалсторадж и если что-то пошло не так
+        // присваиваем объекту нулевые значения
         try{
-            //locAchievments = JSON.parse(localStorage.getItem("lvlsData"))
+            locAchievments = JSON.parse(localStorage.getItem("data"));
+            if(!('numKilledGangs' in locAchievments && 
+                'numAttempts' in locAchievments)){
+                    locAchievments =  {numAttempts:0, numKilledGangs:0};
+                }
         }
         catch(err){
-            locAchievments = [-1,-1,-1,-1,-1]
+            locAchievments = {numAttempts:0, numKilledGangs:0};
         }
-
-        
 
         if(loadings.isPlayerData == 1){
             try{
-                let data = globalThis.gData
-                globalThis.achievments = data.achievments
+                let data = globalThis.gData;
+                globalThis.plrAchievments = data.achievments;
+                // сравниваем значения объектов из локалсторадж и из данных игрока
+                // на сервере, выбираем бОльшие
+                if( ('numKilledGangs' in globalThis.plrAchievments) && 
+                    ('numAttempts' in globalThis.plrAchievments) &&
+                    locAchievments.numKilledGangs>globalThis.plrAchievments.numKilledGangs){
+                        globalThis.plrAchievments.numKilledGangs = locAchievments.numKilledGangs;
+                        globalThis.plrAchievments.numAttempts = locAchievments.numAttempts;
+                    }
+                else{
+                    globalThis.plrAchievments = locAchievments;
+                }
             }catch(err){
 
             }
         }
+
+        try{
+            // Подписка на события 'game_api_pause'.
+            globalThis.gYsdk.on('game_api_pause', () => {
+                try{
+                    globalThis.currentScene.game.pause();
+                }catch(err){};
+            }); 
+            globalThis.gYsdk.on('game_api_resume', () => {
+                try{
+                    globalThis.currentScene.game.resume();
+                }catch(err){};
+            }); 
+        }catch(err){};
         
+        try{
+            globalThis.gYsdk.features.GameplayAPI.start()
+        }catch(err){}
+
         myGame.scene.start('tutorScene');
         
         // если нулевой уровень (учебка) ещё не проходился, запускаем его
@@ -111,10 +147,11 @@ export function initApp(YaGames) {
      *  по количеству уничтоженных гангстеров и сколько гангстеров он обнаружил,
      *  от этого зависит живучесть слонов, она постепенно уменьшается
      */
-    globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0,numFindedGangs:0 };
+    globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
 
-    globalThis.elStrength = 25;
-    //currentTexts = ruTexts;
+    globalThis.elStrength = 20;
+
+    globalThis.numKilledGangs =0;
     
     // запускаем игру и загружаем ассеты в сцене Preload
     startGame();
@@ -135,7 +172,7 @@ export function initApp(YaGames) {
             try {
                 globalThis.lang = ysdk.environment.i18n.lang
                 if(globalThis.lang == "en"){
-                    //currentTexts = enTexts;
+                    globalThis.lang = "en";
                 }else{
                     globalThis.lang == "ru"
                     //currentTexts =ruTexts;
@@ -144,6 +181,9 @@ export function initApp(YaGames) {
                 globalThis.lang = "ru"
                 //currentTexts =ruTexts;
             }
+
+            
+
             addLoading('isSDKLoaded', 1)
             addLoading('isAdvFinish', 0)
             ysdk.getPlayer().then(player => {
@@ -151,18 +191,20 @@ export function initApp(YaGames) {
                 player.getData().then(data => {
                     try {
                         globalThis.gData = data;
-                        globalThis.achievments = JSON.parse(data.lvlsData)
+                        let locAchievments = JSON.parse(data.achv);
+                        console.log(locAchievments);
+                        globalThis.plrAchievments = JSON.parse(data.achv);
                         addLoading('isPlayerData', 1)
                     } catch (err) {
-                        globalThis.achievments = [-1,-1,-1,-1,-1,-1]
+                        //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
                         addLoading('isPlayerData', 0)
                     }
                 }).catch(err => {
-                    globalThis.achievments = [-1,-1,-1,-1,-1,-1]
+                    //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
                     addLoading('isPlayerData', 0)
                 })
             }).catch(err => {
-                globalThis.achievments = [-1,-1,-1,-1,-1,-1]
+                //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
                 addLoading('isPlayerData', 0)
             });
             
@@ -171,7 +213,7 @@ export function initApp(YaGames) {
             addLoading('isSDKLoaded', 0)
             addLoading('isPlayerData', 0)
             addLoading('isAdvFinish', 0)
-            globalThis.achievments = [-1,-1,-1,-1,-1,-1]
+            //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
             globalThis.lang = "ru"
             //currentTexts =ruTexts;
         });
