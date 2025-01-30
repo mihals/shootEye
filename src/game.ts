@@ -60,15 +60,13 @@ export function addLoading(name, value) {
     // начинаем игру 
     if (!Object.values(loadings).includes(-1)) {
         let locAchievments:Achievments;
-        let remoteAchievments:Array<number>
+        let remoteAchievments:Achievments;
 
         try {
             // Показываем SDK, что игра загрузилась и можно начинать играть.
             if (globalThis.gYsdk.features.LoadingAPI) {
                 globalThis.gYsdk.features.LoadingAPI.ready();
             }
-
-
         }
         catch (err) { }
 
@@ -87,22 +85,27 @@ export function addLoading(name, value) {
 
         if(loadings.isPlayerData == 1){
             try{
-                let data = globalThis.gData;
-                globalThis.plrAchievments = data.achievments;
+                //let data = globalThis.gData;
+                //globalThis.plrAchievments = data.achievments;
                 // сравниваем значения объектов из локалсторадж и из данных игрока
                 // на сервере, выбираем бОльшие
                 if( ('numKilledGangs' in globalThis.plrAchievments) && 
-                    ('numAttempts' in globalThis.plrAchievments) &&
-                    locAchievments.numKilledGangs>globalThis.plrAchievments.numKilledGangs){
+                    ('numAttempts' in globalThis.plrAchievments) ){
+                    if(locAchievments.numKilledGangs>globalThis.plrAchievments.numKilledGangs){
                         globalThis.plrAchievments.numKilledGangs = locAchievments.numKilledGangs;
+                    }
+                    if(locAchievments.numAttempts>globalThis.plrAchievments.numAttempts){
                         globalThis.plrAchievments.numAttempts = locAchievments.numAttempts;
                     }
                 else{
                     globalThis.plrAchievments = locAchievments;
                 }
+            }
             }catch(err){
 
             }
+        }else{
+            globalThis.plrAchievments = locAchievments;
         }
 
         try{
@@ -123,21 +126,20 @@ export function addLoading(name, value) {
             globalThis.gYsdk.features.GameplayAPI.start()
         }catch(err){}
 
+        if(globalThis.plrAchievments.numKilledGangs >= 7){
+            globalThis.elStrength = 50;
+        }else if(globalThis.plrAchievments.numKilledGangs >= 5){
+            globalThis.elStrength = 35;
+        }else if(globalThis.plrAchievments.numKilledGangs >= 3){
+            globalThis.elStrength = 25;
+        }else {globalThis.elStrength = 20}
+
         myGame.scene.start('tutorScene');
-        
-        // если нулевой уровень (учебка) ещё не проходился, запускаем его
-        // if (globalThis.achievments[0] == LvlState.NonAttempted) {
-        //     globalThis.currentLevel = lvlNames.Demo;
-        //     myGame.scene.start("demo")
-        // }else{
-        //     globalThis.myUIBlocks.showBaseWnd(achievments,lang)
-        // }
     }
 }
 
 export function initApp(YaGames) {
-    /** данные о достижениях игрока из localStorage  */
-    let locAchievments:Array<number>;
+    //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
     /** данные о достижениях игрока из объекта player из yasdk  */
     //let remotecAchievments:Array<number>;
     // значение по умолчанию
@@ -190,9 +192,9 @@ export function initApp(YaGames) {
                 globalThis.gPlayer = player;
                 player.getData().then(data => {
                     try {
-                        globalThis.gData = data;
+                        //globalThis.gData = data;
                         let locAchievments = JSON.parse(data.achv);
-                        console.log(locAchievments);
+                        //console.log(locAchievments);
                         globalThis.plrAchievments = JSON.parse(data.achv);
                         addLoading('isPlayerData', 1)
                     } catch (err) {
@@ -217,5 +219,11 @@ export function initApp(YaGames) {
             globalThis.lang = "ru"
             //currentTexts =ruTexts;
         });
+}
+
+function clearData(){
+    globalThis.gYsdk.getPlayer().then(player => {
+        player.setData({});
+    })
 }
 

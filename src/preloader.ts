@@ -146,7 +146,7 @@ export let objectsArr:Array<ObjectMap> = [
         objectX: 1090,
         objectY: 358,
         personArr: [{
-            deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,health:100,
+            deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN,health:200,
             hiddenArea: { dX: 398, dY: 24, w: 32, h: 61 },
             activeArea: { dX: 400, dY: 35, w: 178, h: 195 },
             flashesArr:[{dx:442, dy:150}, {dx:247, dy:126}]
@@ -361,7 +361,7 @@ export class Preloader extends Phaser.Scene
         //this.load.image('bigFlash','assets/bigFlash.png');
         //this.load.image('smallFlash','assets/smallFlash.png');
         //this.load.image('landscapeL','assets/landscapeL.png');
-        this.load.image('landscapeEnd','assets/landscapeEnd.png');
+        //this.load.image('landscapeEnd','assets/landscapeEnd.png');
 
         //this.load.image('empty','assets/empty.png');
         //this.load.image('emptyAnchor','assets/gunAim.png');
@@ -681,10 +681,22 @@ export {myModalWnd};
  */
 export function recoverData(currAchievments:Achievments, sceneName:string){
     saveResult(currAchievments.numKilledGangs);
+    globalThis.numKilledGangs = 0;
 
-    try{
-        globalThis.gYsdk.features.GameplayAPI.stop()
-    }catch(err){}
+    switch(globalThis.elStrength){
+        case 20:
+            if(globalThis.plrAchievments.numKilledGangs >= 3)
+                elStrength = 25;
+            break;
+        case 25:
+            if(globalThis.plrAchievments.numKilledGangs >= 5)
+                elStrength = 35;
+            break;
+        case 35:
+            if(globalThis.plrAchievments.numKilledGangs >= 7)
+                elStrength = 50;
+            break;
+    }
     
     objectsArr = [
         //object1Map = 
@@ -842,7 +854,7 @@ function saveResult(numKilledGangs:number){
         globalThis.plrAchievments.numKilledGangs = numKilledGangs;
     }
 
-    globalThis.plrAchievments.numAttempts++;
+    //globalThis.plrAchievments.numAttempts++;
 
     try{
         localStorage.setItem("data", JSON.stringify(globalThis.plrAchievments));
@@ -854,6 +866,7 @@ function saveResult(numKilledGangs:number){
 }
 
 export function winScene(scene:Phaser.Scene){
+    
     scene.scene.launch("winScene");
 }
 

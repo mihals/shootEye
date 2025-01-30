@@ -43,6 +43,8 @@ export class SceneB extends Phaser.Scene
     dirSgn:number;
     goldEl:Phaser.GameObjects.Image;
 
+    winWnd:Phaser.GameObjects.DOMElement;
+
     constructor ()
     {
         super('sceneB');
@@ -61,6 +63,8 @@ export class SceneB extends Phaser.Scene
         }else{
             this.anchorY = 100; 
         }
+
+        this.scene.stop("winScene");
     }
 
     create ()
@@ -182,6 +186,9 @@ export class SceneB extends Phaser.Scene
                                 this.cameras.main.flash(350, 255, 0, 0);
                                 myScoreChecker.changeHealth(-10);
                                 if(myScoreChecker.health[0] <= 0){
+                                    try{
+                                        globalThis.gYsdk.features.GameplayAPI.stop()
+                                    }catch(err){}
                                     let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                     let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                     dom.setHTML(content.htmlContent);
@@ -227,7 +234,10 @@ export class SceneB extends Phaser.Scene
                             from: 300,
                             run: () => {
                                 person.flashSpriteArr[0].setTexture('atlas0',"empty");
-                                person.shootTimeLine.play(true)
+                                if(person.state == STATE.ACTIVE)
+                                    person.shootTimeLine.play(true);
+                                else 
+                                    console.log("person empty");
                             }
                         }
                     ]);
@@ -343,6 +353,7 @@ export class SceneB extends Phaser.Scene
         });
         
         myScoreChecker.drawBars(this);
+        globalThis.numKilledGangs = 0;
     }
 
     update(time: number, delta: number): void {
@@ -425,6 +436,9 @@ export class SceneB extends Phaser.Scene
                             fireSphereArr[0].destroy();
                             myScoreChecker.changeAmmo(-5);
                             if(myScoreChecker.ammo[0] <= 0){
+                                try{
+                                    globalThis.gYsdk.features.GameplayAPI.stop()
+                                }catch(err){}
                                 let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.AMMO);
                                 let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                 dom.setHTML(content.htmlContent);
@@ -547,7 +561,8 @@ export class SceneB extends Phaser.Scene
                         locPerson.health -= globalThis.elStrength;
                         if(locPerson.health > 0){
                              locPerson.shootTimeLine.resume();
-                        }else{
+                        }else if(locPerson.state != STATE.EMPTY){
+                            locPerson.shootTimeLine.stop();
                             locPerson.sprite.setTexture('atlas0',"empty");
                             locPerson.state = STATE.EMPTY;
                             locPerson.flashSpriteArr.forEach((spr) => {
@@ -565,6 +580,22 @@ export class SceneB extends Phaser.Scene
                                     this.goldEl.setTexture('atlas0',"empty");
                                     myScoreChecker.changeMoney(10);
                                     globalThis.numKilledGangs++;
+
+                                    if(globalThis.numKilledGangs == 9){
+                                        let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.WIN);
+                                        this.winWnd = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                        this.winWnd.setHTML(content.htmlContent).setAlpha(0);
+                                        this.add.tween({
+                                        targets:this.winWnd,
+                                        props:{alpha:1},
+                                        duration:3000,
+                                        yoyo:true,
+                                        onComplete: () => {
+                                            this.scene.pause();
+                                            this.scene.launch('winScene',{x:this.emptyAnchor.x});
+                                        }
+                                    })
+                                    }
                                 }
                             })
                         }

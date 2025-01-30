@@ -43,6 +43,8 @@ export class SceneC extends Phaser.Scene
     goldEl:Phaser.GameObjects.Image;
     firstUpdate:string;
 
+    winWnd:Phaser.GameObjects.DOMElement;
+
     constructor ()
     {
         super('sceneC');
@@ -202,6 +204,9 @@ export class SceneC extends Phaser.Scene
                                 }
                                 myScoreChecker.changeHealth(-10);
                                 if(myScoreChecker.health[0] <= 0){
+                                    try{
+                                        globalThis.gYsdk.features.GameplayAPI.stop()
+                                    }catch(err){}
                                     let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                     let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                     dom.setHTML(content.htmlContent);
@@ -238,6 +243,9 @@ export class SceneC extends Phaser.Scene
                                     this.cameras.main.flash(350, 255, 0, 0);
                                     myScoreChecker.changeHealth(-10);
                                     if(myScoreChecker.health[0] <= 0){
+                                        try{
+                                            globalThis.gYsdk.features.GameplayAPI.stop()
+                                        }catch(err){}
                                         let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                         let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                         dom.setHTML(content.htmlContent);
@@ -276,6 +284,9 @@ export class SceneC extends Phaser.Scene
                                 }
                                 myScoreChecker.changeHealth(-10);
                                 if(myScoreChecker.health[0] <= 0){
+                                    try{
+                                        globalThis.gYsdk.features.GameplayAPI.stop()
+                                    }catch(err){}
                                     let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                     let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                     dom.setHTML(content.htmlContent);
@@ -307,10 +318,8 @@ export class SceneC extends Phaser.Scene
                             from: 300,
                             run: () => {
                                 person.flashSpriteArr[0].setTexture('atlas0',"empty");
-                                // if(person.flashSpriteArr.length > 1){
-                                //     person.flashSpriteArr[1].setTexture("bigFlash");
-                                // }
-                                person.shootTimeLine.play(true)
+                                if(person.state == STATE.ACTIVE)
+                                    person.shootTimeLine.play(true);
                             }
                         }
                     ]);
@@ -572,6 +581,9 @@ export class SceneC extends Phaser.Scene
                             fireSphereArr[2].destroy();
                             myScoreChecker.changeAmmo(-5);
                             if(myScoreChecker.ammo[0] <= 0){
+                                try{
+                                    globalThis.gYsdk.features.GameplayAPI.stop()
+                                }catch(err){}
                                 let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.AMMO);
                                 let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                 dom.setHTML(content.htmlContent);
@@ -665,7 +677,7 @@ export class SceneC extends Phaser.Scene
                         }else{
                             if(locPerson.sprite.texture.key == "an7fr2"){
                                 locPerson.sprite.setTexture('atlas0',"doorBld4");
-                            }else{
+                            }else if(locPerson.state != STATE.EMPTY){
                                 locPerson.sprite.setTexture('atlas0',"empty");
                             }
                             locPerson.state = STATE.EMPTY;
@@ -684,6 +696,22 @@ export class SceneC extends Phaser.Scene
                                     this.goldEl.setTexture('atlas0',"empty");
                                     myScoreChecker.changeMoney(10);
                                     globalThis.numKilledGangs++;
+
+                                    if(globalThis.numKilledGangs == 9){
+                                        let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.WIN);
+                                        this.winWnd = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
+                                        this.winWnd.setHTML(content.htmlContent).setAlpha(0);
+                                        this.add.tween({
+                                        targets:this.winWnd,
+                                        props:{alpha:1},
+                                        duration:3000,
+                                        yoyo:true,
+                                        onComplete: () => {
+                                            this.scene.pause();
+                                            this.scene.launch('winScene',{x:this.emptyAnchor.x});
+                                        }
+                                    })
+                                    }
                                 }
                             })
                         }

@@ -88,6 +88,8 @@ export class SceneD extends Phaser.Scene
         }else{
             this.anchorY = 100; 
         }
+
+        this.scene.stop("winScene");
     }
 
     create ()
@@ -113,7 +115,7 @@ export class SceneD extends Phaser.Scene
         this.add.image(1800,273,'atlas0','landscapeL').setFlipX(true);
         this.add.image(3000,273,'atlas0','landscapeL')//.setFlipX(true);
 
-        this.add.image(3360,415,'landscapeEnd');
+        this.add.image(3360,415,'atlas1','landscapeEnd');
 
         // золотая монетка - бонус, премия за подбитого слона
         this.goldEl = this.add.image(0,0,'atlas0', "empty")
@@ -204,6 +206,9 @@ export class SceneD extends Phaser.Scene
                                     }
                                     myScoreChecker.changeHealth(-10);
                                     if(myScoreChecker.health[0] <= 0){
+                                        try{
+                                            globalThis.gYsdk.features.GameplayAPI.stop()
+                                        }catch(err){}
                                         let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                         let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                         dom.setHTML(content.htmlContent);
@@ -240,6 +245,9 @@ export class SceneD extends Phaser.Scene
                                         this.cameras.main.flash(350, 255, 0, 0);
                                         myScoreChecker.changeHealth(-10);
                                         if(myScoreChecker.health[0] <= 0){
+                                            try{
+                                                globalThis.gYsdk.features.GameplayAPI.stop()
+                                            }catch(err){}
                                             let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                             let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                             dom.setHTML(content.htmlContent);
@@ -278,6 +286,9 @@ export class SceneD extends Phaser.Scene
                                     }
                                     myScoreChecker.changeHealth(-10);
                                     if(myScoreChecker.health[0] <= 0){
+                                        try{
+                                            globalThis.gYsdk.features.GameplayAPI.stop()
+                                        }catch(err){}
                                         let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                         let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                         dom.setHTML(content.htmlContent);
@@ -309,10 +320,8 @@ export class SceneD extends Phaser.Scene
                                 from: 300,
                                 run: () => {
                                     person.flashSpriteArr[0].setTexture('atlas0',"empty");
-                                    // if(person.flashSpriteArr.length > 1){
-                                    //     person.flashSpriteArr[1].setTexture("bigFlash");
-                                    // }
-                                    person.shootTimeLine.play(true)
+                                    if(person.state == STATE.ACTIVE)
+                                        person.shootTimeLine.play(true);
                                 }
                             }
                         ]);
@@ -623,6 +632,9 @@ export class SceneD extends Phaser.Scene
                             fireSphereArr[2].destroy();
                             myScoreChecker.changeAmmo(-5);
                             if(myScoreChecker.ammo[0] <= 0){
+                                try{
+                                    globalThis.gYsdk.features.GameplayAPI.stop()
+                                }catch(err){}
                                 let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.AMMO);
                                 let dom = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
                                 dom.setHTML(content.htmlContent);
@@ -721,12 +733,7 @@ export class SceneD extends Phaser.Scene
                         locPerson.health -= globalThis.elStrength;
                         if(locPerson.health > 0){
                              locPerson.shootTimeLine.resume();
-                        }else{
-                            // this.sceneObjArr.forEach((obj) => {
-                            //     obj.personArr.forEach((pers) => {
-                            //         locPerson.sprite.setTexture("empty");
-                            //     })});
-                            
+                        }else if(locPerson.state != STATE.EMPTY){
                             locPerson.state = STATE.EMPTY;
                             locPerson.sprite.setTexture('atlas0',"empty");
                             this.sceneObjArr.forEach((obj) => {
@@ -749,9 +756,9 @@ export class SceneD extends Phaser.Scene
                                 onComplete: () => {
                                     this.goldEl.setTexture('atlas0',"empty");
                                     myScoreChecker.changeMoney(10);
+                                    myScoreChecker.changeMoney(10);
                                     globalThis.numKilledGangs++;
-                                    winScene(this);
-                                    //this.scene.launch("winScene");
+                                    
                                     if(globalThis.numKilledGangs == 9){
                                         let content:domElContent = myModalWnd.getModalWnd(ModalWndMode.WIN);
                                         this.winWnd = this.add.dom(this.emptyAnchor.x, 300,'div', content.styleContent);
@@ -759,9 +766,11 @@ export class SceneD extends Phaser.Scene
                                         this.add.tween({
                                         targets:this.winWnd,
                                         props:{alpha:1},
-                                        duration:500,
+                                        duration:3000,
+                                        yoyo:true,
                                         onComplete: () => {
-                                            
+                                            this.scene.pause();
+                                            this.scene.launch('winScene',{x:this.emptyAnchor.x});
                                         }
                                     })
                                     }

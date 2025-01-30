@@ -241662,7 +241662,7 @@ var MyGame = (function (exports) {
           objectX: 1090,
           objectY: 358,
           personArr: [{
-                  deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN, health: 100,
+                  deltaX: 351, deltaY: 97, animKey: "elAnim8", state: STATE.HIDDEN, health: 200,
                   hiddenArea: { dX: 398, dY: 24, w: 32, h: 61 },
                   activeArea: { dX: 400, dY: 35, w: 178, h: 195 },
                   flashesArr: [{ dx: 442, dy: 150 }, { dx: 247, dy: 126 }]
@@ -241853,7 +241853,7 @@ var MyGame = (function (exports) {
           //this.load.image('bigFlash','assets/bigFlash.png');
           //this.load.image('smallFlash','assets/smallFlash.png');
           //this.load.image('landscapeL','assets/landscapeL.png');
-          this.load.image('landscapeEnd', 'assets/landscapeEnd.png');
+          //this.load.image('landscapeEnd','assets/landscapeEnd.png');
           //this.load.image('empty','assets/empty.png');
           //this.load.image('emptyAnchor','assets/gunAim.png');
           //this.load.image('redBall','assets/redBall41x41.png');
@@ -242115,10 +242115,21 @@ var MyGame = (function (exports) {
    */
   function recoverData(currAchievments, sceneName) {
       saveResult(currAchievments.numKilledGangs);
-      try {
-          globalThis.gYsdk.features.GameplayAPI.stop();
+      globalThis.numKilledGangs = 0;
+      switch (globalThis.elStrength) {
+          case 20:
+              if (globalThis.plrAchievments.numKilledGangs >= 3)
+                  elStrength = 25;
+              break;
+          case 25:
+              if (globalThis.plrAchievments.numKilledGangs >= 5)
+                  elStrength = 35;
+              break;
+          case 35:
+              if (globalThis.plrAchievments.numKilledGangs >= 7)
+                  elStrength = 50;
+              break;
       }
-      catch (err) { }
       objectsArr = [
           //object1Map = 
           {
@@ -242265,7 +242276,7 @@ var MyGame = (function (exports) {
       if (numKilledGangs > globalThis.plrAchievments.numKilledGangs) {
           globalThis.plrAchievments.numKilledGangs = numKilledGangs;
       }
-      globalThis.plrAchievments.numAttempts++;
+      //globalThis.plrAchievments.numAttempts++;
       try {
           localStorage.setItem("data", JSON.stringify(globalThis.plrAchievments));
       }
@@ -242274,9 +242285,6 @@ var MyGame = (function (exports) {
           globalThis.gPlayer.setData({ achv: JSON.stringify(globalThis.plrAchievments) });
       }
       catch (err) { }
-  }
-  function winScene(scene) {
-      scene.scene.launch("winScene");
   }
 
   class SceneA extends __webpack_exports__Scene {
@@ -242395,6 +242403,10 @@ var MyGame = (function (exports) {
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
+                                      try {
+                                          globalThis.gYsdk.features.GameplayAPI.stop();
+                                      }
+                                      catch (err) { }
                                       let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                       let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                       dom.setHTML(content.htmlContent);
@@ -242430,6 +242442,10 @@ var MyGame = (function (exports) {
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
                                       if (myScoreChecker.health[0] <= 0) {
+                                          try {
+                                              globalThis.gYsdk.features.GameplayAPI.stop();
+                                          }
+                                          catch (err) { }
                                           let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                           let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                           dom.setHTML(content.htmlContent);
@@ -242467,6 +242483,10 @@ var MyGame = (function (exports) {
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
+                                      try {
+                                          globalThis.gYsdk.features.GameplayAPI.stop();
+                                      }
+                                      catch (err) { }
                                       let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                       let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                       dom.setHTML(content.htmlContent);
@@ -242497,10 +242517,8 @@ var MyGame = (function (exports) {
                               from: 300,
                               run: () => {
                                   person.flashSpriteArr[0].setTexture('atlas0', "empty");
-                                  // if(person.flashSpriteArr.length > 1){
-                                  //     person.flashSpriteArr[1].setTexture("bigFlash");
-                                  // }
-                                  person.shootTimeLine.play(true);
+                                  if (person.state == STATE.ACTIVE)
+                                      person.shootTimeLine.play(true);
                               }
                           }
                       ]);
@@ -242722,6 +242740,10 @@ var MyGame = (function (exports) {
                               fireSphereArr[2].destroy();
                               myScoreChecker.changeAmmo(-5);
                               if (myScoreChecker.ammo[0] <= 0) {
+                                  try {
+                                      globalThis.gYsdk.features.GameplayAPI.stop();
+                                  }
+                                  catch (err) { }
                                   let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
                                   let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                   dom.setHTML(content.htmlContent);
@@ -242804,7 +242826,7 @@ var MyGame = (function (exports) {
                           if (locPerson.health > 0) {
                               locPerson.shootTimeLine.resume();
                           }
-                          else {
+                          else if (locPerson.state != STATE.EMPTY) {
                               locPerson.sprite.setTexture('atlas0', "empty");
                               locPerson.state = STATE.EMPTY;
                               locPerson.flashSpriteArr.forEach((spr) => {
@@ -242822,6 +242844,21 @@ var MyGame = (function (exports) {
                                       this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
                                       globalThis.numKilledGangs++;
+                                      if (globalThis.numKilledGangs == 9) {
+                                          let content = myModalWnd.getModalWnd(ModalWndMode.WIN);
+                                          this.winWnd = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                          this.winWnd.setHTML(content.htmlContent).setAlpha(0);
+                                          this.add.tween({
+                                              targets: this.winWnd,
+                                              props: { alpha: 1 },
+                                              duration: 3000,
+                                              yoyo: true,
+                                              onComplete: () => {
+                                                  this.scene.pause();
+                                                  this.scene.launch('winScene', { x: this.emptyAnchor.x });
+                                              }
+                                          });
+                                      }
                                   }
                               });
                           }
@@ -242851,6 +242888,7 @@ var MyGame = (function (exports) {
           else {
               this.anchorY = 100;
           }
+          this.scene.stop("winScene");
       }
       create() {
           globalThis.currentScene = this;
@@ -242953,6 +242991,10 @@ var MyGame = (function (exports) {
                                   this.cameras.main.flash(350, 255, 0, 0);
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
+                                      try {
+                                          globalThis.gYsdk.features.GameplayAPI.stop();
+                                      }
+                                      catch (err) { }
                                       let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                       let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                       dom.setHTML(content.htmlContent);
@@ -242997,7 +243039,10 @@ var MyGame = (function (exports) {
                               from: 300,
                               run: () => {
                                   person.flashSpriteArr[0].setTexture('atlas0', "empty");
-                                  person.shootTimeLine.play(true);
+                                  if (person.state == STATE.ACTIVE)
+                                      person.shootTimeLine.play(true);
+                                  else
+                                      console.log("person empty");
                               }
                           }
                       ]);
@@ -243099,6 +243144,7 @@ var MyGame = (function (exports) {
               }
           });
           myScoreChecker.drawBars(this);
+          globalThis.numKilledGangs = 0;
       }
       update(time, delta) {
           this.emptyAnchor.setVelocityX((this.rightDir + this.leftDir) * 180);
@@ -243170,6 +243216,10 @@ var MyGame = (function (exports) {
                               fireSphereArr[0].destroy();
                               myScoreChecker.changeAmmo(-5);
                               if (myScoreChecker.ammo[0] <= 0) {
+                                  try {
+                                      globalThis.gYsdk.features.GameplayAPI.stop();
+                                  }
+                                  catch (err) { }
                                   let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
                                   let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                   dom.setHTML(content.htmlContent);
@@ -243272,7 +243322,8 @@ var MyGame = (function (exports) {
                           if (locPerson.health > 0) {
                               locPerson.shootTimeLine.resume();
                           }
-                          else {
+                          else if (locPerson.state != STATE.EMPTY) {
+                              locPerson.shootTimeLine.stop();
                               locPerson.sprite.setTexture('atlas0', "empty");
                               locPerson.state = STATE.EMPTY;
                               locPerson.flashSpriteArr.forEach((spr) => {
@@ -243290,6 +243341,21 @@ var MyGame = (function (exports) {
                                       this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
                                       globalThis.numKilledGangs++;
+                                      if (globalThis.numKilledGangs == 9) {
+                                          let content = myModalWnd.getModalWnd(ModalWndMode.WIN);
+                                          this.winWnd = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                          this.winWnd.setHTML(content.htmlContent).setAlpha(0);
+                                          this.add.tween({
+                                              targets: this.winWnd,
+                                              props: { alpha: 1 },
+                                              duration: 3000,
+                                              yoyo: true,
+                                              onComplete: () => {
+                                                  this.scene.pause();
+                                                  this.scene.launch('winScene', { x: this.emptyAnchor.x });
+                                              }
+                                          });
+                                      }
                                   }
                               });
                           }
@@ -243433,6 +243499,10 @@ var MyGame = (function (exports) {
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
+                                      try {
+                                          globalThis.gYsdk.features.GameplayAPI.stop();
+                                      }
+                                      catch (err) { }
                                       let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                       let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                       dom.setHTML(content.htmlContent);
@@ -243468,6 +243538,10 @@ var MyGame = (function (exports) {
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
                                       if (myScoreChecker.health[0] <= 0) {
+                                          try {
+                                              globalThis.gYsdk.features.GameplayAPI.stop();
+                                          }
+                                          catch (err) { }
                                           let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                           let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                           dom.setHTML(content.htmlContent);
@@ -243505,6 +243579,10 @@ var MyGame = (function (exports) {
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
+                                      try {
+                                          globalThis.gYsdk.features.GameplayAPI.stop();
+                                      }
+                                      catch (err) { }
                                       let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                       let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                       dom.setHTML(content.htmlContent);
@@ -243535,10 +243613,8 @@ var MyGame = (function (exports) {
                               from: 300,
                               run: () => {
                                   person.flashSpriteArr[0].setTexture('atlas0', "empty");
-                                  // if(person.flashSpriteArr.length > 1){
-                                  //     person.flashSpriteArr[1].setTexture("bigFlash");
-                                  // }
-                                  person.shootTimeLine.play(true);
+                                  if (person.state == STATE.ACTIVE)
+                                      person.shootTimeLine.play(true);
                               }
                           }
                       ]);
@@ -243766,6 +243842,10 @@ var MyGame = (function (exports) {
                               fireSphereArr[2].destroy();
                               myScoreChecker.changeAmmo(-5);
                               if (myScoreChecker.ammo[0] <= 0) {
+                                  try {
+                                      globalThis.gYsdk.features.GameplayAPI.stop();
+                                  }
+                                  catch (err) { }
                                   let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
                                   let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                   dom.setHTML(content.htmlContent);
@@ -243844,7 +243924,7 @@ var MyGame = (function (exports) {
                               if (locPerson.sprite.texture.key == "an7fr2") {
                                   locPerson.sprite.setTexture('atlas0', "doorBld4");
                               }
-                              else {
+                              else if (locPerson.state != STATE.EMPTY) {
                                   locPerson.sprite.setTexture('atlas0', "empty");
                               }
                               locPerson.state = STATE.EMPTY;
@@ -243863,6 +243943,21 @@ var MyGame = (function (exports) {
                                       this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
                                       globalThis.numKilledGangs++;
+                                      if (globalThis.numKilledGangs == 9) {
+                                          let content = myModalWnd.getModalWnd(ModalWndMode.WIN);
+                                          this.winWnd = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
+                                          this.winWnd.setHTML(content.htmlContent).setAlpha(0);
+                                          this.add.tween({
+                                              targets: this.winWnd,
+                                              props: { alpha: 1 },
+                                              duration: 3000,
+                                              yoyo: true,
+                                              onComplete: () => {
+                                                  this.scene.pause();
+                                                  this.scene.launch('winScene', { x: this.emptyAnchor.x });
+                                              }
+                                          });
+                                      }
                                   }
                               });
                           }
@@ -243902,6 +243997,7 @@ var MyGame = (function (exports) {
           else {
               this.anchorY = 100;
           }
+          this.scene.stop("winScene");
       }
       create() {
           globalThis.currentScene = this;
@@ -243920,7 +244016,7 @@ var MyGame = (function (exports) {
           this.add.image(600, 273, 'atlas0', 'landscapeL');
           this.add.image(1800, 273, 'atlas0', 'landscapeL').setFlipX(true);
           this.add.image(3000, 273, 'atlas0', 'landscapeL'); //.setFlipX(true);
-          this.add.image(3360, 415, 'landscapeEnd');
+          this.add.image(3360, 415, 'atlas1', 'landscapeEnd');
           // золотая монетка - бонус, премия за подбитого слона
           this.goldEl = this.add.image(0, 0, 'atlas0', "empty");
           // прицел
@@ -244000,6 +244096,10 @@ var MyGame = (function (exports) {
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
+                                      try {
+                                          globalThis.gYsdk.features.GameplayAPI.stop();
+                                      }
+                                      catch (err) { }
                                       let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                       let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                       dom.setHTML(content.htmlContent);
@@ -244035,6 +244135,10 @@ var MyGame = (function (exports) {
                                       this.cameras.main.flash(350, 255, 0, 0);
                                       myScoreChecker.changeHealth(-10);
                                       if (myScoreChecker.health[0] <= 0) {
+                                          try {
+                                              globalThis.gYsdk.features.GameplayAPI.stop();
+                                          }
+                                          catch (err) { }
                                           let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                           let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                           dom.setHTML(content.htmlContent);
@@ -244072,6 +244176,10 @@ var MyGame = (function (exports) {
                                   }
                                   myScoreChecker.changeHealth(-10);
                                   if (myScoreChecker.health[0] <= 0) {
+                                      try {
+                                          globalThis.gYsdk.features.GameplayAPI.stop();
+                                      }
+                                      catch (err) { }
                                       let content = myModalWnd.getModalWnd(ModalWndMode.HEALTH);
                                       let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                       dom.setHTML(content.htmlContent);
@@ -244102,10 +244210,8 @@ var MyGame = (function (exports) {
                               from: 300,
                               run: () => {
                                   person.flashSpriteArr[0].setTexture('atlas0', "empty");
-                                  // if(person.flashSpriteArr.length > 1){
-                                  //     person.flashSpriteArr[1].setTexture("bigFlash");
-                                  // }
-                                  person.shootTimeLine.play(true);
+                                  if (person.state == STATE.ACTIVE)
+                                      person.shootTimeLine.play(true);
                               }
                           }
                       ]);
@@ -244371,6 +244477,10 @@ var MyGame = (function (exports) {
                               fireSphereArr[2].destroy();
                               myScoreChecker.changeAmmo(-5);
                               if (myScoreChecker.ammo[0] <= 0) {
+                                  try {
+                                      globalThis.gYsdk.features.GameplayAPI.stop();
+                                  }
+                                  catch (err) { }
                                   let content = myModalWnd.getModalWnd(ModalWndMode.AMMO);
                                   let dom = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
                                   dom.setHTML(content.htmlContent);
@@ -244449,11 +244559,7 @@ var MyGame = (function (exports) {
                           if (locPerson.health > 0) {
                               locPerson.shootTimeLine.resume();
                           }
-                          else {
-                              // this.sceneObjArr.forEach((obj) => {
-                              //     obj.personArr.forEach((pers) => {
-                              //         locPerson.sprite.setTexture("empty");
-                              //     })});
+                          else if (locPerson.state != STATE.EMPTY) {
                               locPerson.state = STATE.EMPTY;
                               locPerson.sprite.setTexture('atlas0', "empty");
                               this.sceneObjArr.forEach((obj) => {
@@ -244475,9 +244581,8 @@ var MyGame = (function (exports) {
                                   onComplete: () => {
                                       this.goldEl.setTexture('atlas0', "empty");
                                       myScoreChecker.changeMoney(10);
+                                      myScoreChecker.changeMoney(10);
                                       globalThis.numKilledGangs++;
-                                      winScene(this);
-                                      //this.scene.launch("winScene");
                                       if (globalThis.numKilledGangs == 9) {
                                           let content = myModalWnd.getModalWnd(ModalWndMode.WIN);
                                           this.winWnd = this.add.dom(this.emptyAnchor.x, 300, 'div', content.styleContent);
@@ -244485,8 +244590,11 @@ var MyGame = (function (exports) {
                                           this.add.tween({
                                               targets: this.winWnd,
                                               props: { alpha: 1 },
-                                              duration: 500,
+                                              duration: 3000,
+                                              yoyo: true,
                                               onComplete: () => {
+                                                  this.scene.pause();
+                                                  this.scene.launch('winScene', { x: this.emptyAnchor.x });
                                               }
                                           });
                                       }
@@ -244610,7 +244718,7 @@ var MyGame = (function (exports) {
               skipTutor: "&nbspSKIP.&nbsp"
           };
           //globalThis.lang = "en";
-          this.msgTxtObj = globalThis.lang == "ru" ? this.msgTxtObjRu : this.msgTxtObjEn;
+          //this.msgTxtObj = globalThis.lang == "ru"?this.msgTxtObjRu:this.msgTxtObjEn;
           //this.msgTxtObj = this.msgTxtObjEn;
           globalThis.directions = { toRight: false, toLeft: false,
               toUp: false, toDown: false };
@@ -244621,6 +244729,7 @@ var MyGame = (function (exports) {
       create() {
           globalThis.currentScene = this;
           globalThis.numKilledGangs = 0;
+          this.msgTxtObj = globalThis.lang == "ru" ? this.msgTxtObjRu : this.msgTxtObjEn;
           // объект находится и в соседней сцене
           objectsArr[0].objectX = 2947;
           objectsArr[0].objectY = 410;
@@ -245237,15 +245346,30 @@ var MyGame = (function (exports) {
           super('winScene');
       }
       init(data) {
+          this.x = data.x;
       }
       create() {
-          globalThis.currentScene = this;
-          this.rbImg = this.add.image(600, 350, "redBall");
-          this.add.tween({
-              targets: this.rbImg,
-              props: { y: 0 },
-              duration: 500,
-              yoyo: true
+          // globalThis.currentScene = this;
+          // this.rbImg = this.add.image(600,350,"atlas0", "moneyPiece");
+          // this.add.tween({
+          //     targets:this.rbImg,
+          //     props:{y:0},
+          //     duration:500,
+          //     yoyo:true
+          // })
+          const emitter = this.add.particles(600, 100, 'atlas0', {
+              frame: ['goldEl'],
+              speed: 300,
+              gravityY: 400,
+              lifespan: 4000,
+              scale: 0.3,
+              duration: 5000,
+              blendMode: 'ADD',
+          });
+          emitter.on('complete', () => {
+              globalThis.currentScene.scene.stop();
+              recoverData({ numKilledGangs: 0, numAttempts: 0 }, "sceneB");
+              this.scene.start("sceneB");
           });
       }
       update(time, delta) {
@@ -245319,22 +245443,28 @@ var MyGame = (function (exports) {
           }
           if (loadings.isPlayerData == 1) {
               try {
-                  let data = globalThis.gData;
-                  globalThis.plrAchievments = data.achievments;
+                  //let data = globalThis.gData;
+                  //globalThis.plrAchievments = data.achievments;
                   // сравниваем значения объектов из локалсторадж и из данных игрока
                   // на сервере, выбираем бОльшие
                   if (('numKilledGangs' in globalThis.plrAchievments) &&
-                      ('numAttempts' in globalThis.plrAchievments) &&
-                      locAchievments.numKilledGangs > globalThis.plrAchievments.numKilledGangs) {
-                      globalThis.plrAchievments.numKilledGangs = locAchievments.numKilledGangs;
-                      globalThis.plrAchievments.numAttempts = locAchievments.numAttempts;
-                  }
-                  else {
-                      globalThis.plrAchievments = locAchievments;
+                      ('numAttempts' in globalThis.plrAchievments)) {
+                      if (locAchievments.numKilledGangs > globalThis.plrAchievments.numKilledGangs) {
+                          globalThis.plrAchievments.numKilledGangs = locAchievments.numKilledGangs;
+                      }
+                      if (locAchievments.numAttempts > globalThis.plrAchievments.numAttempts) {
+                          globalThis.plrAchievments.numAttempts = locAchievments.numAttempts;
+                      }
+                      else {
+                          globalThis.plrAchievments = locAchievments;
+                      }
                   }
               }
               catch (err) {
               }
+          }
+          else {
+              globalThis.plrAchievments = locAchievments;
           }
           try {
               // Подписка на события 'game_api_pause'.
@@ -245358,17 +245488,23 @@ var MyGame = (function (exports) {
               globalThis.gYsdk.features.GameplayAPI.start();
           }
           catch (err) { }
+          if (globalThis.plrAchievments.numKilledGangs >= 7) {
+              globalThis.elStrength = 50;
+          }
+          else if (globalThis.plrAchievments.numKilledGangs >= 5) {
+              globalThis.elStrength = 35;
+          }
+          else if (globalThis.plrAchievments.numKilledGangs >= 3) {
+              globalThis.elStrength = 25;
+          }
+          else {
+              globalThis.elStrength = 20;
+          }
           myGame.scene.start('tutorScene');
-          // если нулевой уровень (учебка) ещё не проходился, запускаем его
-          // if (globalThis.achievments[0] == LvlState.NonAttempted) {
-          //     globalThis.currentLevel = lvlNames.Demo;
-          //     myGame.scene.start("demo")
-          // }else{
-          //     globalThis.myUIBlocks.showBaseWnd(achievments,lang)
-          // }
       }
   }
   function initApp(YaGames) {
+      //globalThis.plrAchievments = {numAttempts:0, numKilledGangs:0};
       /** данные о достижениях игрока из объекта player из yasdk  */
       //let remotecAchievments:Array<number>;
       // значение по умолчанию
@@ -245414,9 +245550,9 @@ var MyGame = (function (exports) {
               globalThis.gPlayer = player;
               player.getData().then(data => {
                   try {
-                      globalThis.gData = data;
+                      //globalThis.gData = data;
                       let locAchievments = JSON.parse(data.achv);
-                      console.log(locAchievments);
+                      //console.log(locAchievments);
                       globalThis.plrAchievments = JSON.parse(data.achv);
                       addLoading('isPlayerData', 1);
                   }

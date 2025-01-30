@@ -99,7 +99,7 @@ export class TutorScene extends Phaser.Scene
         }
 
         //globalThis.lang = "en";
-        this.msgTxtObj = globalThis.lang == "ru"?this.msgTxtObjRu:this.msgTxtObjEn;
+        //this.msgTxtObj = globalThis.lang == "ru"?this.msgTxtObjRu:this.msgTxtObjEn;
 
         //this.msgTxtObj = this.msgTxtObjEn;
 
@@ -115,6 +115,7 @@ export class TutorScene extends Phaser.Scene
     {
         globalThis.currentScene = this;
         globalThis.numKilledGangs = 0;
+        this.msgTxtObj = globalThis.lang == "ru"?this.msgTxtObjRu:this.msgTxtObjEn;
 
         // объект находится и в соседней сцене
         objectsArr[0].objectX = 2947;
